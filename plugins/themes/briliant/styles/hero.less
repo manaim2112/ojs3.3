@@ -1,0 +1,161 @@
+// Hero section
+.page_index_journal .hero-section {
+	background: linear-gradient(135deg, @bg-base 0%, darken(@bg-base, 8%) 100%);
+	padding: 5rem @base 4rem;
+	text-align: center;
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background-image:
+			radial-gradient(circle at 30% 50%, rgba(255,255,255,0.06) 0%, transparent 50%),
+			radial-gradient(circle at 70% 80%, rgba(255,255,255,0.03) 0%, transparent 40%);
+		pointer-events: none;
+	}
+
+	// Subtle dot pattern overlay
+	&::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+		background-size: 32px 32px;
+		pointer-events: none;
+	}
+
+	// Floating geometric shapes
+	.hero-shape {
+		position: absolute;
+		border-radius: 50%;
+		pointer-events: none;
+		z-index: 0;
+
+		&.hero-shape-1 {
+			width: 280px;
+			height: 280px;
+			background: radial-gradient(circle, fade(#fff, 4%) 0%, transparent 70%);
+			top: -80px;
+			right: -60px;
+		}
+
+		&.hero-shape-2 {
+			width: 180px;
+			height: 180px;
+			border: 1px solid fade(#fff, 6%);
+			bottom: -40px;
+			left: -40px;
+		}
+
+		&.hero-shape-3 {
+			width: 60px;
+			height: 60px;
+			background: fade(#fff, 4%);
+			top: 30%;
+			left: 8%;
+		}
+	}
+
+	.hero-inner {
+		max-width: 720px;
+		margin: 0 auto;
+		position: relative;
+		z-index: 1;
+	}
+
+	.hero-journal-name {
+		font-size: 2.75rem;
+		font-weight: 800;
+		color: @text-bg-base;
+		line-height: 1.2;
+		margin: 0 0 1rem;
+		letter-spacing: -0.02em;
+	}
+
+	.hero-description {
+		font-size: 1.1rem;
+		color: fade(@text-bg-base, 85%);
+		line-height: 1.7;
+		margin: 0 0 2rem;
+		max-width: 600px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.hero-search {
+		max-width: 560px;
+		margin: 0 auto;
+
+		form {
+			display: flex;
+			gap: 0;
+			box-shadow: @shadow-lg;
+			border-radius: @radius-lg;
+			overflow: hidden;
+		}
+
+		input[type="text"] {
+			flex: 1;
+			border: none;
+			padding: 1rem 1.25rem;
+			font-size: 1rem;
+			font-family: @font;
+			color: @text;
+			outline: none;
+			background: @bg;
+
+			&::placeholder {
+				color: @text-lighter;
+			}
+		}
+
+		button {
+			background: @accent;
+			color: #fff;
+			border: none;
+			padding: 1rem 1.75rem;
+			font-size: 1rem;
+			font-weight: 600;
+			cursor: pointer;
+			transition: background @transition;
+			font-family: @font;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+
+			.fa {
+				font-size: 1rem;
+			}
+
+			&:hover {
+				background: darken(@accent, 8%);
+			}
+		}
+	}
+}
+
+@media (max-width: @screen-tablet) {
+	.page_index_journal .hero-section {
+		padding: 3rem @base;
+
+		.hero-journal-name {
+			font-size: 2rem;
+		}
+
+		.hero-description {
+			font-size: 1rem;
+		}
+
+		.hero-search {
+			input[type="text"] {
+				padding: 0.75rem 1rem;
+			}
+
+			button {
+				padding: 0.75rem 1.25rem;
+			}
+		}
+	}
+}

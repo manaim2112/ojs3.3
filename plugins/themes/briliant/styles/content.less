@@ -1,0 +1,255 @@
+// Content grid - sidebar left, articles right
+.pkp_structure_content {
+	max-width: @max-width;
+	margin: 0 auto;
+	padding: 0 @base;
+	display: flex;
+	flex-direction: row-reverse;
+	gap: 2rem;
+	align-items: flex-start;
+
+	&.has_sidebar {
+		.pkp_structure_main {
+			flex: 1;
+			min-width: 0;
+		}
+
+		.pkp_structure_sidebar {
+			width: @sidebar-width;
+			flex-shrink: 0;
+		}
+	}
+
+	&:not(.has_sidebar) {
+		.pkp_structure_main {
+			width: 100%;
+		}
+	}
+}
+
+.pkp_structure_main {
+	padding: 2rem 0 @section-spacing;
+}
+
+// Briliant page wrapper
+.br-page {
+	max-width: 800px;
+
+	&.br-page-article,
+	&.br-page-issue,
+	&.br-page-search,
+	&.br-page-issue-archive {
+		max-width: none;
+	}
+
+	&.br-page-about,
+	&.br-page-contact,
+	&.br-page-privacy,
+	&.br-page-editorial-team,
+	&.br-page-submissions,
+	&.br-page-announcements,
+	&.br-page-announcement,
+	&.br-page-navigation-item {
+		max-width: 800px;
+	}
+
+	&.br-page-login,
+	&.br-page-register,
+	&.br-page-register-complete,
+	&.br-page-lost-password,
+	&.br-page-error,
+	&.br-page-message {
+		max-width: 540px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+.br-page-title {
+	font-size: 1.75rem;
+	font-weight: 800;
+	color: @text;
+	line-height: 1.3;
+	margin: 1.5rem 0 1rem;
+	letter-spacing: -0.01em;
+}
+
+.br-subtitle {
+	font-size: 1.15rem;
+	font-weight: 400;
+	color: @text-light;
+	margin: -0.5rem 0 1.5rem;
+	line-height: 1.4;
+}
+
+.br-card {
+	background: @bg;
+	border: 1px solid @border;
+	border-radius: @radius-md;
+	padding: 1.5rem;
+	margin-bottom: 1.5rem;
+}
+
+.br-empty-state {
+	text-align: center;
+	padding: 3rem 1.5rem;
+}
+
+.br-sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0,0,0,0);
+	border: 0;
+}
+
+// Sidebar
+.pkp_structure_sidebar {
+	padding: 2rem 0 @section-spacing;
+
+	section {
+		margin-bottom: 1.5rem;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	.pkp_block {
+		background: @bg-shade;
+		border-radius: @radius-md;
+		padding: 1.25rem;
+		transition: box-shadow @transition;
+
+		&:hover {
+			box-shadow: @shadow-sm;
+		}
+
+		.title {
+			font-size: 0.8rem;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 0.06em;
+			color: @text-light;
+			margin: 0 0 0.75rem;
+			padding-bottom: 0.5rem;
+			border-bottom: 2px solid @bg-base;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+
+			&::before {
+				content: '\f02e';
+				font-family: 'FontAwesome';
+				font-size: 0.75rem;
+				color: @bg-base;
+				text-transform: none;
+				letter-spacing: 0;
+			}
+		}
+
+		// Different icons per block type using data attributes or position
+		&.pkp_block_block_makeSubmission,
+		&.pkp_block_block_information {
+			.title::before { content: '\f15c'; }
+		}
+
+		&.pkp_block_block_developedBy {
+			.title::before { content: '\f085'; }
+		}
+
+		&.pkp_block_block_keywordCloud {
+			.title::before { content: '\f02b'; }
+		}
+
+		&.pkp_block_block_notification {
+			.title::before { content: '\f0a2'; }
+		}
+
+		&.pkp_block_block_languageToggle {
+			.title::before { content: '\f0ac'; }
+		}
+
+		&.pkp_block_block_webFeed {
+			.title::before { content: '\f09e'; }
+		}
+
+		.content {
+			font-size: 0.875rem;
+			color: @text;
+			line-height: 1.6;
+
+			a {
+				color: @primary;
+				text-decoration: none;
+
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+
+			ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+
+				li {
+					padding: 0.3rem 0;
+					border-bottom: 1px solid @border;
+					transition: padding-left @transition;
+
+					&:last-child {
+						border-bottom: none;
+					}
+
+					&:hover {
+						padding-left: 0.25rem;
+					}
+
+					a {
+						display: block;
+					}
+				}
+			}
+		}
+	}
+}
+
+// Current issue section
+.current_issue_section {
+	margin: 0 0 2rem;
+
+	h2 {
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: @text;
+		margin: 0 0 0.25rem;
+	}
+
+	.current_issue_link {
+		display: inline-block;
+		font-size: 0.875rem;
+		color: @primary;
+		text-decoration: none;
+		margin-bottom: 1rem;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+@media (max-width: @screen-tablet) {
+	.pkp_structure_content {
+		flex-direction: column;
+
+		&.has_sidebar {
+			.pkp_structure_sidebar {
+				width: 100%;
+			}
+		}
+	}
+}

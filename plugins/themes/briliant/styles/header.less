@@ -1,0 +1,261 @@
+// Header styles
+.pkp_structure_head {
+	background: linear-gradient(135deg, fade(@bg, 95%) 0%, fade(darken(@bg-shade, 4%), 95%) 100%);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	border-bottom: none;
+	box-shadow: 0 1px 0 @border, 0 4px 20px fade(black, 4%);
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+
+	.pkp_head_wrapper {
+		max-width: @max-width;
+		margin: 0 auto;
+		padding: 0 @base;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		height: 64px;
+		gap: @base;
+	}
+
+	.pkp_site_name_wrapper {
+		display: flex;
+		align-items: center;
+		flex-shrink: 0;
+	}
+
+	.pkp_site_name {
+		a.is_img img {
+			max-height: 44px;
+			width: auto;
+		}
+		a.is_text {
+			font-size: 1rem;
+			font-weight: 700;
+			color: @text;
+			text-decoration: none;
+			white-space: nowrap;
+		}
+	}
+
+	.pkp_site_nav_toggle {
+		display: none;
+	}
+
+	// Mobile nav toggle button
+	.pkp_head_wrapper > .pkp_site_nav_toggle {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 4px;
+		width: 36px;
+		height: 36px;
+		padding: 0;
+		background: none;
+		border: none;
+		cursor: pointer;
+		flex-shrink: 0;
+
+		span {
+			display: block;
+			width: 18px;
+			height: 2px;
+			background: @text;
+			border-radius: 1px;
+			transition: background @transition;
+		}
+
+		&:hover span {
+			background: @primary;
+		}
+	}
+
+	// Desktop nav toggle hidden
+	.pkp_site_nav_menu .pkp_site_nav_toggle {
+		display: none;
+	}
+
+	.pkp_site_nav_menu {
+		display: flex;
+		align-items: center;
+		flex: 1;
+		justify-content: space-between;
+	}
+
+	.pkp_navigation_primary_row {
+		display: flex;
+		align-items: center;
+	}
+
+	.pkp_navigation_primary_wrapper {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+	}
+
+	.pkp_nav_list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		gap: 0.25rem;
+
+		li {
+			position: relative;
+
+			a {
+				display: block;
+				padding: 0.5rem 0.875rem;
+				color: @text;
+				font-size: 0.875rem;
+				font-weight: 500;
+				text-decoration: none;
+				border-radius: @radius-sm;
+				transition: background @transition, color @transition;
+
+				&:hover {
+					background: @bg-shade;
+					color: @primary;
+				}
+			}
+
+			ul {
+				display: none;
+				position: absolute;
+				top: 100%;
+				left: 0;
+				background: @bg;
+				border: 1px solid @border;
+				border-radius: @radius-md;
+				box-shadow: @shadow-md;
+				min-width: 200px;
+				z-index: 100;
+				list-style: none;
+				padding: 0.5rem 0;
+
+				li a {
+					padding: 0.5rem 1rem;
+					white-space: nowrap;
+				}
+			}
+
+			&:hover > ul {
+				display: block;
+			}
+		}
+	}
+
+	.pkp_navigation_search_wrapper {
+		a.pkp_search {
+			display: flex;
+			align-items: center;
+			gap: 0.375rem;
+			padding: 0.5rem 0.875rem;
+			color: @text-light;
+			font-size: 0.875rem;
+			text-decoration: none;
+			border-radius: @radius-sm;
+			transition: color @transition;
+
+			.fa {
+				font-size: 0.875rem;
+			}
+
+			&:hover {
+				color: @primary;
+			}
+		}
+	}
+
+	.pkp_navigation_user_wrapper {
+		.pkp_nav_list {
+			gap: 0;
+
+			li a {
+				font-size: 0.8rem;
+				color: @text-light;
+
+				&:hover {
+					color: @primary;
+					background: transparent;
+				}
+			}
+		}
+	}
+
+	// Dark mode toggle
+	#darkModeToggle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		padding: 0;
+		margin-left: 0.25rem;
+		background: none;
+		border: 1px solid transparent;
+		border-radius: @radius-sm;
+		cursor: pointer;
+		transition: all @transition;
+		flex-shrink: 0;
+
+		&:hover {
+			background: @bg-shade;
+			border-color: @border;
+		}
+
+		#darkIcon {
+			font-size: 1.1rem;
+			color: @text-light;
+			transition: color @transition;
+		}
+
+		&:hover #darkIcon {
+			color: @primary;
+		}
+	}
+}
+
+@media (max-width: @screen-tablet) {
+	.pkp_structure_head {
+		.pkp_head_wrapper > .pkp_site_nav_toggle {
+			display: flex;
+		}
+
+		.pkp_site_nav_menu {
+			display: none;
+			position: absolute;
+			top: 64px;
+			left: 0;
+			right: 0;
+			background: fade(@bg, 98%);
+			backdrop-filter: blur(12px);
+			-webkit-backdrop-filter: blur(12px);
+			box-shadow: 0 4px 20px fade(black, 8%);
+			padding: @base;
+			flex-direction: column;
+			align-items: stretch;
+
+			&.open {
+				display: flex;
+			}
+		}
+
+		.pkp_nav_list {
+			flex-direction: column;
+		}
+
+		.pkp_navigation_user_wrapper {
+			border-top: 1px solid @border;
+			margin-top: 0.5rem;
+			padding-top: 0.5rem;
+		}
+
+		#darkModeToggle {
+			margin-left: auto;
+		}
+	}
+}

@@ -1,0 +1,74 @@
+msgid "plugins.themes.briliant.name"
+msgstr "Briliant"
+
+msgid "plugins.themes.briliant.description"
+msgstr "Tema yang bersih dan modern dengan branding jurnal yang menonjol, pencarian hero, dan tata letak konten yang seimbang."
+
+msgid "plugins.themes.briliant.option.variant.label"
+msgstr "Varian Tema"
+
+msgid "plugins.themes.briliant.option.variant.description"
+msgstr "Pilih varian tema dengan latar belakang dan warna aksen yang unik"
+
+msgid "plugins.themes.briliant.option.variant.default"
+msgstr "Default (Biru)"
+
+msgid "plugins.themes.briliant.option.variant.sport"
+msgstr "Olahraga (Merah & Oranye)"
+
+msgid "plugins.themes.briliant.option.variant.biology"
+msgstr "Biologi (Hijau & Teal)"
+
+msgid "plugins.themes.briliant.option.variant.plant"
+msgstr "Tanaman (Hijau Segar)"
+
+msgid "plugins.themes.briliant.option.variant.psychic"
+msgstr "Psikis (Ungu & Magenta)"
+
+msgid "plugins.themes.briliant.option.typography.label"
+msgstr "Tipografi"
+
+msgid "plugins.themes.briliant.option.typography.description"
+msgstr "Pilih font untuk jurnal Anda"
+
+msgid "plugins.themes.briliant.option.typography.inter"
+msgstr "Inter (default)"
+
+msgid "plugins.themes.briliant.option.typography.dmSans"
+msgstr "DM Sans"
+
+msgid "plugins.themes.briliant.option.typography.jakarta"
+msgstr "Plus Jakarta Sans"
+
+msgid "plugins.themes.briliant.option.typography.notoSans"
+msgstr "Noto Sans"
+
+msgid "plugins.themes.briliant.option.typography.geist"
+msgstr "Geist"
+
+msgid "plugins.themes.briliant.option.colour.label"
+msgstr "Warna Dasar"
+
+msgid "plugins.themes.briliant.option.colour.description"
+msgstr "Pilih warna aksen utama"
+
+msgid "plugins.themes.briliant.option.showDescriptionInJournalIndex.label"
+msgstr "Tampilkan Deskripsi"
+
+msgid "plugins.themes.briliant.option.showDescriptionInJournalIndex.option"
+msgstr "Tampilkan deskripsi jurnal di bagian hero beranda"
+
+msgid "common.submitNow"
+msgstr "Submit Artikel"
+
+msgid "common.waitlistContributor"
+msgstr "Kontributor"
+
+msgid "common.sponsorship"
+msgstr "Sponsor"
+
+msgid "common.relatedArticles"
+msgstr "Artikel Terkait"
+
+msgid "common.toggleDarkMode"
+msgstr "Mode gelap"

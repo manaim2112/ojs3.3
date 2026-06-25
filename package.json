@@ -5,8 +5,8 @@
   "author": "Public Knowledge Project",
   "private": true,
   "scripts": {
-    "dev": "vue-cli-service build --no-clean --watch",
-    "build": "vue-cli-service build --no-clean",
+    "dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider vue-cli-service build --no-clean --watch",
+    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider vue-cli-service build --no-clean",
     "lint": "vue-cli-service lint js/load.js lib/pkp/js/load.js lib/pkp/js/classes/VueRegistry.js"
   },
   "dependencies": {
@@ -29,11 +29,14 @@
   },
   "devDependencies": {
     "@foreachbe/cypress-tinymce": "^1.0.0",
+    "@tailwindcss/cli": "^4.3.1",
+    "@tailwindcss/typography": "^0.5.20",
     "@vue/cli-plugin-babel": "^4.5.15",
     "@vue/cli-plugin-eslint": "^4.5.15",
     "@vue/cli-service": "^4.5.15",
     "@vue/eslint-config-prettier": "^4.0.1",
     "babel-eslint": "^10.1.0",
+    "cross-env": "^10.1.0",
     "cypress": "^5.6",
     "cypress-failed-log": "^2.7.0",
     "cypress-file-upload": "^3.5.1",
@@ -45,6 +48,8 @@
     "less": "^3.12.2",
     "less-loader": "^4.1.0",
     "lint-staged": "^8.2.1",
+    "tailwindcss": "^4.3.1",
+    "tailwindcss-animated": "^2.1.0",
     "vue-template-compiler": "^2.6.12"
   },
   "eslintConfig": {

@@ -1,0 +1,74 @@
+msgid "plugins.themes.briliant.name"
+msgstr "Briliant"
+
+msgid "plugins.themes.briliant.description"
+msgstr "A clean and modern theme with prominent journal branding, hero search, and a balanced content layout."
+
+msgid "plugins.themes.briliant.option.variant.label"
+msgstr "Theme Variant"
+
+msgid "plugins.themes.briliant.option.variant.description"
+msgstr "Choose a theme variant with unique background and accent colors"
+
+msgid "plugins.themes.briliant.option.variant.default"
+msgstr "Default (Blue)"
+
+msgid "plugins.themes.briliant.option.variant.sport"
+msgstr "Sport (Red & Orange)"
+
+msgid "plugins.themes.briliant.option.variant.biology"
+msgstr "Biology (Green & Teal)"
+
+msgid "plugins.themes.briliant.option.variant.plant"
+msgstr "Plant (Fresh Green)"
+
+msgid "plugins.themes.briliant.option.variant.psychic"
+msgstr "Psychic (Purple & Magenta)"
+
+msgid "plugins.themes.briliant.option.typography.label"
+msgstr "Typography"
+
+msgid "plugins.themes.briliant.option.typography.description"
+msgstr "Select the font for your journal"
+
+msgid "plugins.themes.briliant.option.typography.inter"
+msgstr "Inter (default)"
+
+msgid "plugins.themes.briliant.option.typography.dmSans"
+msgstr "DM Sans"
+
+msgid "plugins.themes.briliant.option.typography.jakarta"
+msgstr "Plus Jakarta Sans"
+
+msgid "plugins.themes.briliant.option.typography.notoSans"
+msgstr "Noto Sans"
+
+msgid "plugins.themes.briliant.option.typography.geist"
+msgstr "Geist"
+
+msgid "plugins.themes.briliant.option.colour.label"
+msgstr "Base Colour"
+
+msgid "plugins.themes.briliant.option.colour.description"
+msgstr "Choose the primary accent colour"
+
+msgid "plugins.themes.briliant.option.showDescriptionInJournalIndex.label"
+msgstr "Show Description"
+
+msgid "plugins.themes.briliant.option.showDescriptionInJournalIndex.option"
+msgstr "Show journal description on the homepage hero section"
+
+msgid "common.submitNow"
+msgstr "Submit Now"
+
+msgid "common.waitlistContributor"
+msgstr "Waitlist Contributor"
+
+msgid "common.sponsorship"
+msgstr "Sponsorship"
+
+msgid "common.relatedArticles"
+msgstr "Related Articles"
+
+msgid "common.toggleDarkMode"
+msgstr "Toggle dark mode"

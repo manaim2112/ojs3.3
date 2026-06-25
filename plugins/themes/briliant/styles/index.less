@@ -1,0 +1,522 @@
+@import "variables";
+@import "header";
+@import "hero";
+@import "content";
+@import "components";
+@import "footer";
+@import "pages/indexJournal";
+@import "objects/article_summary";
+
+// CSS reset & base
+*, *::before, *::after {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 16px;
+}
+
+body {
+	margin: 0 !important;
+	padding: 0;
+	font-family: @font !important;
+	font-size: 1rem;
+	line-height: 1.6;
+	color: @text;
+	background: @bg;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+// Screen-reader utility
+.pkp_screen_reader {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0,0,0,0);
+	white-space: nowrap;
+	border: 0;
+}
+
+// Dark mode
+html.dark {
+	--bg: @dark-bg;
+	--bg-shade: @dark-bg-shade;
+	--bg-base: @dark-bg-base;
+	--bg-dark: @dark-bg-dark;
+	--text: @dark-text;
+	--text-light: @dark-text-light;
+	--text-lighter: @dark-text-lighter;
+	--border: @dark-border;
+}
+
+html.dark body {
+	background: @dark-bg;
+	color: @dark-text;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+html.dark .pkp_structure_head {
+	background: linear-gradient(135deg, fade(@dark-bg, 93%) 0%, fade(lighten(@dark-bg-shade, 3%), 93%) 100%);
+	border-bottom: none;
+	box-shadow: 0 1px 0 @dark-border, 0 4px 20px fade(black, 20%);
+
+	#darkModeToggle {
+		&:hover {
+			background: @dark-bg;
+			border-color: @dark-border;
+		}
+		#darkIcon {
+			color: @dark-text-light;
+		}
+		&:hover #darkIcon {
+			color: @dark-primary;
+		}
+	}
+}
+
+html.dark .pkp_site_name a.is_text {
+	color: @dark-text;
+}
+
+html.dark .pkp_nav_list li a {
+	color: @dark-text;
+	&:hover {
+		background: @dark-bg;
+		color: @dark-primary;
+	}
+}
+
+html.dark .pkp_nav_list li ul {
+	background: @dark-bg-shade;
+	border-color: @dark-border;
+}
+
+html.dark .pkp_navigation_user_wrapper .pkp_nav_list li a {
+	color: @dark-text-light;
+	&:hover {
+		color: @dark-primary;
+	}
+}
+
+html.dark .pkp_navigation_search_wrapper a.pkp_search {
+	color: @dark-text-light;
+	&:hover {
+		color: @dark-primary;
+	}
+}
+
+html.dark .pkp_structure_footer_wrapper {
+	background: linear-gradient(180deg, darken(@dark-bg-dark, 2%) 0%, @dark-bg-dark 100%);
+
+	&::before {
+		background: linear-gradient(90deg, transparent, fade(@dark-accent, 20%), transparent);
+	}
+}
+
+html.dark .pkp_footer_content {
+	p:first-child {
+		color: @dark-text;
+	}
+	a {
+		color: @dark-secondary;
+		&::after { background: @dark-secondary; }
+		&:hover { color: lighten(@dark-secondary, 10%); }
+	}
+}
+
+html.dark .pkp_structure_sidebar .pkp_block {
+	background: @dark-bg-shade;
+	.title {
+		color: @dark-text-light;
+		border-bottom-color: @dark-bg-base;
+	}
+	.content {
+		color: @dark-text;
+		a { color: @dark-primary; }
+		ul li {
+			border-bottom-color: @dark-border;
+		}
+	}
+}
+
+html.dark .br-card,
+html.dark .obj_article_summary,
+html.dark .obj_article_summary .title a,
+html.dark .br-card-search-result {
+	background: @dark-bg-shade;
+	border-color: @dark-border;
+
+	&:hover {
+		border-color: @dark-bg-base;
+	}
+}
+
+html.dark .obj_article_summary.br-has-cover:hover .br-cover-overlay::after {
+	background: linear-gradient(180deg, fade(@dark-bg-shade, 75%) 0%, fade(@dark-bg-shade, 92%) 100%);
+}
+
+html.dark .br-page-title,
+html.dark .obj_article_summary .title a {
+	color: @dark-text;
+}
+
+html.dark .br-page-title,
+html.dark .obj_article_summary .title a {
+	color: @dark-text;
+}
+
+html.dark .br-subtitle,
+html.dark .br-label {
+	color: @dark-text-light;
+}
+
+html.dark .br-value,
+html.dark .br-author-name,
+html.dark .obj_article_summary .meta .authors {
+	color: @dark-text;
+}
+
+html.dark .br-affiliation {
+	color: @dark-text-light;
+}
+
+html.dark .br-orcid a {
+	color: @dark-primary;
+}
+
+html.dark .br-author-email {
+	a { color: @dark-text-light; &:hover { color: @dark-primary; } }
+	.fa { color: @dark-text-lighter; }
+}
+
+html.dark .br-flag-detail {
+	box-shadow: 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+html.dark .obj_article_summary .meta {
+	color: @dark-text-light;
+}
+
+html.dark .br-item {
+	border-bottom-color: @dark-border;
+}
+
+html.dark .cmp_announcements {
+	background: @dark-bg-shade;
+	h2 { color: @dark-text; }
+	.obj_announcement_summary {
+		h3 a, h4 a { color: @dark-text; &:hover { color: @dark-primary; } }
+		.date { color: @dark-text-light; }
+		& + .obj_announcement_summary { border-top-color: @dark-border; }
+	}
+}
+
+html.dark .current_issue_section h2 {
+	color: @dark-text;
+}
+
+html.dark .br-field .br-input,
+html.dark .br-field .br-select {
+	background: @dark-bg;
+	border-color: @dark-border;
+	color: @dark-text;
+	&:focus {
+		border-color: @dark-primary;
+		box-shadow: 0 0 0 3px fade(@dark-primary, 20%);
+	}
+}
+
+html.dark .br-field .br-label {
+	color: @dark-text;
+}
+
+html.dark .br-notification.notice {
+	background: #2a2520;
+	color: #fbbf24;
+	border-color: #78350f;
+}
+
+html.dark .br-notification.error,
+html.dark .br-form-error {
+	background: #2a1820;
+	color: #f87171;
+	border-color: #7f1d1d;
+}
+
+html.dark .br-btn-outline {
+	color: @dark-primary;
+	border-color: @dark-primary;
+	&:hover {
+		background: @dark-primary;
+		color: #fff;
+	}
+}
+
+html.dark .br-breadcrumbs {
+	.br-separator {
+		color: @dark-text-lighter;
+	}
+	.br-breadcrumbs-item {
+		color: @dark-text-light;
+		a { color: @dark-primary; }
+	}
+	.br-breadcrumbs-current {
+		color: @dark-text;
+	}
+}
+
+html.dark .br-context-item {
+	border-color: @dark-border;
+	.br-context-name { color: @dark-text; }
+}
+
+html.dark .br-field-checkbox .br-checkbox-label {
+	color: @dark-text;
+}
+
+html.dark .hero-section {
+	background: linear-gradient(135deg, @dark-bg-base 0%, darken(@dark-bg-base, 8%) 100%) !important;
+}
+
+html.dark .cmp_announcements .obj_announcement_summary h3 a,
+html.dark .cmp_announcements .obj_announcement_summary h4 a {
+	color: @dark-text;
+}
+
+html.dark .br-forgot-password {
+	color: @dark-primary;
+}
+
+html.dark .br-edit-link {
+	color: @dark-text-light;
+	&:hover {
+		background: @dark-bg;
+		color: @dark-primary;
+	}
+}
+
+html.dark .br-galleys-item {
+	background: @dark-bg-shade;
+	border-color: @dark-border;
+}
+
+html.dark .br-citation-output {
+	background: @dark-bg;
+	border-left-color: @dark-bg-base;
+	color: @dark-text-light;
+}
+
+html.dark .br-citation-list {
+	background: @dark-bg;
+	border-color: @dark-border;
+}
+
+html.dark .br-citation-styles li a {
+	color: @dark-text;
+	&:hover {
+		background: @dark-bg-shade;
+		color: @dark-primary;
+	}
+}
+
+html.dark .br-citation-download-label {
+	border-top-color: @dark-border;
+}
+
+html.dark .br-biographies-item .br-bio-item {
+	background: @dark-bg-shade;
+}
+
+html.dark .br-cover-item .br-cover-image {
+	border-color: @dark-bg-shade;
+}
+
+html.dark .item.downloads_chart {
+	background: @dark-bg-shade;
+	border-color: @dark-border;
+
+	&::before { color: @dark-bg-base; }
+
+	h3.label { color: @dark-text; }
+
+	.value .usageStatsUnavailable {
+		background: @dark-bg;
+		color: @dark-text-light;
+		border-color: @dark-border;
+		&::before { color: @dark-text-lighter; }
+	}
+}
+
+html.dark .br-version-current {
+	color: @dark-text;
+}
+
+html.dark .br-version-item {
+	border-bottom-color: @dark-border;
+}
+
+html.dark .br-license-body .br-copyright-statement {
+	color: @dark-text;
+}
+
+html.dark .br-success-message {
+	color: #4ade80;
+}
+
+html.dark .br-submission-section {
+	h2.br-section-title { color: @dark-text; }
+	.br-checklist-item {
+		border-bottom-color: @dark-border;
+		color: @dark-text;
+	}
+}
+
+html.dark .br-card-contact .br-card-title {
+	color: @dark-text;
+	border-bottom-color: @dark-bg-base;
+}
+
+html.dark .br-card-issue .br-issue-title {
+	color: @dark-text;
+	&:hover { color: @dark-primary; }
+}
+
+html.dark .br-contact-grid .br-contact-phone,
+html.dark .br-contact-grid .br-contact-email {
+	a { color: @dark-primary; }
+}
+
+html.dark .br-meta-item .br-issue-link {
+	color: @dark-primary;
+}
+
+html.dark .br-citation-toggle {
+	&:hover {
+		background: @dark-primary !important;
+		color: #fff !important;
+	}
+}
+
+html.dark h2.br-section-title,
+html.dark .br-section-title {
+	color: @dark-text;
+	border-bottom-color: @dark-bg-base;
+}
+
+html.dark .br-table thead th {
+	background: @dark-bg-shade;
+	color: @dark-text;
+	border-bottom-color: @dark-border;
+}
+
+html.dark .br-table tbody td {
+	color: @dark-text;
+	border-bottom-color: @dark-border;
+}
+
+html.dark .br-subscription-section .br-section-title {
+	color: @dark-text;
+}
+
+html.dark .br-subscription-section .br-section-desc {
+	color: @dark-text-light;
+}
+
+html.dark .br-subscription-name {
+	color: @dark-text;
+}
+
+html.dark .br-subscription-desc {
+	color: @dark-text-light;
+}
+
+html.dark .br-subscription-inactive {
+	background: rgba(255,255,255,0.08);
+	color: @dark-text-light;
+}
+
+html.dark .br-card-form {
+	background: @dark-bg-shade;
+	border-color: @dark-border;
+}
+
+html.dark .br-field .br-textarea {
+	background: @dark-bg;
+	border-color: @dark-border;
+	color: @dark-text;
+	&:focus {
+		border-color: @dark-primary;
+		box-shadow: 0 0 0 3px fade(@dark-primary, 20%);
+	}
+}
+
+html.dark .br-journal-card {
+	background: @dark-bg-shade;
+	border-color: @dark-border;
+}
+
+html.dark .br-journal-card-title a {
+	color: @dark-text;
+	&:hover { color: @dark-primary; }
+}
+
+html.dark .br-journal-card-desc {
+	color: @dark-text-light;
+}
+
+html.dark .br-category-count {
+	color: @dark-text-light;
+}
+
+html.dark .br-category-desc {
+	color: @dark-text;
+}
+
+html.dark .br-card-subcategory {
+	color: @dark-text;
+	border-color: @dark-border;
+	&:hover {
+		color: @dark-primary;
+	}
+}
+
+html.dark .br-category-cover img {
+	border-color: @dark-bg-shade;
+}
+
+html.dark .page_index_journal .homepage_image {
+	background: @dark-bg-shade;
+}
+
+html.dark .br-article-details .br-cover-image {
+	border-color: @dark-bg-shade;
+}
+
+html.dark .obj_article_summary .br-stat-views {
+	color: @dark-accent;
+	background: fade(@dark-accent, 12%);
+}
+
+html.dark .obj_article_summary .br-stat-downloads {
+	color: @dark-primary;
+	background: fade(@dark-primary, 12%);
+}
+
+html.dark #br-reading-progress {
+	background: linear-gradient(90deg, @dark-primary, @dark-secondary);
+}
+
+@media (max-width: @screen-tablet) {
+	html.dark .pkp_site_nav_menu {
+		background: @dark-bg-shade;
+		border-bottom-color: @dark-border;
+	}
+	html.dark .pkp_navigation_user_wrapper {
+		border-top-color: @dark-border;
+	}
+}

@@ -16,3 +16,8 @@ styles/build.css
 cypress.env.json
 cypress/logs/
 cypress/screenshots/
+/cache
+package-lock.json
+nul
+SKILL.md
+test_server.ps1
