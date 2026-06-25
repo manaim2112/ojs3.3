@@ -216,14 +216,24 @@ html.dark .cmp_announcements {
 	}
 }
 
-html.dark .current_issue_section h2,
-html.dark .current_issue_section .current_issue_link,
-html.dark .current_issue_section .read_more {
-	color: @dark-text;
+html.dark .current_issue_section {
+	h2, .current_issue_link, .read_more,
+	.br-section h3, .br-description,
+	.br-published .br-label, .br-published .br-value {
+		color: @dark-text;
+	}
+	.br-description { color: @dark-text-light; }
+	.current_issue_link:hover, .read_more:hover {
+		color: @dark-primary;
+	}
 }
-html.dark .current_issue_section .current_issue_link:hover,
-html.dark .current_issue_section .read_more:hover {
+html.dark .br-galley-link {
 	color: @dark-primary;
+	background: fade(@dark-primary, 10%);
+	&:hover {
+		background: @dark-primary;
+		color: @text-bg-base;
+	}
 }
 
 html.dark .br-field .br-input,
