@@ -1,0 +1,557 @@
+{
+    "last_time": "2026-05-13 05:01:44",
+    "data": {
+        "search_metadata": {
+            "id": "6a0405b777e3d9b74f541dec",
+            "status": "Success",
+            "json_endpoint": "https:\/\/serpapi.com\/searches\/iS2_wzGKE57TlL68afDkrw\/6a0405b777e3d9b74f541dec.json",
+            "created_at": "2026-05-13 05:01:43 UTC",
+            "processed_at": "2026-05-13 05:01:43 UTC",
+            "google_scholar_author_url": "https:\/\/scholar.google.com\/citations?user=vBVJ_5wAAAAJ&hl=en",
+            "raw_html_file": "https:\/\/serpapi.com\/searches\/iS2_wzGKE57TlL68afDkrw\/6a0405b777e3d9b74f541dec.html",
+            "total_time_taken": 0.85
+        },
+        "search_parameters": {
+            "engine": "google_scholar_author",
+            "author_id": "vBVJ_5wAAAAJ",
+            "hl": "en"
+        },
+        "author": {
+            "name": "Revenue Journal: Management and Entrepreneurship",
+            "affiliations": "CV. Bimbingan Belajar Assyfa",
+            "email": "Verified email at assyfa.com",
+            "website": "https:\/\/www.journal.assyfa.com\/index.php\/rjme",
+            "interests": [
+                {
+                    "title": "Management",
+                    "link": "https:\/\/scholar.google.com\/citations?view_op=search_authors&hl=en&mauthors=label:management",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?engine=google_scholar_profiles&hl=en&mauthors=label%3Amanagement"
+                },
+                {
+                    "title": "Entrepreneurship",
+                    "link": "https:\/\/scholar.google.com\/citations?view_op=search_authors&hl=en&mauthors=label:entrepreneurship",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?engine=google_scholar_profiles&hl=en&mauthors=label%3Aentrepreneurship"
+                }
+            ],
+            "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=view_photo&user=vBVJ_5wAAAAJ&citpid=2"
+        },
+        "articles": [
+            {
+                "title": "Opportunities and challenges: adopting \u201cblue-green economy\u201d terms to achieve SDGs",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:_FxGoFyzp5QC",
+                "citation_id": "vBVJ_5wAAAAJ:_FxGoFyzp5QC",
+                "authors": "E Sungkawati",
+                "publication": "Revenue Journal: Management and Entrepreneurship 2 (1), 01-13, 2024",
+                "cited_by": {
+                    "value": 65,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=4249338610906817028",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=4249338610906817028&engine=google_scholar&hl=en",
+                    "cites_id": "4249338610906817028"
+                },
+                "year": "2024"
+            },
+            {
+                "title": "Green economy, sustainability and implementation before, during, and after the covid-19 pandemic in Indonesia",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:u-x6o8ySG0sC",
+                "citation_id": "vBVJ_5wAAAAJ:u-x6o8ySG0sC",
+                "authors": "R Darmayanti, Y Milshteyn, AM Kashap",
+                "publication": "Revenue Journal: Management and Entrepreneurship 1 (1), 27-33, 2023",
+                "cited_by": {
+                    "value": 54,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=770416681213097068",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=770416681213097068&engine=google_scholar&hl=en",
+                    "cites_id": "770416681213097068"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Work environment analysis to improve employee performance",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:ufrVoPGSRksC",
+                "citation_id": "vBVJ_5wAAAAJ:ufrVoPGSRksC",
+                "authors": "M Dullah, L Limgiani, LA Suwardi",
+                "publication": "Revenue Journal: Management and Entrepreneurship 1 (2), 127-134, 2023",
+                "cited_by": {
+                    "value": 43,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=3366739985409564327",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=3366739985409564327&engine=google_scholar&hl=en",
+                    "cites_id": "3366739985409564327"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Digital economy and financial inclusion in reviving the national economy: A Management Strategy",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:IjCSPb-OGe4C",
+                "citation_id": "vBVJ_5wAAAAJ:IjCSPb-OGe4C",
+                "authors": "D Sudiantini, PP Rizky, A Hazarika",
+                "publication": "Revenue Journal: Management and Entrepreneurship 1 (1), 64-75, 2023",
+                "cited_by": {
+                    "value": 38,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=7985719986904709003",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=7985719986904709003&engine=google_scholar&hl=en",
+                    "cites_id": "7985719986904709003"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Is it feasible to establish a connection between cassava and rice in terms of their image?",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:Tyk-4Ss8FVUC",
+                "citation_id": "vBVJ_5wAAAAJ:Tyk-4Ss8FVUC",
+                "authors": "ED Yuniwati, R Darmayanti, S Karim",
+                "publication": "Revenue Journal: Management and Entrepreneurship 1 (2), 99-103, 2023",
+                "cited_by": {
+                    "value": 36,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=11900260103253973966",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=11900260103253973966&engine=google_scholar&hl=en",
+                    "cites_id": "11900260103253973966"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "The impact of monetary policy instruments on sustainable development",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:qjMakFHDy7sC",
+                "citation_id": "vBVJ_5wAAAAJ:qjMakFHDy7sC",
+                "authors": "OA Jothr, AI Jummaa, A Ambariyani",
+                "publication": "Revenue Journal: Management and Entrepreneurship 1 (1), 22-26, 2023",
+                "cited_by": {
+                    "value": 31,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=7500543368144701876,8411074266636643723",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=7500543368144701876%2C8411074266636643723&engine=google_scholar&hl=en",
+                    "cites_id": "7500543368144701876,8411074266636643723"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Development of Islamic economics and practices in Indonesia (2013-2023): opportunities and challenges",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:eQOLeE2rZwMC",
+                "citation_id": "vBVJ_5wAAAAJ:eQOLeE2rZwMC",
+                "authors": "N Nursaid, Z Smith, A Dhakal",
+                "publication": "Revenue Journal: Management and Entrepreneurship 1 (1), 51-63, 2023",
+                "cited_by": {
+                    "value": 30,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=18058590495454658035",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=18058590495454658035&engine=google_scholar&hl=en",
+                    "cites_id": "18058590495454658035"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Does TQM affect Indonesian food sector production efficiently?",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:zYLM7Y9cAGgC",
+                "citation_id": "vBVJ_5wAAAAJ:zYLM7Y9cAGgC",
+                "authors": "T Hendarto, AI Haanurat, A Dhakal",
+                "publication": "Revenue Journal: Management and Entrepreneurship 1 (1), 44-50, 2023",
+                "cited_by": {
+                    "value": 27,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=9900954033941551565",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=9900954033941551565&engine=google_scholar&hl=en",
+                    "cites_id": "9900954033941551565"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "\" Improving\" food processing skills by creating new entrepreneurs",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:d1gkVwhDpl0C",
+                "citation_id": "vBVJ_5wAAAAJ:d1gkVwhDpl0C",
+                "authors": "E Sungkawati, U Usmiyatun, S Karim",
+                "publication": "Revenue Journal: Management and Entrepreneurship 1 (1), 76-86, 2023",
+                "cited_by": {
+                    "value": 24,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=4602537985131229146",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=4602537985131229146&engine=google_scholar&hl=en",
+                    "cites_id": "4602537985131229146"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Government's participation in the Agribusiness Information System: Ornamental Fish Fishermen's Income will\" Increase\"",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:LkGwnXOMwfcC",
+                "citation_id": "vBVJ_5wAAAAJ:LkGwnXOMwfcC",
+                "authors": "T Hendarto, PS Hiat",
+                "publication": "Revenue Journal: Management and Entrepreneurship 2 (1), 108-122, 2024",
+                "cited_by": {
+                    "value": 23,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=1012545887030539921,8386855481957343221",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=1012545887030539921%2C8386855481957343221&engine=google_scholar&hl=en",
+                    "cites_id": "1012545887030539921,8386855481957343221"
+                },
+                "year": "2024"
+            },
+            {
+                "title": "Instagram's impact on sharia economic law literacy in the digital age and Indonesia's sharia economy strengthening",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:W7OEmFMy1HYC",
+                "citation_id": "vBVJ_5wAAAAJ:W7OEmFMy1HYC",
+                "authors": "AI Haanurat, ASA Vedianty, SA Tollentino",
+                "publication": "Revenue Journal: Management and Entrepreneurship 1 (2), 112-118, 2023",
+                "cited_by": {
+                    "value": 23,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=12804392018320332979",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=12804392018320332979&engine=google_scholar&hl=en",
+                    "cites_id": "12804392018320332979"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Retail Companies: The Impact of Brand Image, Advertising, Promotional, and Capital Spending on Financial Performance",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:u5HHmVD_uO8C",
+                "citation_id": "vBVJ_5wAAAAJ:u5HHmVD_uO8C",
+                "authors": "T Hendarto, N Nursaid, H Nadaroglu",
+                "publication": "Revenue Journal: Management and Entrepreneurship 2, 2024",
+                "cited_by": {
+                    "value": 22,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=208492864772218165",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=208492864772218165&engine=google_scholar&hl=en",
+                    "cites_id": "208492864772218165"
+                },
+                "year": "2024"
+            },
+            {
+                "title": "Viral Marketing: Mixue the King of Snow Ice Cream\u2014How does this franchise affect the market?",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:2osOgNQ5qMEC",
+                "citation_id": "vBVJ_5wAAAAJ:2osOgNQ5qMEC",
+                "authors": "E Sungkawati, DR Novitasari, SB Hamad",
+                "publication": "Revenue Journal: Management and Entrepreneurship 1 (2), 142-150, 2023",
+                "cited_by": {
+                    "value": 22,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=5001534956946304840",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=5001534956946304840&engine=google_scholar&hl=en",
+                    "cites_id": "5001534956946304840"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Analysis of the relationship between some indicators of sustainable development and economic growth in Iraq for the period (2004-2020)",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:YsMSGLbcyi4C",
+                "citation_id": "vBVJ_5wAAAAJ:YsMSGLbcyi4C",
+                "authors": "KR Awad, SH Abbas, MK Obed",
+                "publication": "Revenue Journal: Management and Entrepreneurship 1 (2), 90-98, 2023",
+                "cited_by": {
+                    "value": 21,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=13103332348437554968,4371798794967263834",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=13103332348437554968%2C4371798794967263834&engine=google_scholar&hl=en",
+                    "cites_id": "13103332348437554968,4371798794967263834"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Utilization of Instagram@ posaja_sragen for marketing communication to promote PT Pos Indonesia Sragen products",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:8k81kl-MbHgC",
+                "citation_id": "vBVJ_5wAAAAJ:8k81kl-MbHgC",
+                "authors": "EI Ardiana, J Suryono, B Gama, B Setyo",
+                "publication": "Revenue Journal: Management and Entrepreneurship 2 (1), 63-81, 2024",
+                "cited_by": {
+                    "value": 20,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=13043085836253556604,851728481323506274,9492662011590526696,18253510315697577741,722394361507767742",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=13043085836253556604%2C851728481323506274%2C9492662011590526696%2C18253510315697577741%2C722394361507767742&engine=google_scholar&hl=en",
+                    "cites_id": "13043085836253556604,851728481323506274,9492662011590526696,18253510315697577741,722394361507767742"
+                },
+                "year": "2024"
+            },
+            {
+                "title": "An exploratory and analytical study of a sample of control and audit professionals' opinions on green audit techniques and methods",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:9yKSN-GCB0IC",
+                "citation_id": "vBVJ_5wAAAAJ:9yKSN-GCB0IC",
+                "authors": "AZ Khalaf, SB Hamad",
+                "publication": "Revenue Journal: Management and Entrepreneurship 1 (1), 11-17, 2023",
+                "cited_by": {
+                    "value": 18,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=6547763347299634986,3867959992339483171,1534668017161658915",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=6547763347299634986%2C3867959992339483171%2C1534668017161658915&engine=google_scholar&hl=en",
+                    "cites_id": "6547763347299634986,3867959992339483171,1534668017161658915"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Alternative waste management: composting and biochar conversion for metal remediation",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:UeHWp8X0CEIC",
+                "citation_id": "vBVJ_5wAAAAJ:UeHWp8X0CEIC",
+                "authors": "ED Yuniwati, DR Novitasari, A Kamran",
+                "publication": "Revenue Journal: Management and Entrepreneurship 1 (1), 34-43, 2023",
+                "cited_by": {
+                    "value": 17,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=7753805496298252958",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=7753805496298252958&engine=google_scholar&hl=en",
+                    "cites_id": "7753805496298252958"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Indonesia's Geostrategic Position in Global and Regional Politics: Government Preparation",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:_kc_bZDykSQC",
+                "citation_id": "vBVJ_5wAAAAJ:_kc_bZDykSQC",
+                "authors": "RH Solehudin",
+                "publication": "Revenue Journal: Management and Entrepreneurship 1 (2), 81-89, 2023",
+                "cited_by": {
+                    "value": 17,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=18314103477663911568",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=18314103477663911568&engine=google_scholar&hl=en",
+                    "cites_id": "18314103477663911568"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Navigating the Future: AI, Floods, Politics, and Entrepreneurship in Management Operations for Resilient Societies in Jakarta",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:kNdYIx-mwKoC",
+                "citation_id": "vBVJ_5wAAAAJ:kNdYIx-mwKoC",
+                "authors": "H Solehudin, R Darmayanti, FW Agustin, CR Santoso",
+                "publication": "Revenue Journal: Management and Entrepreneurship 3 (1), 51-73, 2025",
+                "cited_by": {
+                    "value": 16,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=59630569069051579",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=59630569069051579&engine=google_scholar&hl=en",
+                    "cites_id": "59630569069051579"
+                },
+                "year": "2025"
+            },
+            {
+                "title": "Sustainable and just economy: One Islamic boarding school, one product program for economic empowerment",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=vBVJ_5wAAAAJ&citation_for_view=vBVJ_5wAAAAJ:WF5omc3nYNoC",
+                "citation_id": "vBVJ_5wAAAAJ:WF5omc3nYNoC",
+                "authors": "N Nursaid, R Zamil, A Labh",
+                "publication": "Revenue Journal: Management and Entrepreneurship 2, 2024",
+                "cited_by": {
+                    "value": 16,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=2850157303116051367,1083038011533864407",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=2850157303116051367%2C1083038011533864407&engine=google_scholar&hl=en",
+                    "cites_id": "2850157303116051367,1083038011533864407"
+                },
+                "year": "2024"
+            }
+        ],
+        "cited_by": {
+            "table": [
+                {
+                    "citations": {
+                        "all": 662,
+                        "since_2021": 655
+                    }
+                },
+                {
+                    "h_index": {
+                        "all": 17,
+                        "since_2021": 16
+                    }
+                },
+                {
+                    "i10_index": {
+                        "all": 23,
+                        "since_2021": 23
+                    }
+                }
+            ],
+            "graph": [
+                {
+                    "year": 2020,
+                    "citations": 3
+                },
+                {
+                    "year": 2021,
+                    "citations": 5
+                },
+                {
+                    "year": 2022,
+                    "citations": 11
+                },
+                {
+                    "year": 2023,
+                    "citations": 162
+                },
+                {
+                    "year": 2024,
+                    "citations": 228
+                },
+                {
+                    "year": 2025,
+                    "citations": 197
+                },
+                {
+                    "year": 2026,
+                    "citations": 48
+                }
+            ]
+        },
+        "co_authors": [
+            {
+                "name": "Rani Darmayanti",
+                "link": "https:\/\/scholar.google.com\/citations?user=3YBrj-MAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=3YBrj-MAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "3YBrj-MAAAAJ",
+                "affiliations": "Universitas Nahdlatul Ulama Pasuruan, Indonesia",
+                "email": "Verified email at unupasuruan.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=3YBrj-MAAAAJ&citpid=26"
+            },
+            {
+                "name": "Endang Sungkawati",
+                "link": "https:\/\/scholar.google.com\/citations?user=qhPL2fIAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=qhPL2fIAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "qhPL2fIAAAAJ",
+                "affiliations": "Universitas Wisnuwardhana Malang, Indonesia",
+                "email": "Verified email at wisnuwardhana.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=qhPL2fIAAAAJ&citpid=1"
+            },
+            {
+                "name": "nursaid",
+                "link": "https:\/\/scholar.google.com\/citations?user=3NzmC54AAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=3NzmC54AAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "3NzmC54AAAAJ",
+                "affiliations": "Universitas Muhammadiyah Jember",
+                "email": "Verified email at unmuhjember.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=3NzmC54AAAAJ&citpid=2"
+            },
+            {
+                "name": "Totok Hendarto",
+                "link": "https:\/\/scholar.google.com\/citations?user=dg1Q7xIAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=dg1Q7xIAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "dg1Q7xIAAAAJ",
+                "affiliations": "Universitas Dr soetomo Surabaya, Indonesia",
+                "email": "Verified email at unitomo.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=dg1Q7xIAAAAJ&citpid=1"
+            },
+            {
+                "name": "Samuel Karim",
+                "link": "https:\/\/scholar.google.com\/citations?user=2kTeXd4AAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=2kTeXd4AAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "2kTeXd4AAAAJ",
+                "affiliations": "COHReD UNIVERSITY COLLEGE, AND ERNEST BAI KOROMA UNIVERSITY OF SCIENCE AND TECHNOLOGY",
+                "email": "Verified email at rolandknews.com",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=2kTeXd4AAAAJ&citpid=3"
+            },
+            {
+                "name": "Amrit Dhakal",
+                "link": "https:\/\/scholar.google.com\/citations?user=O9FB5kgAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=O9FB5kgAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "O9FB5kgAAAAJ",
+                "affiliations": "Prince of Songkla University",
+                "email": "Verified email at psu.ac.th",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=O9FB5kgAAAAJ&citpid=1"
+            },
+            {
+                "name": "Eny Dyah Yuniwati",
+                "link": "https:\/\/scholar.google.com\/citations?user=iTg3EBsAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=iTg3EBsAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "iTg3EBsAAAAJ",
+                "affiliations": "Universitas Wisnuwardhana Malang, Indonesia",
+                "email": "Verified email at wisnuwardhana.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=iTg3EBsAAAAJ&citpid=7"
+            },
+            {
+                "name": "A. Ifayani Haanurat",
+                "link": "https:\/\/scholar.google.com\/citations?user=Yu9ly3YAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=Yu9ly3YAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "Yu9ly3YAAAAJ",
+                "affiliations": "Universitas Muhammadiyah Makassar",
+                "email": "Verified email at unismuh.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=Yu9ly3YAAAAJ&citpid=1"
+            },
+            {
+                "name": "Dwi Rizki Novitasari",
+                "link": "https:\/\/scholar.google.com\/citations?user=Pg_7z_4AAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=Pg_7z_4AAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "Pg_7z_4AAAAJ",
+                "affiliations": "SD Muhammadiyah Pasuruan",
+                "email": "Verified email at assyfa.com",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=Pg_7z_4AAAAJ&citpid=1"
+            },
+            {
+                "name": "SALAH BEN HAMAD",
+                "link": "https:\/\/scholar.google.com\/citations?user=9njDexkAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=9njDexkAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "9njDexkAAAAJ",
+                "affiliations": "Professeur des universit\u00e9s",
+                "email": "Verified email at fsegt.utm.tn",
+                "thumbnail": "https:\/\/scholar.google.com\/citations\/images\/avatar_scholar_56.png"
+            },
+            {
+                "name": "Rd. Heri Solehudin",
+                "link": "https:\/\/scholar.google.com\/citations?user=B-D0iJkAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=B-D0iJkAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "B-D0iJkAAAAJ",
+                "affiliations": "Universitas Muhammadiyah Prof. DR. HAMKA, Indonesia",
+                "email": "Verified email at uhamka.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=B-D0iJkAAAAJ&citpid=1"
+            },
+            {
+                "name": "Usmiyatun Usmiyatun",
+                "link": "https:\/\/scholar.google.com\/citations?user=-jOWNg0AAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=-jOWNg0AAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "-jOWNg0AAAAJ",
+                "affiliations": "Universitas Muhammadiyah Malang, Indonesia",
+                "email": "Verified email at webmail.umm.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=-jOWNg0AAAAJ&citpid=3"
+            },
+            {
+                "name": "Framz Hardiansyah",
+                "link": "https:\/\/scholar.google.com\/citations?user=g8J-uBIAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=g8J-uBIAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "g8J-uBIAAAAJ",
+                "affiliations": "STKIP PGRI Sumenep",
+                "email": "Verified email at stkippgrisumenep.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=g8J-uBIAAAAJ&citpid=1"
+            },
+            {
+                "name": "Mohammad Dullah",
+                "link": "https:\/\/scholar.google.com\/citations?user=0ptM4K4AAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=0ptM4K4AAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "0ptM4K4AAAAJ",
+                "affiliations": "lecturer of economic manajemen, Wisnuwardhana University",
+                "email": "Verified email at wisnuwardhana.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=0ptM4K4AAAAJ&citpid=1"
+            },
+            {
+                "name": "Limgiani",
+                "link": "https:\/\/scholar.google.com\/citations?user=G0s1bAQAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=G0s1bAQAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "G0s1bAQAAAAJ",
+                "affiliations": "Wishnuwardhana University",
+                "email": "Verified email at wisnuwardhana.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=G0s1bAQAAAAJ&citpid=4"
+            },
+            {
+                "name": "DEDY YULIAWAN",
+                "link": "https:\/\/scholar.google.com\/citations?user=fF49VwoAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=fF49VwoAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "fF49VwoAAAAJ",
+                "affiliations": "University of Lampung",
+                "email": "Verified email at feb.unila.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=fF49VwoAAAAJ&citpid=1"
+            },
+            {
+                "name": "TOTO GUNARTO",
+                "link": "https:\/\/scholar.google.com\/citations?user=7T0GRRwAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=7T0GRRwAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "7T0GRRwAAAAJ",
+                "email": "Verified email at feb.unila.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=7T0GRRwAAAAJ&citpid=1"
+            },
+            {
+                "name": "Mas'odi Mas'odi",
+                "link": "https:\/\/scholar.google.com\/citations?user=Su44v60AAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=Su44v60AAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "Su44v60AAAAJ",
+                "affiliations": "STKIP PGRI Sumenep, Indonesia",
+                "email": "Verified email at stkippgrisumenep.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=Su44v60AAAAJ&citpid=4"
+            },
+            {
+                "name": "DIAN SUDIANTINI",
+                "link": "https:\/\/scholar.google.com\/citations?user=99k7iuAAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=99k7iuAAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "99k7iuAAAAAJ",
+                "affiliations": "PTI, Universitas bhayangkara jakarta raya",
+                "email": "Verified email at dsn.ubharajaya.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=99k7iuAAAAAJ&citpid=1"
+            },
+            {
+                "name": "Anurag Hazarika",
+                "link": "https:\/\/scholar.google.com\/citations?user=iFDKXXoAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=iFDKXXoAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "iFDKXXoAAAAJ",
+                "affiliations": "Associate Professor of Business Administration and Management",
+                "email": "Verified email at 21stcenturyopenuniversity.us",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=iFDKXXoAAAAJ&citpid=1"
+            }
+        ],
+        "serpapi_pagination": {
+            "next": "https:\/\/serpapi.com\/search.json?author_id=vBVJ_5wAAAAJ&engine=google_scholar_author&hl=en&start=20"
+        }
+    }
+}

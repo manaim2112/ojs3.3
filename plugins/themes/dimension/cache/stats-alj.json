@@ -1,0 +1,558 @@
+{
+    "last_time": "2026-06-17 12:49:11",
+    "data": {
+        "search_metadata": {
+            "id": "6a3297c56c4c0c2a698ea83b",
+            "status": "Success",
+            "json_endpoint": "https:\/\/serpapi.com\/searches\/p-ZlgZqrYjSWBnbXo0P5Ew\/6a3297c56c4c0c2a698ea83b.json",
+            "created_at": "2026-06-17 12:49:09 UTC",
+            "processed_at": "2026-06-17 12:49:09 UTC",
+            "google_scholar_author_url": "https:\/\/scholar.google.com\/citations?user=NiJ5z9cAAAAJ&hl=en",
+            "raw_html_file": "https:\/\/serpapi.com\/searches\/p-ZlgZqrYjSWBnbXo0P5Ew\/6a3297c56c4c0c2a698ea83b.html",
+            "total_time_taken": 1.09
+        },
+        "search_parameters": {
+            "engine": "google_scholar_author",
+            "author_id": "NiJ5z9cAAAAJ",
+            "hl": "en"
+        },
+        "author": {
+            "name": "Assyfa Learning Journal",
+            "affiliations": "CV. Bimbingan Belajar Assyfa",
+            "email": "Verified email at assyfa.com",
+            "website": "https:\/\/www.journal.assyfa.com\/index.php\/alj",
+            "interests": [
+                {
+                    "title": "Education",
+                    "link": "https:\/\/scholar.google.com\/citations?view_op=search_authors&hl=en&mauthors=label:education",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?engine=google_scholar_profiles&hl=en&mauthors=label%3Aeducation"
+                },
+                {
+                    "title": "Development",
+                    "link": "https:\/\/scholar.google.com\/citations?view_op=search_authors&hl=en&mauthors=label:development",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?engine=google_scholar_profiles&hl=en&mauthors=label%3Adevelopment"
+                }
+            ],
+            "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=view_photo&user=NiJ5z9cAAAAJ&citpid=6"
+        },
+        "articles": [
+            {
+                "title": "Digital comic learning media based on character values on students\u2019 critical thinking in solving mathematical problems in terms of learning styles",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:PazO6pb-sMwC",
+                "citation_id": "NiJ5z9cAAAAJ:PazO6pb-sMwC",
+                "authors": "R Darmayanti",
+                "publication": "Available at SSRN 4803023, 2022",
+                "cited_by": {
+                    "value": 242,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=2148106604444214410",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=2148106604444214410&engine=google_scholar&hl=en",
+                    "cites_id": "2148106604444214410"
+                },
+                "year": "2022"
+            },
+            {
+                "title": "Gema Cow-Pu: Development of mathematical crossword puzzle learning media on students' critical thinking ability",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:fEOibwPWpKIC",
+                "citation_id": "NiJ5z9cAAAAJ:fEOibwPWpKIC",
+                "authors": "R Darmayanti",
+                "publication": "Assyfa Learning Journal 1 (1), 10.61650, 2022",
+                "cited_by": {
+                    "value": 101,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=7390433915150343614,8836582414718190790",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=7390433915150343614%2C8836582414718190790&engine=google_scholar&hl=en",
+                    "cites_id": "7390433915150343614,8836582414718190790"
+                },
+                "year": "2022"
+            },
+            {
+                "title": "Development of Aqidah Akhlak Learning Media\" Board Game Based on Education Fun on the Theme of Commendable Morals (E-Fun A2M)\" for High School Students",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:XD-gHx7UXLsC",
+                "citation_id": "NiJ5z9cAAAAJ:XD-gHx7UXLsC",
+                "authors": "MD Pradana, YOOO Uthman",
+                "publication": "Assyfa Learning Journal 1 (1), 25-36, 2023",
+                "cited_by": {
+                    "value": 88,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=15096482529938258237",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=15096482529938258237&engine=google_scholar&hl=en",
+                    "cites_id": "15096482529938258237"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "The Importance of Marbles in science education for elementary school children",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:-_dYPAW6P2MC",
+                "citation_id": "NiJ5z9cAAAAJ:-_dYPAW6P2MC",
+                "authors": "JJ Kreinsen",
+                "publication": "Assyfa Learning Journal 2 (2), 99-115, 2024",
+                "cited_by": {
+                    "value": 81,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=9831980797679322897,14797953470754617838,10773434261556512423,14959677645115815329",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=9831980797679322897%2C14797953470754617838%2C10773434261556512423%2C14959677645115815329&engine=google_scholar&hl=en",
+                    "cites_id": "9831980797679322897,14797953470754617838,10773434261556512423,14959677645115815329"
+                },
+                "year": "2024"
+            },
+            {
+                "title": "Digital literacy: Empowering individuals in the Digital Age",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:yB1At4FlUx8C",
+                "citation_id": "NiJ5z9cAAAAJ:yB1At4FlUx8C",
+                "authors": "N Hussain, S Phulpoto",
+                "publication": "Assyfa Learning Journal 2 (2), 70-83, 2024",
+                "cited_by": {
+                    "value": 69,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=17521756891183624076,7388986516852718389",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=17521756891183624076%2C7388986516852718389&engine=google_scholar&hl=en",
+                    "cites_id": "17521756891183624076,7388986516852718389"
+                },
+                "year": "2024"
+            },
+            {
+                "title": "Game-Based Science Learning: What are the Problems with Teachers Practicing It in Class?",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:puFLaqDw8dcC",
+                "citation_id": "NiJ5z9cAAAAJ:puFLaqDw8dcC",
+                "authors": "A Schabas",
+                "publication": "Assyfa Learning Journal 1 (2), 89-103, 2023",
+                "cited_by": {
+                    "value": 63,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=5174683465827755611,16666785915705113544",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=5174683465827755611%2C16666785915705113544&engine=google_scholar&hl=en",
+                    "cites_id": "5174683465827755611,16666785915705113544"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "MONICA-DANCE: Development of Monopoly Media Based on Traditional Indigenous Dances on High School Students\u2019 Mathematical Critical Thinking Ability",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:0KyAp5RtaNEC",
+                "citation_id": "NiJ5z9cAAAAJ:0KyAp5RtaNEC",
+                "authors": "R Sugianto, S Khan",
+                "publication": "Assyfa Learning Journal 2, 2023",
+                "cited_by": {
+                    "value": 61,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=17335270853681290125,18006245180290486199,1501818728813182358",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=17335270853681290125%2C18006245180290486199%2C1501818728813182358&engine=google_scholar&hl=en",
+                    "cites_id": "17335270853681290125,18006245180290486199,1501818728813182358"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "TTM Magic Card Media Development",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:2KloaMYe4IUC",
+                "citation_id": "NiJ5z9cAAAAJ:2KloaMYe4IUC",
+                "authors": "C Choirudin, H Sugilar, V Ulu\u00e7ay",
+                "publication": "Assyfa Learning Journal 1 (2), 2023",
+                "cited_by": {
+                    "value": 58,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=11114960121400022237,9027888750045868340,9947455174936180581",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=11114960121400022237%2C9027888750045868340%2C9947455174936180581&engine=google_scholar&hl=en",
+                    "cites_id": "11114960121400022237,9027888750045868340,9947455174936180581"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Bridging the Gap: Environmental Education as a Catalyst for Human-Environmental Harmony",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:uLbwQdceFCQC",
+                "citation_id": "NiJ5z9cAAAAJ:uLbwQdceFCQC",
+                "authors": "D Harahap, YOOO Uthman",
+                "publication": "Available at SSRN 4834363, 2024",
+                "cited_by": {
+                    "value": 57,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=9100897530259292698,1708529348850295967",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=9100897530259292698%2C1708529348850295967&engine=google_scholar&hl=en",
+                    "cites_id": "9100897530259292698,1708529348850295967"
+                },
+                "year": "2024"
+            },
+            {
+                "title": "Design of a website-based arabic typing application for students of arabic language education program at university",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:-qpA3cGbmHsC",
+                "citation_id": "NiJ5z9cAAAAJ:-qpA3cGbmHsC",
+                "authors": "W Nasiha, N Afifah, AN Amir",
+                "publication": "Assyfa Learning Journal 1 (1), 12-24, 2023",
+                "cited_by": {
+                    "value": 54,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=6843414208246684915,11040759525131645865",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=6843414208246684915%2C11040759525131645865&engine=google_scholar&hl=en",
+                    "cites_id": "6843414208246684915,11040759525131645865"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Adopting Blue-Green Economy Terms to Achieve SDGs: Indonesia\u2019s Opportunities and Challenges",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:_Ybze24A_UAC",
+                "citation_id": "NiJ5z9cAAAAJ:_Ybze24A_UAC",
+                "authors": "E Sungkawati, Y Uthman",
+                "publication": "Assyfa Learning Journal 1, 2024",
+                "cited_by": {
+                    "value": 52,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=17199281377274987283,3022895393136729646",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=17199281377274987283%2C3022895393136729646&engine=google_scholar&hl=en",
+                    "cites_id": "17199281377274987283,3022895393136729646"
+                },
+                "year": "2024"
+            },
+            {
+                "title": "Technology in Mathematics Teaching and Learning: An Impact Evaluation in Selected Senior Schools in Masingbi Town",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:tzM49s52ZIMC",
+                "citation_id": "NiJ5z9cAAAAJ:tzM49s52ZIMC",
+                "authors": "S Karim, EM Zoker",
+                "publication": "Assyfa Learning Journal 1 (2), 60-72, 2023",
+                "cited_by": {
+                    "value": 52,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=9893087957657163319,12734506321053981529",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=9893087957657163319%2C12734506321053981529&engine=google_scholar&hl=en",
+                    "cites_id": "9893087957657163319,12734506321053981529"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Programmed learning in mathematics education before and after the pandemic: Academics Integrate technology",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:iWL_APfBKHwC",
+                "citation_id": "NiJ5z9cAAAAJ:iWL_APfBKHwC",
+                "authors": "R Darmayanti",
+                "publication": "Assyfa Learning Journal 2 (1), 40-56, 2024",
+                "cited_by": {
+                    "value": 51,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=923411308816086279,12279851776120061673,1359693174739806527",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=923411308816086279%2C12279851776120061673%2C1359693174739806527&engine=google_scholar&hl=en",
+                    "cites_id": "923411308816086279,12279851776120061673,1359693174739806527"
+                },
+                "year": "2024"
+            },
+            {
+                "title": "Developing pancasila learning strategies through culture-based interactive media in elementary schools",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:q09DtPQ_434C",
+                "citation_id": "NiJ5z9cAAAAJ:q09DtPQ_434C",
+                "authors": "AA Bustomi, N Khosiah, A Fathurrohman",
+                "publication": "Assyfa Learning Journal 3 (1), 43-56, 2025",
+                "cited_by": {
+                    "value": 49,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=1558760384156958848,14941309376967815987,1083038011533864407",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=1558760384156958848%2C14941309376967815987%2C1083038011533864407&engine=google_scholar&hl=en",
+                    "cites_id": "1558760384156958848,14941309376967815987,1083038011533864407"
+                },
+                "year": "2025"
+            },
+            {
+                "title": "ANDIN-MU: Development of Android-Based Descriptive Text Interactive Multimedia Materials in High School English Subjects",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:9Nmd_mFXekcC",
+                "citation_id": "NiJ5z9cAAAAJ:9Nmd_mFXekcC",
+                "authors": "MA Ahmed, N Kumalasari",
+                "publication": "Assyfa Learning Journal 1 (1), 49-59, 2023",
+                "cited_by": {
+                    "value": 48,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=17235413424641125486",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=17235413424641125486&engine=google_scholar&hl=en",
+                    "cites_id": "17235413424641125486"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Edu-Connect: Transforming MSU Marawi Education through Social Media Networks",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:-LHtoeeytlUC",
+                "citation_id": "NiJ5z9cAAAAJ:-LHtoeeytlUC",
+                "authors": "JM Abao, TA Al-Mounaim, HM Pacasum, I Saidamen, MC Viray, HB Gogo",
+                "publication": "Assyfa Learning Journal 2 (2), 116-132, 2024",
+                "cited_by": {
+                    "value": 43,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=12342081031143065856,1012545887030539921,11634060888047931651,8988990730176859304",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=12342081031143065856%2C1012545887030539921%2C11634060888047931651%2C8988990730176859304&engine=google_scholar&hl=en",
+                    "cites_id": "12342081031143065856,1012545887030539921,11634060888047931651,8988990730176859304"
+                },
+                "year": "2024"
+            },
+            {
+                "title": "Professional development in an institution through the GROW model",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:evX43VCCuoAC",
+                "citation_id": "NiJ5z9cAAAAJ:evX43VCCuoAC",
+                "authors": "MA Rahman",
+                "publication": "Assyfa Learning Journal 1 (2), 112-121, 2023",
+                "cited_by": {
+                    "value": 43,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=10224124738154186658",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=10224124738154186658&engine=google_scholar&hl=en",
+                    "cites_id": "10224124738154186658"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Conquering IMO Problems in Brazil by Recognizing the Didactic Situation, Mathematics Teachers Must Know!",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:ibZ2AwG9z6wC",
+                "citation_id": "NiJ5z9cAAAAJ:ibZ2AwG9z6wC",
+                "authors": "PV da Silva Santiago, R Darmayanti, R Sugianto",
+                "publication": "Assyfa Learning Journal 1 (2), 73-88, 2023",
+                "cited_by": {
+                    "value": 42,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=3545363878158625811",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=3545363878158625811&engine=google_scholar&hl=en",
+                    "cites_id": "3545363878158625811"
+                },
+                "year": "2023"
+            },
+            {
+                "title": "Machine Learning Analysis of Junior High Students' Math Representation in HOTS Problems",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:oE_QS-WwsdAC",
+                "citation_id": "NiJ5z9cAAAAJ:oE_QS-WwsdAC",
+                "authors": "DP Utomo",
+                "publication": "Assyfa Learning Journal 2 (2), 133-147, 2024",
+                "cited_by": {
+                    "value": 39,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=17752612373057434968,3737536407260083850,3714334061376429992,393848778654303097,3867959992339483171,1534668017161658915",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=17752612373057434968%2C3737536407260083850%2C3714334061376429992%2C393848778654303097%2C3867959992339483171%2C1534668017161658915&engine=google_scholar&hl=en",
+                    "cites_id": "17752612373057434968,3737536407260083850,3714334061376429992,393848778654303097,3867959992339483171,1534668017161658915"
+                },
+                "year": "2024"
+            },
+            {
+                "title": "Developing Physics Concept Understanding Skills: The Role of Interactive Media in Junior High Schools",
+                "link": "https:\/\/scholar.google.com\/citations?view_op=view_citation&hl=en&user=NiJ5z9cAAAAJ&citation_for_view=NiJ5z9cAAAAJ:HAmI6pRF5skC",
+                "citation_id": "NiJ5z9cAAAAJ:HAmI6pRF5skC",
+                "authors": "M Lubis, D Makwana, G Makwana",
+                "publication": "Assyfa Learning Journal 3 (1), 57-68, 2025",
+                "cited_by": {
+                    "value": 36,
+                    "link": "https:\/\/scholar.google.com\/scholar?oi=bibs&hl=en&cites=12730970516823563007,859046757359881669,570663447030942092",
+                    "serpapi_link": "https:\/\/serpapi.com\/search.json?cites=12730970516823563007%2C859046757359881669%2C570663447030942092&engine=google_scholar&hl=en",
+                    "cites_id": "12730970516823563007,859046757359881669,570663447030942092"
+                },
+                "year": "2025"
+            }
+        ],
+        "cited_by": {
+            "table": [
+                {
+                    "citations": {
+                        "all": 1598,
+                        "since_2021": 1584
+                    }
+                },
+                {
+                    "h_index": {
+                        "all": 26,
+                        "since_2021": 26
+                    }
+                },
+                {
+                    "i10_index": {
+                        "all": 29,
+                        "since_2021": 29
+                    }
+                }
+            ],
+            "graph": [
+                {
+                    "year": 2020,
+                    "citations": 4
+                },
+                {
+                    "year": 2021,
+                    "citations": 14
+                },
+                {
+                    "year": 2022,
+                    "citations": 49
+                },
+                {
+                    "year": 2023,
+                    "citations": 542
+                },
+                {
+                    "year": 2024,
+                    "citations": 460
+                },
+                {
+                    "year": 2025,
+                    "citations": 371
+                },
+                {
+                    "year": 2026,
+                    "citations": 130
+                }
+            ]
+        },
+        "co_authors": [
+            {
+                "name": "Rani Darmayanti",
+                "link": "https:\/\/scholar.google.com\/citations?user=3YBrj-MAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=3YBrj-MAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "3YBrj-MAAAAJ",
+                "affiliations": "Universitas Nahdlatul Ulama Pasuruan, Indonesia",
+                "email": "Verified email at unupasuruan.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=3YBrj-MAAAAJ&citpid=32"
+            },
+            {
+                "name": "Choirudin Choirudin",
+                "link": "https:\/\/scholar.google.com\/citations?user=8SERascAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=8SERascAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "8SERascAAAAJ",
+                "affiliations": "Universitas Ma'arif Lampung (UMALA)",
+                "email": "Verified email at iaimnumetrolampung.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=8SERascAAAAJ&citpid=4"
+            },
+            {
+                "name": "Usmiyatun Usmiyatun",
+                "link": "https:\/\/scholar.google.com\/citations?user=-jOWNg0AAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=-jOWNg0AAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "-jOWNg0AAAAJ",
+                "affiliations": "Universitas Muhammadiyah Malang, Indonesia",
+                "email": "Verified email at webmail.umm.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=-jOWNg0AAAAJ&citpid=3"
+            },
+            {
+                "name": "Yusuf Olawale Owa-Onire Uthman",
+                "link": "https:\/\/scholar.google.com\/citations?user=BWEUNxQAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=BWEUNxQAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "BWEUNxQAAAAJ",
+                "affiliations": "Ibn haldun University, Istanbul Turkey",
+                "email": "Verified email at ibnhaldun.edu.tr",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=BWEUNxQAAAAJ&citpid=3"
+            },
+            {
+                "name": "Muhammad Saidun Anwar (Scopus ID...",
+                "link": "https:\/\/scholar.google.com\/citations?user=p1igepsAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=p1igepsAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "p1igepsAAAAJ",
+                "affiliations": "Institut Agama Islam Ma'arif NU (IAIMNU) Metro Lampung",
+                "email": "Verified email at iaimnumetrolampung.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=p1igepsAAAAJ&citpid=9"
+            },
+            {
+                "name": "Samuel Karim",
+                "link": "https:\/\/scholar.google.com\/citations?user=2kTeXd4AAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=2kTeXd4AAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "2kTeXd4AAAAJ",
+                "affiliations": "COHReD UNIVERSITY COLLEGE, AND ERNEST BAI KOROMA UNIVERSITY OF SCIENCE AND TECHNOLOGY",
+                "email": "Verified email at rolandknews.com",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=2kTeXd4AAAAJ&citpid=3"
+            },
+            {
+                "name": "Ilham Muhammad",
+                "link": "https:\/\/scholar.google.com\/citations?user=pwKft-QAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=pwKft-QAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "pwKft-QAAAAJ",
+                "affiliations": "Institut Al - Bahjah",
+                "email": "Verified email at staialbahjah.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=pwKft-QAAAAJ&citpid=14"
+            },
+            {
+                "name": "Dwi Priyo Utomo",
+                "link": "https:\/\/scholar.google.com\/citations?user=NxywTccAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=NxywTccAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "NxywTccAAAAJ",
+                "affiliations": "Mathematics Education",
+                "email": "Verified email at umm.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=NxywTccAAAAJ&citpid=1"
+            },
+            {
+                "name": "Mohammedalameen Ahmed Aldaw",
+                "link": "https:\/\/scholar.google.com\/citations?user=yT-N3-wAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=yT-N3-wAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "yT-N3-wAAAAJ",
+                "affiliations": "Universitas Muhammadiyah Yogyakarta",
+                "email": "Verified email at mail.umy.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=yT-N3-wAAAAJ&citpid=4"
+            },
+            {
+                "name": "Mohamed Exton ZOKER",
+                "link": "https:\/\/scholar.google.com\/citations?user=zDTDSVMAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=zDTDSVMAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "zDTDSVMAAAAJ",
+                "affiliations": "Lecturer, Mathematics and Integrated Science Department, Njala University",
+                "email": "Verified email at njala.edu.sl",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=zDTDSVMAAAAJ&citpid=2"
+            },
+            {
+                "name": "Viky Risnanda Arif",
+                "link": "https:\/\/scholar.google.com\/citations?user=h8RCWhIAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=h8RCWhIAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "h8RCWhIAAAAJ",
+                "affiliations": "SMAN 1 GRATI",
+                "email": "Verified email at guru.sma.belajar.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=h8RCWhIAAAAJ&citpid=1"
+            },
+            {
+                "name": "Abu Amar Bustomi",
+                "link": "https:\/\/scholar.google.com\/citations?user=d_HD6ysAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=d_HD6ysAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "d_HD6ysAAAAJ",
+                "affiliations": "Universitas Islam Negeri Sunan Ampel Surabaya, Indonesia",
+                "email": "Verified email at uinsa.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=d_HD6ysAAAAJ&citpid=1"
+            },
+            {
+                "name": "Besse Darmawati",
+                "link": "https:\/\/scholar.google.com\/citations?user=ahn24z8AAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=ahn24z8AAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "ahn24z8AAAAJ",
+                "affiliations": "Badan Riset dan Inovasi Nasional (BRIN)",
+                "email": "Verified email at brin.go.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=ahn24z8AAAAJ&citpid=1"
+            },
+            {
+                "name": "Md Anisur Rahman",
+                "link": "https:\/\/scholar.google.com\/citations?user=T5oRlNQAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=T5oRlNQAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "T5oRlNQAAAAJ",
+                "affiliations": "Assistant Professor, Department of Political Science, Hajigonj Degree College,Chandpur, Bangladesh",
+                "email": "Verified email at edrc-jefler.org",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=T5oRlNQAAAAJ&citpid=1"
+            },
+            {
+                "name": "Endang Sungkawati",
+                "link": "https:\/\/scholar.google.com\/citations?user=qhPL2fIAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=qhPL2fIAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "qhPL2fIAAAAJ",
+                "affiliations": "Universitas Wisnuwardhana Malang, Indonesia",
+                "email": "Verified email at wisnuwardhana.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=qhPL2fIAAAAJ&citpid=1"
+            },
+            {
+                "name": "AFIFAH UNISSULA",
+                "link": "https:\/\/scholar.google.com\/citations?user=fGEvpScAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=fGEvpScAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "fGEvpScAAAAJ",
+                "affiliations": "Universitas Islam Sultan Agung",
+                "email": "Verified email at unissula.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=fGEvpScAAAAJ&citpid=1"
+            },
+            {
+                "name": "Framz Hardiansyah",
+                "link": "https:\/\/scholar.google.com\/citations?user=g8J-uBIAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=g8J-uBIAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "g8J-uBIAAAAJ",
+                "affiliations": "STKIP PGRI Sumenep",
+                "email": "Verified email at stkippgrisumenep.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=g8J-uBIAAAAJ&citpid=1"
+            },
+            {
+                "name": "Lilis Marina Angraini",
+                "link": "https:\/\/scholar.google.com\/citations?user=6cmplFQAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=6cmplFQAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "6cmplFQAAAAJ",
+                "affiliations": "Universitas Islam Riau",
+                "email": "Verified email at edu.uir.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=6cmplFQAAAAJ&citpid=2"
+            },
+            {
+                "name": "Maesaroh Lubis",
+                "link": "https:\/\/scholar.google.com\/citations?user=OptSO2gAAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=OptSO2gAAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "OptSO2gAAAAJ",
+                "affiliations": "Universitas Muhammadiyah Tasikmalaya, Indonesia",
+                "email": "Verified email at umtas.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=OptSO2gAAAAJ&citpid=2"
+            },
+            {
+                "name": "Mas'odi Mas'odi",
+                "link": "https:\/\/scholar.google.com\/citations?user=Su44v60AAAAJ&hl=en",
+                "serpapi_link": "https:\/\/serpapi.com\/search.json?author_id=Su44v60AAAAJ&engine=google_scholar_author&hl=en",
+                "author_id": "Su44v60AAAAJ",
+                "affiliations": "STKIP PGRI Sumenep, Indonesia",
+                "email": "Verified email at stkippgrisumenep.ac.id",
+                "thumbnail": "https:\/\/scholar.googleusercontent.com\/citations?view_op=small_photo&user=Su44v60AAAAJ&citpid=4"
+            }
+        ],
+        "serpapi_pagination": {
+            "next": "https:\/\/serpapi.com\/search.json?author_id=NiJ5z9cAAAAJ&engine=google_scholar_author&hl=en&start=20"
+        }
+    }
+}
