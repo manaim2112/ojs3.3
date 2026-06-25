@@ -34,7 +34,7 @@
 						{if $thumb}
 							<div class="thumb">
 								<a href="{$url|escape}">
-									<img src="{$journalFilesPath}{$journal->getId()}/{$thumb.uploadName|escape:"url"}"{if $thumb.altText} alt="{$thumb.altText|escape|default:''}"{/if}>
+									<img src="{$journalFilesPath}{$journal->getId()}/{$thumb.uploadName|escape:"url"}"{if $thumb.altText} alt="{$thumb.altText|escape|default:''}"{/if} onerror="this.onerror=null;this.src='https://placehold.co/200x200/f8f9fc/94a3b8?text=Journal'">
 								</a>
 							</div>
 						{/if}

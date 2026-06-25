@@ -19,12 +19,13 @@
 
 	{if $issueCover}
 		<a class="cover float-left mr-4 mb-4" href="{url op="view" path=$issue->getBestIssueId()}">
-			<img class="rounded-lg hover:shadow-sm" src="{$issueCover|escape}" alt="{$issue->getLocalizedCoverImageAltText()|escape|default:''}">
+			<img class="rounded-lg hover:shadow-sm" src="{$issueCover|escape}" alt="{$issue->getLocalizedCoverImageAltText()|escape|default:''}" onerror="this.onerror=null;this.src='https://placehold.co/200x260/f8f9fc/94a3b8?text=No+Cover'">
 		</a>
 
 		<img class="absolute w-72 blur-lg rotate-45 h-auto right-0 bottom-0 -z-5" loading="lazy"
 			src="{$issueCover|escape}"
 			alt="{$issue->getLocalizedCoverImageAltText()|escape|default:''}"
+			onerror="this.onerror=null;this.style.display='none'"
 		>
 	{/if}
 

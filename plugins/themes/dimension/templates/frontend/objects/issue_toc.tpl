@@ -45,7 +45,7 @@
 				{capture assign="defaultAltText"}
 					{translate key="issue.viewIssueIdentification" identification=$issue->getIssueIdentification()|escape}
 				{/capture}
-				<img src="{$issueCover|escape}" alt="{$issue->getLocalizedCoverImageAltText()|escape|default:$defaultAltText}">
+				<img src="{$issueCover|escape}" alt="{$issue->getLocalizedCoverImageAltText()|escape|default:$defaultAltText}" onerror="this.onerror=null;this.src='https://placehold.co/300x400/f8f9fc/94a3b8?text=No+Cover'">
 			</a>
 		{/if}
 

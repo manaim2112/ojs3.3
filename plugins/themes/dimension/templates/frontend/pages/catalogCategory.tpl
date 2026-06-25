@@ -38,7 +38,7 @@
 	<div class="about_section{if $image} has_image{/if}{if $description} has_description{/if}">
 		{if $image}
 			<div class="cover" href="{url router=$smarty.const.ROUTE_PAGE page="catalog" op="fullSize" type="category" id=$category->getId()}">
-				<img src="{url router=$smarty.const.ROUTE_PAGE page="catalog" op="thumbnail" type="category" id=$category->getId()}" alt="null" />
+				<img src="{url router=$smarty.const.ROUTE_PAGE page="catalog" op="thumbnail" type="category" id=$category->getId()}" alt="{$category->getLocalizedTitle()|escape}" onerror="this.onerror=null;this.src='https://placehold.co/300x200/f8f9fc/94a3b8?text=Category'">
 			</div>
 		{/if}
 		<div class="description">

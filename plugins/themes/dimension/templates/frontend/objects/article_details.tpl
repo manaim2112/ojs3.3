@@ -284,10 +284,12 @@
 							<img
 								src="{$publication->getLocalizedCoverImageUrl($article->getData('contextId'))|escape}"
 								alt="{$coverImage.altText|escape|default:''}"
+								onerror="this.onerror=null;this.src='https://placehold.co/400x560/f8f9fc/94a3b8?text=No+Cover'"
 							>
 						{else}
 							<a href="{url page="issue" op="view" path=$issue->getBestIssueId()}">
-								<img src="{$issue->getLocalizedCoverImageUrl()|escape}" alt="{$issue->getLocalizedCoverImageAltText()|escape|default:''}">
+								<img src="{$issue->getLocalizedCoverImageUrl()|escape}" alt="{$issue->getLocalizedCoverImageAltText()|escape|default:''}"
+									onerror="this.onerror=null;this.src='https://placehold.co/400x560/f8f9fc/94a3b8?text=No+Cover'">
 							</a>
 						{/if}
 					</div>

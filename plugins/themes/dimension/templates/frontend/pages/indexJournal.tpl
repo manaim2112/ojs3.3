@@ -26,8 +26,8 @@
 
 			{if !$activeTheme->getOption('useHomepageImageAsHeader') && $homepageImage}
 				<div class="homepage_image">
-					<img src="{$publicFilesDir}/{$homepageImage.uploadName|escape:"url"}" {if $homepageImage.altText}
-						alt="{$homepageImage.altText|escape}" {/if}>
+					<img src="{$publicFilesDir}/{$homepageImage.uploadName|escape:"url"}"{if $homepageImage.altText}
+						alt="{$homepageImage.altText|escape}" {/if} onerror="this.onerror=null;this.src='https://placehold.co/1200x400/f8f9fc/94a3b8?text=Homepage'">
 				</div>
 			{/if}
 
@@ -40,8 +40,8 @@
 					{* Issue cover image *}
 					{assign var=issueCover value=$issue->getLocalizedCoverImageUrl()}
 					{if $issueCover}
-						<img class="float-right ml-4 mb-4 h-72 w-auto" src="{$issueCover|escape}"
-							alt="{$issue->getLocalizedCoverImageAltText()|escape|default:$defaultAltText}">
+					<img class="float-right ml-4 mb-4 h-72 w-auto" src="{$issueCover|escape}"
+							alt="{$issue->getLocalizedCoverImageAltText()|escape|default:$defaultAltText}" onerror="this.onerror=null;this.src='https://placehold.co/300x400/f8f9fc/94a3b8?text=No+Cover'">
 
 					{/if}
 					<div class="text-justify prose dark:prose-invert prose-img:max-w-full prose-img:h-auto prose-img:rounded-lg prose-img:shadow-md prose-img:transition-all prose-img:duration-300 prose-img:transform prose-img:hover:scale-102 prose-img:m-2 prose-img:inline-block prose-li:m-1 max-w-none text-sm">

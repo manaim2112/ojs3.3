@@ -30,10 +30,12 @@
 		<img class="absolute w-32 rotate-45 h-auto right-0 bottom-0 -z-3" loading="lazy"
 			src="{$publication->getLocalizedCoverImageUrl($article->getData('contextId'))|escape}"
 			alt="{$coverImage.altText|escape|default:''}"
+			onerror="this.onerror=null;this.style.display='none'"
 		>
 		<img class="absolute w-72 blur-lg rotate-45 h-auto right-0 bottom-0 -z-5" loading="lazy"
 			src="{$publication->getLocalizedCoverImageUrl($article->getData('contextId'))|escape}"
 			alt="{$coverImage.altText|escape|default:''}"
+			onerror="this.onerror=null;this.style.display='none'"
 		>
 		{* <div class="cover absolute right-0 bottom-0">
 			<a {if $journal}href="{url journal=$journal->getPath() page="article" op="view" path=$articlePath}"{else}href="{url page="article" op="view" path=$articlePath}"{/if} class="file">
@@ -74,7 +76,7 @@
 				
 				{foreach from=$authors item=author name=authorList key="idx"}
 					<span class="inline-flex items-center space-x-2">
-						<img loading="lazy" style="display:inline-block;margin-right:5px;width: 20px;border:1px solid #000;" src="https://journal.assyfa.com/public/site/flags/{$author->_data["country"]|lower}.svg" alt="Country Of {$author->getFullName()|escape}">
+						<img loading="lazy" style="display:inline-block;margin-right:4px;width:16px;height:11px;border:1px solid #ccc;border-radius:2px;" src="https://flagcdn.com/w20/{$author->_data["country"]|lower}.png" alt="{$author->getFullName()|escape}" onerror="this.onerror=null;this.style.display='none'">
 						{$author->getLocalizedData("givenName")|escape} 
             			{$author->getLocalizedData("familyName")|escape}
 				{if $idx+1 < count($authors)}, {/if}
@@ -119,33 +121,27 @@
 				</li>
 			{/foreach}
 
+			{* View count *}
 			<li>
-				<span style="    padding: 5px 10px;
-					border-radius: 1rem;
-					border: 2px solid #ffe257;
-					background: #ffff8842;display:inline-block;">
-					<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M160 80c0-26.5 21.5-48 48-48h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H208c-26.5 0-48-21.5-48-48V80zM0 272c0-26.5 21.5-48 48-48H80c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V272zM368 96h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H368c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48z"/></svg>
-					 view {$article->getViews()}
-				   </span>
-			
+				<span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold" style="border:2px solid #ffe257;background:#ffff8842;">
+					<svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 448 512"><path d="M160 80c0-26.5 21.5-48 48-48h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H208c-26.5 0-48-21.5-48-48V80zM0 272c0-26.5 21.5-48 48-48H80c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V272zM368 96h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H368c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48z"/></svg>
+					{$article->getViews()}
+				</span>
 			</li>
-			<li style="margin-top:5px;" class="flex items-center gap-2">
-			  {if $galleys}
-					{assign var="totalViews" value=0}
-				  {foreach from=$galleys item=galley name=galleyList}
-					  {assign var="totalViews" value=$totalViews + $galley->getViews()}
-				  {/foreach}
-				   <span style="    padding: 5px 10px;
-						border-radius: 1rem;
-						border: 2px solid #5e57ff;
-						background: #3280ff1a;
-						display:inline-block;"
-						
-						> 
-							<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
-						Dilihat  {$totalViews}</span>
-			  {/if}
-			</li>
+			{* Download count *}
+			{assign var="articleGalleys" value=$article->getGalleys()}
+			{if $articleGalleys}
+				{assign var="downloadViews" value=0}
+				{foreach from=$articleGalleys item=galley name=galleyList}
+					{assign var="downloadViews" value=$downloadViews + $galley->getViews()}
+				{/foreach}
+				<li>
+					<span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold" style="border:2px solid #5e57ff;background:#3280ff1a;">
+						<svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 512 512"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
+						{$downloadViews}
+					</span>
+				</li>
+			{/if}
 		</ul>
 	{/if}
 

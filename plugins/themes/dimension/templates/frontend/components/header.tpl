@@ -33,7 +33,8 @@
 <div class="relative w-full overflow-hidden">
     <img class="w-full h-auto object-cover object-center transition-all duration-500"
          src="{$publicFilesDir}/{$homepageImage.uploadName|escape:"url"}"
-         {if $homepageImage.altText} alt="{$homepageImage.altText|escape}"{/if}>
+         {if $homepageImage.altText} alt="{$homepageImage.altText|escape}"{/if}
+         onerror="this.onerror=null;this.style.display='none'">
     <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent flex items-end justify-center p-8 opacity-0 hover:opacity-100 transition-opacity duration-500">
         <h1 class="text-white text-3xl md:text-5xl font-bold drop-shadow-lg text-center">
             {$displayPageHeaderTitle|escape}
@@ -50,12 +51,12 @@
         <a href="{$homeUrl}" class="flex items-center animate-fade-in-down">
         	{if $displayPageHeaderLogo}
 	        	<img src="{$publicFilesDir}/{$displayPageHeaderLogo.uploadName|escape:"url"}" alt="{$displayPageHeaderTitle|escape}"
-	        		class="h-10">
+	        		class="h-10" onerror="this.onerror=null;this.src='https://placehold.co/160x40/1E6292/ffffff?text=Logo'">
         	{elseif $displayPageHeaderTitle}
 	        	<span class="text-base font-bold tracking-tight">{$displayPageHeaderTitle|escape}</span>
         	{else}
 	        	<img class="w-10" src="{$baseUrl}/templates/images/structure/logo.png" alt="{$applicationName|escape}"
-	        		title="{$applicationName|escape}" />
+	        		title="{$applicationName|escape}" onerror="this.onerror=null;this.src='https://placehold.co/40x40/1E6292/ffffff?text=OJ'" />
         	{/if}
 		</a>
 
