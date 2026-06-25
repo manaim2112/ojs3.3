@@ -216,8 +216,14 @@ html.dark .cmp_announcements {
 	}
 }
 
-html.dark .current_issue_section h2 {
+html.dark .current_issue_section h2,
+html.dark .current_issue_section .current_issue_link,
+html.dark .current_issue_section .read_more {
 	color: @dark-text;
+}
+html.dark .current_issue_section .current_issue_link:hover,
+html.dark .current_issue_section .read_more:hover {
+	color: @dark-primary;
 }
 
 html.dark .br-field .br-input,
