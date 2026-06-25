@@ -1,88 +1,356 @@
 /**
  * @file  plugins/themes/modern/styles/pages/indexSite.less
  *
- * Copyright (c) 2014-2021 Simon Fraser University
- * Copyright (c) 2003-2021 John Willinsky
- * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
- *
- * @brief Styles applying to the front page of the journal
+ * @brief Editorial bento grid for site index
  * @link templates/frontend/pages/indexSite.tpl
  */
-.pkp_page_index {
+@import "../variables.less";
 
-	.journals {
-		margin-top: @triple;
+/* =============================================================
+   Hero — split layout with big number
+   ============================================================= */
+.sis_hero {
+	padding: @quadruple @triple @triple;
+	border-bottom: 1px solid @card-border;
+	margin-bottom: @triple;
 
-		h2 {
-			&:extend(.pkp_screen_reader);
+	.sis_hero_inner {
+		max-width: 1100px;
+		margin: 0 auto;
+		display: flex;
+		align-items: flex-end;
+		gap: @triple;
+	}
+
+	.sis_hero_text {
+		flex: 1;
+	}
+
+	.sis_hero_about {
+		font-size: @font-lead;
+		line-height: @line-lead;
+		color: @text-light;
+		max-width: 640px;
+
+		> *:first-child { margin-top: 0; }
+		> *:last-child { margin-bottom: 0; }
+	}
+
+	.sis_hero_badge {
+		flex-shrink: 0;
+	}
+
+	.sis_hero_count {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+		background: @accent-soft;
+		border: 2px solid @accent-soft-2;
+	}
+
+	.sis_hero_count_num {
+		font-family: @font-heading;
+		font-size: 2.2rem;
+		font-weight: @bold;
+		color: @accent;
+		line-height: 1;
+		letter-spacing: -0.03em;
+	}
+
+	.sis_hero_count_label {
+		font-size: @font-tiny;
+		font-weight: @semibold;
+		color: @accent;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+	}
+
+	@media (max-width: @screen-tablet) {
+		.sis_hero_inner {
+			flex-direction: column;
+			align-items: flex-start;
 		}
 
-		ul {
-			&:extend(.pkp_unstyled_list);
-		}
-
-		> ul > li {
-			margin: @triple 0;
-		}
-
-		img {
-			display: block;
-			max-height: 20em;
-		}
-
-		h3 {
-			margin: @base 0;
-			font-size: @font-base;
-			font-weight: @bold;
-
-			a {
-				text-decoration: none;
-			}
-		}
-
-		p {
-			margin: @base 0;
-		}
-
-		.links {
-
-			li {
-				display: inline-block;
-				margin: 0 @base @base 0;
-			}
-		}
-
-		@media(min-width: @screen-tablet) {
-
-			> ul > li {
-				.pkp_helpers_clear;
-				margin: 0 -@double;
-				padding: @double;
-				border-top: @bg-border;
-			}
-
-			.thumb {
-				float: left;
-				width: 25%;
-				padding-right: @double;
-
-				+ .body {
-					float: right;
-					width: 75%;
-				}
-			}
-		}
-
-		@media(min-width: @screen-desktop) {
-
-			> ul > li {
-				margin: 0 -@triple;
-				padding: @triple;
-			}
-
-			.thumb {
-				padding-right: @triple;
-			}
+		.sis_hero_badge {
+			align-self: center;
 		}
 	}
+}
+
+/* =============================================================
+   Bento Grid — asymmetric, editorial
+   ============================================================= */
+.sis_journals {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: 0 @triple @quadruple;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: @double;
+	grid-auto-flow: dense;
+
+	@media (max-width: @screen-desktop) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	@media (max-width: @screen-tablet) {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* =============================================================
+   Card — full-bleed image with gradient overlay
+   ============================================================= */
+.sis_card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	background: @card-bg;
+	border: 1px solid @card-border;
+	border-radius: 12px;
+	overflow: hidden;
+	text-decoration: none;
+	color: #fff;
+	box-shadow: @card-shadow-soft;
+	transition: @transition;
+	min-height: 280px;
+
+	&::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: 12px;
+		border: 1px solid rgba(255, 255, 255, 0.15);
+		pointer-events: none;
+		z-index: 3;
+	}
+
+	&:hover {
+		box-shadow: @card-shadow-lift;
+		transform: translateY(-4px);
+		border-color: @card-border-hover;
+
+		.sis_card_media img {
+			transform: scale(1.06);
+		}
+
+		.sis_card_cta .fa-arrow-right {
+			transform: translateX(4px);
+		}
+	}
+
+	&:active {
+		transform: translateY(-2px);
+		box-shadow: @card-shadow-soft;
+	}
+}
+
+/* Hero card — spans 2 cols */
+.sis_card--hero {
+	grid-column: span 2;
+	min-height: 360px;
+
+	@media (max-width: @screen-desktop) {
+		grid-column: span 2;
+	}
+
+	@media (max-width: @screen-tablet) {
+		grid-column: span 1;
+		min-height: 300px;
+	}
+
+	.sis_card_title {
+		font-size: @font-bump;
+	}
+
+	.sis_card_desc {
+		-webkit-line-clamp: 4;
+	}
+}
+
+/* Tall card — spans 2 rows */
+.sis_card--tall {
+	grid-row: span 2;
+	min-height: 400px;
+
+	@media (max-width: @screen-desktop) {
+		grid-row: span 1;
+		min-height: 300px;
+	}
+}
+
+/* =============================================================
+   Card Media — image with gradient overlay
+   ============================================================= */
+.sis_card_media {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		transition: transform 0.7s cubic-bezier(.22, 1, .36, 1);
+	}
+
+	&--empty {
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(
+			135deg,
+			@surface-sunken 0%,
+			@bg-shade 50%,
+			fade(@accent, 8%) 100%
+		);
+
+		/* Decorative pattern for empty state */
+		&::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background-image:
+				radial-gradient(circle at 20% 80%, fade(@accent, 6%) 0%, transparent 50%),
+				radial-gradient(circle at 80% 20%, fade(@brand, 4%) 0%, transparent 50%);
+		}
+	}
+}
+
+/* Gradient overlay — always present */
+.sis_card_media::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(
+		180deg,
+		transparent 0%,
+		transparent 30%,
+		fade(@text, 75%) 100%
+	);
+	z-index: 1;
+}
+
+/* =============================================================
+   Card Content — bottom overlay
+   ============================================================= */
+.sis_card_content {
+	position: relative;
+	z-index: 2;
+	margin-top: auto;
+	padding: @double;
+	display: flex;
+	flex-direction: column;
+	gap: @half;
+}
+
+.sis_card_path {
+	display: inline-flex;
+	align-self: flex-start;
+	padding: @half @base;
+	font-size: @font-tiny;
+	font-weight: @semibold;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: rgba(255, 255, 255, 0.85);
+	background: rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 6px;
+}
+
+.sis_card_title {
+	font-family: @font-heading;
+	font-size: @font-base;
+	font-weight: @semibold;
+	color: #fff;
+	margin: 0;
+	line-height: 1.3;
+	letter-spacing: -0.01em;
+	text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.sis_card_desc {
+	font-size: @font-sml;
+	line-height: @line-sml;
+	color: rgba(255, 255, 255, 0.75);
+	margin: 0;
+
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.sis_card_cta {
+	display: inline-flex;
+	align-items: center;
+	gap: @half;
+	font-size: @font-tiny;
+	font-weight: @semibold;
+	color: #fff;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	margin-top: @half;
+
+	.fa-arrow-right {
+		font-size: 0.65rem;
+		transition: transform 0.3s cubic-bezier(.34, 1.56, .64, 1);
+	}
+}
+
+/* =============================================================
+   Empty State
+   ============================================================= */
+.sis_empty {
+	text-align: center;
+	padding: @quadruple @double;
+	color: @text-light;
+
+	.fa {
+		font-size: 2.5rem;
+		margin-bottom: @double;
+		opacity: 0.3;
+	}
+
+	p {
+		font-size: @font-lead;
+	}
+}
+
+/* =============================================================
+   Scroll reveal
+   ============================================================= */
+[data-reveal] {
+	opacity: 0;
+	transform: translateY(24px);
+	transition: opacity 0.6s cubic-bezier(.22, 1, .36, 1),
+				transform 0.6s cubic-bezier(.22, 1, .36, 1);
+
+	&.is-visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Stagger children */
+.sis_journals {
+	.sis_card:nth-child(1) { transition-delay: 0ms; }
+	.sis_card:nth-child(2) { transition-delay: 60ms; }
+	.sis_card:nth-child(3) { transition-delay: 120ms; }
+	.sis_card:nth-child(4) { transition-delay: 180ms; }
+	.sis_card:nth-child(5) { transition-delay: 240ms; }
+	.sis_card:nth-child(6) { transition-delay: 300ms; }
+	.sis_card:nth-child(7) { transition-delay: 360ms; }
+	.sis_card:nth-child(8) { transition-delay: 420ms; }
+	.sis_card:nth-child(9) { transition-delay: 480ms; }
+	.sis_card:nth-child(10) { transition-delay: 540ms; }
+	.sis_card:nth-child(11) { transition-delay: 600ms; }
+	.sis_card:nth-child(12) { transition-delay: 660ms; }
 }

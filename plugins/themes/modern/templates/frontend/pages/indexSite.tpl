@@ -1,74 +1,81 @@
 {**
  * templates/frontend/pages/indexSite.tpl
  *
- * Copyright (c) 2014-2021 Simon Fraser University
- * Copyright (c) 2003-2021 John Willinsky
- * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
- *
- * Site index.
- *
+ * Modern theme — Editorial site index with bento journal grid.
  *}
 {include file="frontend/components/header.tpl"}
 
 <div class="page_index_site">
 
-	{if $about}
-		<div class="about_site">
-			{$about}
+	{* Editorial Hero *}
+	<section class="sis_hero">
+		<div class="sis_hero_inner">
+			<div class="sis_hero_text">
+				{if $about}
+					<div class="sis_hero_about">{$about}</div>
+				{/if}
+			</div>
+			<div class="sis_hero_badge">
+				{if $journals|@count}
+					<span class="sis_hero_count">
+						<span class="sis_hero_count_num">{$journals|@count}</span>
+						<span class="sis_hero_count_label">{if $journals|@count == 1}Journal{else}Journals{/if}</span>
+					</span>
+				{/if}
+			</div>
+		</div>
+	</section>
+
+	{* Journals Bento Grid *}
+	{if $journals|@count}
+		<section class="sis_journals">
+			{assign var="journalIdx" value=0}
+			{foreach from=$journals item=journal}
+				{capture assign="url"}{url journal=$journal->getPath()}{/capture}
+				{assign var="thumb" value=$journal->getLocalizedData('journalThumbnail')}
+				{assign var="description" value=$journal->getLocalizedDescription()}
+				{math equation="x % 5" x=$journalIdx assign="modCycle"}
+
+				<a href="{$url|escape}" class="sis_card{if $modCycle == 0} sis_card--hero{elseif $modCycle == 1 || $modCycle == 2} sis_card--tall{/if}" data-reveal>
+
+					{* Cover *}
+					<div class="sis_card_media">
+						{if $thumb}
+							<img
+								src="{$journalFilesPath}{$journal->getId()}/{$thumb.uploadName|escape:"url"}"
+								alt="{$journal->getLocalizedName()|escape}"
+								loading="lazy"
+								onerror="this.onerror=null;this.parentElement.classList.add('sis_card_media--empty')"
+							>
+						{else}
+							<div class="sis_card_media--empty"></div>
+						{/if}
+					</div>
+
+					{* Content overlay *}
+					<div class="sis_card_content">
+						<span class="sis_card_path">{$journal->getPath()|escape}</span>
+						<h3 class="sis_card_title">{$journal->getLocalizedName()|escape}</h3>
+						{if $description}
+							<p class="sis_card_desc">{$description|strip_unsafe_html|truncate:120}</p>
+						{/if}
+						<span class="sis_card_cta">
+							{translate key="site.journalView"}
+							<span class="fa fa-arrow-right"></span>
+						</span>
+					</div>
+				</a>
+
+				{math equation="x + 1" x=$journalIdx assign="journalIdx"}
+			{/foreach}
+		</section>
+	{else}
+		<div class="sis_empty">
+			<span class="fa fa-book-open"></span>
+			<p>{translate key="site.noJournals"}</p>
 		</div>
 	{/if}
 
-	<div class="journals">
-		<h2>
-			{translate key="context.contexts"}
-		</h2>
-		{if !$journals|@count}
-			{translate key="site.noJournals"}
-		{else}
-			<ul>
-				{foreach from=$journals item=journal}
-					{capture assign="url"}{url journal=$journal->getPath()}{/capture}
-					{assign var="thumb" value=$journal->getLocalizedData('journalThumbnail')}
-					{assign var="description" value=$journal->getLocalizedDescription()}
-					<li{if $thumb} class="has_thumb"{/if}>
-						{if $thumb}
-							<div class="thumb">
-								<a href="{$url|escape}">
-									<img src="{$journalFilesPath}{$journal->getId()}/{$thumb.uploadName|escape:"url"}"{if $thumb.altText} alt="{$thumb.altText|escape|default:''}"{/if} onerror="this.src='https://placehold.co/200x200/f8f9fc/94a3b8?text=Journal'">
-								</a>
-							</div>
-						{/if}
-
-						<div class="body">
-							<h3>
-								<a href="{$url|escape}" rel="bookmark">
-									{$journal->getLocalizedName()|escape}
-								</a>
-							</h3>
-							{if $description}
-								<div class="description">
-									{$description}
-								</div>
-							{/if}
-							<ul class="links">
-								<li class="view">
-									<a href="{$url|escape}">
-										{translate key="site.journalView"}
-									</a>
-								</li>
-								<li class="current">
-									<a href="{url|escape journal=$journal->getPath() page="issue" op="current"}">
-										{translate key="site.journalCurrent"}
-									</a>
-								</li>
-							</ul>
-						</div>
-					</li>
-				{/foreach}
-			</ul>
-		{/if}
-	</div>
-
-</div><!-- .page -->
+</div>
 
 {include file="frontend/components/footer.tpl"}
