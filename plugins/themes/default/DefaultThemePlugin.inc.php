@@ -33,6 +33,14 @@ class DefaultThemePlugin extends ThemePlugin {
 	public function init() {
 		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_MANAGER, LOCALE_COMPONENT_APP_MANAGER);
 
+		$this->addOption('statCounter_project_id', 'FieldText', [
+			'label' => 'StatCounter Project ID',
+			'description' => 'pada saat instalasi di statcounter, nanti ada project id nya, eg : 13121706'
+		]);
+		$this->addOption('statCounter_security_id', 'FieldText', [
+			'label' => 'StatCounter Security ID',
+			'description' => 'pada saat instalasi di statcounter, nanti ada Security id nya, eg : 13121706'
+		]);
 		// Register theme options
 		$this->addOption('typography', 'FieldOptions', [
 			'type' => 'radio',
@@ -129,7 +137,8 @@ class DefaultThemePlugin extends ThemePlugin {
 		}
 
 		// Update colour based on theme option
-		if (($baseColour = $this->getOption('baseColour')) !== '#1E6292') {
+		$baseColour = $this->getOption('baseColour');
+		if ($baseColour !== '#1E6292') {
 			if (!preg_match('/^#[0-9a-fA-F]{1,6}$/', $baseColour)) $baseColour = '#1E6292'; // pkp/pkp-lib#11974
 			$additionalLessVariables[] = '@bg-base:' . $baseColour . ';';
 			if (!$this->isColourDark($baseColour)) {
@@ -170,7 +179,7 @@ class DefaultThemePlugin extends ThemePlugin {
 			);
 		}
 
-		// Load jQuery from a CDN or, if CDNs are disabled, from a local copy.
+	    // Load jQuery from a CDN or, if CDNs are disabled, from a local copy.
 		$min = Config::getVar('general', 'enable_minified') ? '.min' : '';
 		$jquery = $request->getBaseUrl() . '/lib/pkp/lib/vendor/components/jquery/jquery' . $min . '.js';
 		$jqueryUI = $request->getBaseUrl() . '/lib/pkp/lib/vendor/components/jqueryui/jquery-ui' . $min . '.js';
@@ -200,14 +209,6 @@ class DefaultThemePlugin extends ThemePlugin {
 		return $this->getPluginPath() . '/settings.xml';
 	}
 
-	/** @see ThemePlugin::saveOption */
-	public function saveOption($name, $value, $contextId = null) {
-		// Validate the base colour setting value.
-		if ($name == 'baseColour' && !preg_match('/^#[0-9a-fA-F]{1,6}$/', $value)) $value = null; // pkp/pkp-lib#11974
-
-		parent::saveOption($name, $value, $contextId);
-	}
-
 	/**
 	 * Get the name of the settings file to be installed site-wide when
 	 * OJS is installed.
@@ -231,5 +232,13 @@ class DefaultThemePlugin extends ThemePlugin {
 	 */
 	function getDescription() {
 		return __('plugins.themes.default.description');
+	}
+
+	/** @see ThemePlugin::saveOption */
+	public function saveOption($name, $value, $contextId = null) {
+		// Validate the base colour setting value.
+		if ($name == 'baseColour' && !preg_match('/^#[0-9a-fA-F]{1,6}$/', $value)) $value = null; // pkp/pkp-lib#11974
+
+		parent::saveOption($name, $value, $contextId);
 	}
 }
