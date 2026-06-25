@@ -97,7 +97,7 @@
 	// =====================================================
 	function initScrollReveal() {
 		// Auto-mark elements for reveal
-		$('.obj_article_summary, .obj_issue_summary, .obj_announcement_summary, .pkp_block').each(function(index) {
+		$('.obj_article_summary, .obj_issue_summary, .obj_announcement_summary, .pkp_block, .sis_journal').each(function(index) {
 			if (!$(this).attr('data-reveal')) {
 				$(this).attr('data-reveal', '');
 				$(this).attr('data-reveal-delay', Math.min(index % 4 + 1, 4));
