@@ -195,8 +195,8 @@ class DimensionThemePlugin extends ThemePlugin {
 		// Load primary stylesheet (pre-built Tailwind v4)
 		$this->addStyle('reboot', 'styles/reboot.css');
 
-		// Load custom styles
-		$this->addStyle('main', 'styles/main.css');
+		// Note: main.css is a PostCSS source (not loaded directly — compiled into reboot.css)
+		// $this->addStyle('main', 'styles/main.css');
 
 		if ($this->getOption('typography') === 'notoSerif') {
 			$this->addStyle('font', 'styles/fonts/notoSerif.css');

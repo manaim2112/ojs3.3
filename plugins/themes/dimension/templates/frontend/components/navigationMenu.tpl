@@ -131,48 +131,24 @@
 {/if}
 
 <script>
-	// Mobile Menu Toggle Logic
-	const mobileMenuButton = document.getElementById('mobileMenuButton');
-	const mobileMenu = document.getElementById('mobileMenu');
-	const mobileMenuBackdrop = document.getElementById('mobileMenuBackdrop');
-	const mobileMenuClose = document.getElementById('mobileMenuClose');
-
-	function toggleMobileMenu() {
-		mobileMenu.classList.toggle('translate-x-full'); // Slide in/out
-		document.body.classList.toggle('overflow-hidden'); // Prevent scroll behind menu
-	}
-
-	mobileMenuButton.addEventListener('click', toggleMobileMenu);
-	mobileMenuBackdrop.addEventListener('click', toggleMobileMenu);
-	mobileMenuClose.addEventListener('click', toggleMobileMenu);
-
-	// Submenu Toggle for Mobile Menu Items
+	// Submenu Toggle for Mobile Menu Items (header.tpl handles open/close/ESC/resize)
 	document.querySelectorAll('#mobileMenu .mobile-menu-item').forEach(item => {
-		const submenu = item.querySelector('ul');
+		var submenu = item.querySelector('ul');
 		if (submenu) {
-			const link = item.querySelector('a');
-			const toggleButton = document.createElement('button');
-			toggleButton.innerHTML = '&#9660;'; // Down arrow
+			var link = item.querySelector('a');
+			var toggleButton = document.createElement('button');
+			toggleButton.innerHTML = '&#9660;';
 			toggleButton.classList.add('absolute', 'right-4', 'top-2', 'p-1', 'text-gray-500',
 				'hover:text-gray-800', 'transition-colors');
-			item.insertBefore(toggleButton, submenu); // Insert button before submenu
+			item.insertBefore(toggleButton, submenu);
 
-			toggleButton.addEventListener('click', (e) => {
-				e.stopPropagation(); // Prevent main link click
+			toggleButton.addEventListener('click', function(e) {
+				e.stopPropagation();
 				submenu.classList.toggle('hidden');
-				toggleButton.innerHTML = submenu.classList.contains('hidden') ? '&#9660;' :
-					'&#9650;'; // Toggle arrow
+				toggleButton.innerHTML = submenu.classList.contains('hidden') ? '&#9660;' : '&#9650;';
 			});
 
-			// Hide submenu by default if it was open on page reload for some reason
 			submenu.classList.add('hidden');
-		}
-	});
-
-	// Close menu on ESC key
-	document.addEventListener('keydown', (e) => {
-		if (e.key === 'Escape' && !mobileMenu.classList.contains('translate-x-full')) {
-			toggleMobileMenu();
 		}
 	});
 </script>
