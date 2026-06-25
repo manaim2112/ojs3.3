@@ -1,0 +1,201 @@
+/**
+ * @file styles/animations.less
+ *
+ * Modern theme — Premium motion choreography.
+ * All animations use GPU-safe properties (transform, opacity only).
+ * Custom cubic-bezier curves simulate real-world spring physics.
+ */
+
+/* =============================================================
+   Keyframes — cinematic, weighty motion
+   ============================================================= */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUpLarge {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* =============================================================
+   Utility Classes — premium timing
+   ============================================================= */
+.animate-fade-in {
+  animation: fadeIn .6s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+
+.animate-fade-up {
+  animation: fadeUp .7s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+
+.animate-fade-up-large {
+  animation: fadeUpLarge .8s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+
+.animate-slide-down {
+  animation: slideDown .5s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+
+.animate-scale-up {
+  animation: scaleUp .6s cubic-bezier(.34, 1.56, .64, 1) forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight .6s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft .6s cubic-bezier(.22, 1, .36, 1) forwards;
+}
+
+/* Shimmer loading effect */
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 25%, fade(#fff, 40%) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* =============================================================
+   Staggered Delays — cascading entry
+   ============================================================= */
+.animate-delay-1 { animation-delay: .1s; }
+.animate-delay-2 { animation-delay: .2s; }
+.animate-delay-3 { animation-delay: .3s; }
+.animate-delay-4 { animation-delay: .4s; }
+.animate-delay-5 { animation-delay: .5s; }
+.animate-delay-6 { animation-delay: .6s; }
+
+/* Legacy support */
+.animate-delay-100 { animation-delay: 100ms; }
+.animate-delay-200 { animation-delay: 200ms; }
+.animate-delay-300 { animation-delay: 300ms; }
+.animate-delay-400 { animation-delay: 400ms; }
+.animate-delay-500 { animation-delay: 500ms; }
+
+/* =============================================================
+   Scroll-triggered animations (paired with JS IntersectionObserver)
+   ============================================================= */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity .8s cubic-bezier(.22, 1, .36, 1),
+              transform .8s cubic-bezier(.22, 1, .36, 1);
+  will-change: transform, opacity;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-on-scroll[data-delay="1"] { transition-delay: .1s; }
+.reveal-on-scroll[data-delay="2"] { transition-delay: .2s; }
+.reveal-on-scroll[data-delay="3"] { transition-delay: .3s; }
+.reveal-on-scroll[data-delay="4"] { transition-delay: .4s; }
+.reveal-on-scroll[data-delay="5"] { transition-delay: .5s; }
+
+/* =============================================================
+   Hover micro-interactions
+   ============================================================= */
+.hover-lift {
+  transition: transform .35s cubic-bezier(.34, 1.56, .64, 1),
+              box-shadow .35s cubic-bezier(.22, 1, .36, 1);
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+}
+
+.hover-scale {
+  transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
+
+  &:hover {
+    transform: scale(1.03);
+  }
+}
+
+.hover-glow {
+  transition: box-shadow .35s cubic-bezier(.22, 1, .36, 1);
+
+  &:hover {
+    box-shadow: 0 0 24px -4px fade(@primary, 30%);
+  }
+}

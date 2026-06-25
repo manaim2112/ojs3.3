@@ -1,0 +1,517 @@
+/**
+ * @file styles/components.less
+ *
+ * Modern theme — Premium reusable components.
+ * Design: "Soft Structuralism" — pill buttons, floating surfaces, soft shadows.
+ */
+
+// Simple clearfix wrapper
+.row {
+	.pkp_helpers_clear;
+}
+
+// Button — premium pill with magnetic hover
+.cmp_button {
+	display: inline-block;
+	padding: 0 1.5em;
+	background: @primary;
+	border: none;
+	border-radius: 9999px;
+	box-shadow: 0 2px 8px -2px fade(@primary, 35%);
+	transition: all .35s cubic-bezier(.34, 1.56, .64, 1);
+	font-size: @font-sml;
+	line-height: @triple;
+	font-weight: @semibold;
+	color: #fff;
+	text-decoration: none;
+	letter-spacing: 0.01em;
+	position: relative;
+	overflow: hidden;
+
+	&::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(135deg, fade(#fff, 15%) 0%, transparent 50%);
+		opacity: 0;
+		transition: opacity .3s ease;
+	}
+
+	&:hover,
+	&:focus {
+		box-shadow: 0 12px 28px -8px fade(@primary, 40%);
+		transform: translateY(-2px) scale(1.02);
+		background: @primary-lift;
+		color: #fff;
+		&::after { opacity: 1; }
+	}
+
+	&:active {
+		transform: translateY(0) scale(0.98);
+		box-shadow: 0 2px 8px -2px fade(@primary, 35%);
+		transition-duration: .1s;
+	}
+}
+
+// Wire button — premium outline
+.cmp_button_wire {
+	display: inline-block;
+	padding: 0 1.5em;
+	background: transparent;
+	border: 1.5px solid @primary;
+	border-radius: 9999px;
+	transition: all .35s cubic-bezier(.34, 1.56, .64, 1);
+	font-size: @font-sml;
+	line-height: calc(~"@{triple} - 3px");
+	font-weight: @semibold;
+	color: @primary;
+	text-decoration: none;
+	letter-spacing: 0.01em;
+
+	&:hover,
+	&:focus {
+		background: @primary;
+		color: #fff;
+		box-shadow: 0 12px 28px -8px fade(@primary, 40%);
+		transform: translateY(-2px) scale(1.02);
+		border-color: @primary;
+	}
+
+	&:active {
+		transform: translateY(0) scale(0.98);
+		transition-duration: .1s;
+	}
+}
+
+// Add an icon to the button
+.cmp_button_icon( @icon ) {
+	position: relative;
+	padding-right: @triple + (@triple / 2);
+	border-right: none;
+
+	&:after {
+		.fa();
+		content: @icon;
+		position: absolute;
+		top: 0px;
+		right: 0;
+		width: @triple;
+		height: @triple;
+		border-top-right-radius: @radius;
+		border-bottom-right-radius: @radius;
+		line-height: @triple;
+		text-align: center;
+		background: rgba(0, 0, 0, 0.15);
+		color: #fff;
+		transition: @transition;
+	}
+
+	&:hover:after,
+	&:focus:after {
+		background: rgba(0, 0, 0, 0.25);
+	}
+}
+
+.cmp_button_icon_left( @icon ) {
+	padding-right: 1em;
+	padding-left: @triple + (@triple / 2);
+	border-right: none;
+	border-left: none;
+
+	&:after {
+		right: auto;
+		left: 0;
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+		border-top-left-radius: @radius;
+		border-bottom-left-radius: @radius;
+	}
+}
+
+// Text button with an icon — premium with arrow
+.cmp_button_text( @icon ) {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5em;
+	position: relative;
+	font-size: @font-sml;
+	font-weight: @semibold;
+	line-height: @triple;
+	color: @primary;
+	text-decoration: none;
+	transition: all .3s cubic-bezier(.22, 1, .36, 1);
+
+	&:after {
+		.fa();
+		content: @icon;
+		transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
+	}
+
+	&:hover,
+	&:focus {
+		color: @primary-lift;
+		&:after {
+			transform: translateX(4px);
+		}
+	}
+}
+
+// List of articles
+.cmp_article_list {
+	&:extend(.pkp_unstyled_list);
+
+	> li {
+		.pkp_helpers_clear();
+		margin-bottom: @triple;
+	}
+}
+
+// Forms — refined with focus glow
+.cmp_form {
+
+	fieldset {
+		margin: 0 0 @double;
+		padding: 0;
+		border: none;
+	}
+
+	legend {
+		margin-bottom: @base;
+		font-size: @font-bump;
+		font-weight: @semibold;
+		line-height: @double;
+	}
+
+	.fields {
+
+		> div {
+			position: relative;
+			padding-bottom: @triple; // Contain errors
+
+			.error {
+				position: absolute;
+				left: 0.5em;
+				bottom: 11px;
+				padding: 0 0.5em;
+				background: @no;
+				border-bottom-left-radius: @radius;
+				border-bottom-right-radius: @radius;
+				font-size: @font-sml;
+				line-height: @double;
+				font-weight: @semibold;
+				color: #fff;
+			}
+		}
+	}
+
+	label {
+		display: block;
+		cursor: pointer;
+	}
+
+	.label {
+		display: block;
+		font-size: @font-sml;
+		font-weight: @normal;
+		font-style: italic;
+
+		.required {
+			color: @no;
+		}
+	}
+
+	input[type="text"],
+	input[type="email"],
+	input[type="password"],
+	input[type="url"],
+	input[type="tel"],
+	select,
+	textarea {
+		padding: 0 0.75em;
+		width: 100%;
+		height: calc(~"@{triple} - 3px");
+		background: #fff;
+		border: 1.5px solid rgba(0,0,0,0.12);
+		border-radius: @radius;
+		font-size: @font-sml;
+		line-height: calc(~"@{triple} - 3px");
+		transition: all .3s cubic-bezier(.22, 1, .36, 1);
+
+		&:focus {
+			outline: 0;
+			border-color: @primary;
+			box-shadow: 0 0 0 4px fade(@primary, 8%), 0 2px 8px -2px fade(@primary, 15%);
+		}
+	}
+
+	textarea {
+		width: 100%;
+		height: 8em;
+	}
+
+	.pkp_form_error {
+		margin-bottom: @base;
+		border-radius: @radius;
+		padding: 0 0.5em;
+		font-weight: @semibold;
+		font-size: @font-sml;
+		background: @no;
+		color: #fff;
+	}
+
+	label > input[type="checkbox"],
+	label > input[type="radio"] {
+		margin-right: 0.25em;
+	}
+
+	.buttons {
+		.pkp_helpers_clear;
+
+		button {
+			&:extend(.cmp_button);
+		}
+
+		a {
+			font-size: @font-sml;
+			line-height: @triple;
+			margin-left: 1em;
+		}
+	}
+
+	.description {
+		margin-top: 0;
+		font-size: @font-tiny;
+		line-height: 1.5em;
+		color: @text-light;
+	}
+
+	@media(min-width: @screen-phone) {
+
+		input[type="text"],
+		input[type="email"],
+		input[type="password"],
+		input[type="url"],
+		input[type="tel"],
+		select {
+			max-width: 20em;
+		}
+	}
+}
+
+// Pagination — premium pill buttons
+.cmp_pagination {
+	.pkp_helpers_clear;
+	text-align: right;
+
+	.prev {
+		float: left;
+		margin-right: 0.5em;
+		text-decoration: none;
+
+		&:before {
+			.fa;
+			content: @fa-var-long-arrow-left;
+			margin-right: 0.5em;
+		}
+	}
+
+	.next {
+		margin-left: 0.5em;
+		text-decoration: none;
+
+		&:after {
+			.fa;
+			content: @fa-var-long-arrow-right;
+			margin-left: 0.5em;
+		}
+	}
+}
+
+// Edit link to jump from frontend section to backend editing location
+.cmp_edit_link {
+	display: inline-block;
+	margin-left: 1em;
+	font-size: @font-sml;
+	font-weight: @normal;
+	line-height: 1;
+	vertical-align: middle;
+	text-decoration: none;
+
+	&:before {
+		.fa();
+		content: @fa-var-pencil;
+	}
+}
+
+// Search result filter
+.cmp_search_filter {
+	margin-bottom: @base;
+	font-size: @font-sml;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	label {
+		font-style: italic;
+	}
+
+	.delete {
+		color: @no;
+	}
+}
+
+// Notification — refined with accent stripe
+.cmp_notification {
+	display: block;
+	width: 100%;
+	padding: @double;
+	margin-bottom: @quadruple;
+	background: fade(@primary, 4%);
+	border-left: 4px solid @primary;
+	font-size: @font-base;
+	line-height: @line-base;
+	border-radius: @radius;
+
+	.success {
+		border-color: @yes;
+		background: fade(@yes, 4%);
+	}
+
+	.no {
+		border-color: @no;
+		background: fade(@no, 4%);
+	}
+}
+
+// Breadcrumbs — premium pill design
+.cmp_breadcrumbs {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25em;
+	background: fade(@primary, 4%);
+	padding: 0.5rem 1rem;
+	border-radius: 9999px;
+	border: 1px solid fade(@primary, 10%);
+
+	ol {
+		&:extend(.pkp_unstyled_list);
+		margin-bottom: 0;
+		padding: 0;
+		line-height: @double;
+		font-size: @font-sml;
+	}
+
+	li {
+		display: inline-block;
+	}
+
+	a {
+		display: inline-block;
+		text-decoration: none;
+		color: fade(@text, 0.7);
+		font-weight: 500;
+		transition: all .2s ease;
+
+		&:hover {
+			color: @primary;
+		}
+	}
+
+	.separator {
+		color: fade(@text, 0.3);
+		padding: 0 0.25em;
+		font-size: 0.8em;
+	}
+
+	.current {
+		color: @text;
+		font-weight: 600;
+
+		h1 {
+			margin: 0;
+			font-family: @font;
+			font-size: @font-sml;
+			font-weight: @normal;
+		}
+	}
+}
+
+// Backlink used on error.tpl and message.tpl
+.cmp_back_link {
+	margin-top: @double;
+}
+
+// Announcements
+.cmp_announcements {
+	&:extend(.pkp_unstyled_list);
+	margin-left: -@base;
+	margin-right: -@base;
+
+	> li {
+		padding: @triple @base;
+		border-bottom: @bg-border;
+
+		&:last-child {
+			border-bottom: none;
+		}
+	}
+
+	@media(min-width: @screen-phone) {
+		margin-left: -@double;
+		margin-right: -@double;
+
+		> li {
+			padding-left: @double;
+			padding-right: @double;
+		}
+	}
+
+	@media(min-width: @screen-desktop) {
+		margin-left: -@triple;
+		margin-right: -@triple;
+
+		> li {
+			padding-left: @triple;
+			padding-right: @triple;
+		}
+	}
+}
+
+// Skip-to navigation links
+.cmp_skip_to_content a {
+	&:extend(.pkp_screen_reader);
+	display: block;
+	padding: 1em;
+	z-index: 99999;
+	background: @bg;
+	transform: translateX(-50%);
+
+	&:focus {
+		clip: auto;
+		top: 0;
+		left: 50%;
+		color: @primary;
+	}
+}
+
+// Tables — refined
+.cmp_table {
+	width: 100%;
+	border: @bg-border;
+	border-bottom: none;
+	border-collapse: collapse;
+	border-radius: @radius;
+
+	th,
+	td {
+		padding: 0.75em;
+		text-align: left;
+		border-bottom: @bg-border;
+	}
+
+	th {
+		font-weight: @semibold;
+		background: @bg-shade;
+	}
+}

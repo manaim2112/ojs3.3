@@ -1,0 +1,138 @@
+/**
+ * @file plugins/themes/modern/styles/variables.less
+ *
+ * Modern theme — Design tokens for "Soft Structuralism" aesthetic.
+ * Clean, airy, elevated surfaces with soft diffused shadows.
+ */
+//
+// Colors
+//
+
+// Background
+@bg:                     #fff;
+@bg-shade:               #f1f3f7;
+@bg-base:                #1E6292; // Accent color used in the header
+
+// Primary "anchor" color for links
+@primary:                #006798;
+@primary-lift:           lighten(@primary, 10%);
+
+// Yes/no, success/error, on/off, go/stop, etc. Typically green and red.
+@yes:                    #00b24e;
+@no:                     #A80000;
+
+// Text
+@text:                   rgba(0,0,0,0.87);
+@text-light:             rgba(0,0,0,0.54);
+@text-bg-base:           #fff;
+
+// Border colors
+@bg-border-color:        @bg-shade;
+@bg-base-border-color:   rgba(255,255,255,0.1);
+
+//
+// Spacing — generous, premium rhythm
+//
+// The baseline size should be used to achieve consistent vertical rhythm. All
+// vertical margins, padding, line-height and block heights should use a
+// multiple of this baseline (or half). Where appropriate, horizontal
+// spacings should also use this baseline.
+//
+@rem:                    14px;
+@base:                   0.714rem;
+@half:                   0.357rem;
+@double:                 1.43rem;
+@triple:                 2.143rem;
+@quadruple:              2.857rem;
+
+//
+// Typography — premium hierarchy
+//
+@font:                   "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif;
+@font-heading:           @font;
+@font-site-title:        @font-heading;
+@font-tiny:              0.75rem;
+@font-sml:               0.93rem;
+@line-sml:               1.43rem;
+@font-base:              1rem;
+@line-base:              1.57rem; // Increased for better readability
+@line-base-large:        1.785rem; // large blocks of text
+@font-bump:              1.143rem;
+@line-bump:              1.57rem;
+@font-lead:              1.285rem;
+@line-lead:              2.143rem;
+@font-header:            1.714rem;
+@line-header:            1.25; // Tighter for display text
+
+// Font weights — more subtle hierarchy
+@normal:                 400;
+@medium:                 500;
+@semibold:               600;
+@bold:                   700;
+
+//
+// Modern Design Elements
+//
+@border-radius:          8px;
+@radius:                 @border-radius; // For backwards compatibility
+@shadow-sm:              0 1px 3px 0 rgba(0, 0, 0, 0.04);
+@shadow:                 0 4px 12px -2px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+@shadow-hover:           0 12px 28px -6px rgba(0, 0, 0, 0.1), 0 4px 8px -2px rgba(0, 0, 0, 0.04);
+@shadow-lg:              0 24px 48px -12px rgba(0, 0, 0, 0.12), 0 8px 16px -4px rgba(0, 0, 0, 0.04);
+@transition:             all 0.35s cubic-bezier(.4, 0, .2, 1);
+@transition-base:        all 0.35s cubic-bezier(.4, 0, .2, 1);
+@transition-spring:      all 0.5s cubic-bezier(.34, 1.56, .64, 1);
+@transition-smooth:      all 0.4s cubic-bezier(.22, 1, .36, 1);
+
+//
+// Brand & Accent tokens (computed from injected @bg-base / @primary)
+// These are re-evaluated after ModernThemePlugin injects the real values.
+//
+@brand:                  @bg-base;
+@brand-lift:             lighten(@bg-base, 8%);
+@brand-shade:            darken(@bg-base, 10%);
+@accent:                 @primary;
+@accent-lift:            lighten(@primary, 12%);
+@accent-shade:           darken(@primary, 10%);
+@accent-soft:            fade(@primary, 8%);
+@accent-soft-2:          fade(@primary, 16%);
+@accent-soft-3:          fade(@primary, 4%);
+
+@card-bg:                #ffffff;
+@card-border:            fade(#000, 6%);
+@card-border-hover:      fade(@primary, 30%);
+@card-shadow-soft:       0 1px 3px fade(#000, 3%), 0 8px 24px -8px fade(#000, 7%);
+@card-shadow-lift:       0 20px 40px -12px fade(#000, 15%), 0 8px 16px -4px fade(#000, 6%);
+@card-shadow-flat:       none;
+
+@surface-bg:             #f8f9fc;
+@surface-elevated:       #ffffff;
+@surface-sunken:         #f1f3f7;
+
+//
+// Borders — refined, subtle
+//
+@bg-border:              1px solid @bg-border-color;
+@form-border:            1.5px solid rgba(0,0,0,0.12);
+
+
+//
+// Screen width breakpoints
+//
+@screen-phone:                480px;
+@screen-tablet:               768px;
+@screen-tablet-container:     @screen-tablet - 40px;
+@screen-desktop:              992px;
+@screen-desktop-container:    @screen-desktop - 40px;
+@screen-lg-desktop:           1200px;
+@screen-lg-desktop-container: @screen-lg-desktop - 40px;
+
+// Fixed widths and heights
+@sidebar-width:               300px;
+@logo-height:                 8.571rem;
+
+// Base URL
+// The base URL is set appropriately before the LESS stylesheet is compiled and
+// will point to the theme's base directory. The variable can be used to point
+// to image and font assets.
+@base-url:                   ''; // Leave empty

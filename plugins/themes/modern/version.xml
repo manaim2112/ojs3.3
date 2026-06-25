@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE version SYSTEM "../../../lib/pkp/dtd/pluginVersion.dtd">
+<!--
+  * plugins/themes/modern/version.xml
+  *
+  * Modern theme version information.
+  -->
+<version>
+	<application>modern</application>
+	<type>plugins.themes</type>
+	<release>2.0.0.0</release>
+	<date>2025-05-19</date>
+	<lazy-load>1</lazy-load>
+	<class>ModernThemePlugin</class>
+</version>

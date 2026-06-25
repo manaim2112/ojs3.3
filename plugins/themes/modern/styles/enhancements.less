@@ -1,0 +1,881 @@
+/**
+ * @file plugins/themes/modern/styles/enhancements.less
+ *
+ * Modern theme — Premium visual enhancements layered on top of the base stylesheet.
+ *
+ * Design Philosophy: "Soft Structuralism" — Silver-grey backgrounds, massive bold
+ * typography, airy floating components with soft diffused shadows. Premium feel
+ * without being ostentatious.
+ *
+ * The variables @bg-base, @primary, @text-bg-base, @bg-base-border-color,
+ * @border-radius, @modern-header-style and @modern-card-style are injected
+ * by ModernThemePlugin::buildLessVariables() before this file is compiled.
+ *
+ * NOTE: All brand/accent/transition tokens are defined in variables.less
+ * so they are available to both index.less and this enhancements stylesheet.
+ */
+
+// Import variables so this standalone stylesheet has access to all tokens
+@import "variables.less";
+
+/* =============================================================
+   Page foundation — premium depth
+   ============================================================= */
+html {
+	scroll-behavior: smooth;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+body {
+	background: @surface-bg;
+	// Subtle noise texture for physical depth
+	&:before {
+		content: '';
+		position: fixed;
+		inset: 0;
+		z-index: 0;
+		pointer-events: none;
+		opacity: 0.025;
+		background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+		background-size: 200px 200px;
+	}
+}
+
+::selection {
+	background: @accent-soft-2;
+	color: @brand-shade;
+}
+
+/* Custom scrollbar — refined, brand-tinted */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+	background: fade(@brand, 25%);
+	border-radius: 9999px;
+	&:hover { background: fade(@brand, 45%); }
+}
+
+/* Premium link feedback — animated underline */
+a {
+	color: @accent;
+	transition: color .25s ease;
+
+	&:hover,
+	&:focus {
+		color: @accent-shade;
+	}
+}
+
+/* =============================================================
+   Typography — massive, intentional hierarchy
+   ============================================================= */
+h1, h2, h3, h4, h5, h6 {
+	font-family: @font-heading;
+	color: @text;
+	text-wrap: balance;
+}
+
+// Display headings — extra presence
+.pkp_page_header h1,
+.obj_article_details > .page_title,
+.pkp_structure_main h1 {
+	font-weight: 800;
+	letter-spacing: -0.025em;
+	line-height: 1.15;
+}
+
+// Section headings — strong hierarchy
+.obj_issue_toc .section > h2,
+.obj_issue_toc .section > h3,
+.pkp_block .title {
+	font-weight: 700;
+	letter-spacing: -0.01em;
+}
+
+/* =============================================================
+   Header — floating glass pill on desktop
+   ============================================================= */
+.pkp_structure_head {
+	border-bottom: none;
+	box-shadow: none;
+	position: relative;
+	z-index: 100;
+
+	// Default solid background still applies via base styles. We re-paint
+	// the background depending on the chosen header style.
+	&[class] { /* selector specificity bump */ }
+}
+
+// Header style variants
+.modern-header-paint(@gradient, @glass) when (@gradient = 1) {
+	.pkp_structure_head {
+		background: linear-gradient(135deg, @brand 0%, @brand-shade 100%);
+		box-shadow: 0 4px 24px -4px fade(@brand, 35%);
+	}
+}
+.modern-header-paint(@gradient, @glass) when (@glass = 1) {
+	.pkp_structure_head {
+		background: fade(@brand, 75%);
+		backdrop-filter: blur(20px) saturate(130%);
+		-webkit-backdrop-filter: blur(20px) saturate(130%);
+		box-shadow: 0 1px 0 fade(#fff, 10%), 0 8px 32px -8px fade(@brand, 25%);
+	}
+}
+.modern-header-paint(@gradient, @glass) when (@gradient = 0) and (@glass = 0) {
+	// "solid" — clean, elevated surface
+	.pkp_structure_head {
+		background: @brand;
+		box-shadow: 0 4px 24px -4px fade(@brand, 35%);
+	}
+}
+.modern-header-paint(@modern-header-gradient, @modern-header-glass);
+
+// Site name / logo polish
+.pkp_site_name {
+	.is_text {
+		letter-spacing: -0.02em;
+		font-weight: 700;
+	}
+}
+
+// Primary nav links — premium hover with pill shape
+@media (min-width: @screen-desktop) {
+	.pkp_navigation_primary > li > a {
+		position: relative;
+		border-bottom: none;
+		transition: @transition-base;
+		border-radius: 9999px;
+		padding-left: 1em;
+		padding-right: 1em;
+
+		&:hover,
+		&:focus {
+			border-color: transparent;
+			background: fade(#fff, 15%);
+			transform: translateY(-1px);
+		}
+	}
+
+	// Search and user nav buttons
+	.pkp_navigation_search_wrapper a,
+	.pkp_navigation_user > li > a {
+		transition: @transition-base;
+		border-radius: 9999px;
+
+		&:hover,
+		&:focus {
+			background: fade(#fff, 15%);
+			border-color: transparent;
+			transform: translateY(-1px);
+		}
+	}
+}
+
+/* =============================================================
+   Layout — content wrapper with premium surface
+   ============================================================= */
+.pkp_structure_content {
+	background: transparent;
+	position: relative;
+	z-index: 1;
+}
+
+@media (min-width: @screen-tablet) {
+	.pkp_structure_main {
+		background: @surface-elevated;
+		border-radius: calc(@border-radius * 1.5);
+		box-shadow: @card-shadow-soft;
+		// Hide the vertical helper lines from base body.less
+		&:before,
+		&:after { content: none; }
+	}
+}
+
+/* =============================================================
+   Buttons — premium pill design with magnetic hover
+   ============================================================= */
+.cmp_button {
+	border-radius: 9999px;
+	background: @accent;
+	box-shadow: 0 2px 8px -2px fade(@accent, 35%);
+	transition: @transition-spring;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+	padding: 0 1.5em;
+	position: relative;
+	overflow: hidden;
+
+	&::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(135deg, fade(#fff, 15%) 0%, transparent 50%);
+		opacity: 0;
+		transition: opacity .3s ease;
+	}
+
+	&:hover,
+	&:focus {
+		background: @accent-lift;
+		transform: translateY(-2px) scale(1.02);
+		box-shadow: 0 12px 28px -8px fade(@accent, 40%);
+		&::after { opacity: 1; }
+	}
+
+	&:active {
+		transform: translateY(0) scale(0.98);
+		box-shadow: 0 2px 8px -2px fade(@accent, 35%);
+		transition-duration: .1s;
+	}
+}
+
+.cmp_button_wire {
+	border-radius: 9999px;
+	border-color: @accent;
+	color: @accent;
+	transition: @transition-spring;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+	padding: 0 1.5em;
+	position: relative;
+
+	&:hover,
+	&:focus {
+		background: @accent;
+		color: #fff;
+		transform: translateY(-2px) scale(1.02);
+		box-shadow: 0 12px 28px -8px fade(@accent, 40%);
+		border-color: @accent;
+	}
+
+	&:active {
+		transform: translateY(0) scale(0.98);
+		transition-duration: .1s;
+	}
+}
+
+/* =============================================================
+   Forms — refined inputs with focus glow
+   ============================================================= */
+.cmp_form {
+	input[type="text"],
+	input[type="email"],
+	input[type="password"],
+	input[type="url"],
+	input[type="tel"],
+	select,
+	textarea {
+		border-radius: @border-radius;
+		border: 1.5px solid fade(#000, 12%);
+		transition: @transition-base;
+		background: @surface-elevated;
+
+		&:focus {
+			outline: 0;
+			border-color: @accent;
+			box-shadow: 0 0 0 4px @accent-soft-3, 0 2px 8px -2px fade(@accent, 20%);
+		}
+	}
+
+	.label {
+		font-style: normal;
+		font-weight: 600;
+		color: @text;
+		letter-spacing: 0.01em;
+	}
+}
+
+/* =============================================================
+   Breadcrumbs — subtle pill design
+   ============================================================= */
+.cmp_breadcrumbs {
+	background: @accent-soft-3;
+	padding: 0.625rem 1.25rem;
+	border-radius: 9999px;
+	border: 1px solid fade(@accent, 10%);
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25em;
+
+	ol { margin: 0; padding: 0; }
+
+	a {
+		color: @accent-shade;
+		font-weight: 500;
+		transition: @transition-base;
+
+		&:hover { color: @accent; }
+	}
+
+	.separator {
+		color: fade(#000, 25%);
+		font-size: 0.8em;
+	}
+
+	.current {
+		font-weight: 600;
+		color: @text;
+	}
+}
+
+/* =============================================================
+   Cards — Double-Bezel premium architecture
+   ============================================================= */
+.obj_article_summary,
+.obj_issue_summary,
+.obj_announcement_summary {
+	// Outer shell — the bezel
+	background: @surface-elevated;
+	border: 1px solid @card-border;
+	border-radius: calc(@border-radius * 1.5);
+	transition: @transition-base;
+	padding: @double;
+	position: relative;
+	overflow: hidden;
+
+	// Inner highlight — the glass edge effect
+	&::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		box-shadow: inset 0 1px 0 fade(#fff, 80%);
+		pointer-events: none;
+	}
+}
+
+// Card style variants
+.modern-card-paint(@flat, @elevated) when (@flat = 1) {
+	.obj_article_summary,
+	.obj_issue_summary,
+	.obj_announcement_summary {
+		box-shadow: @card-shadow-flat;
+
+		&:hover,
+		&:focus-within {
+			border-color: @card-border-hover;
+			background: @accent-soft-3;
+		}
+	}
+}
+.modern-card-paint(@flat, @elevated) when (@elevated = 1) {
+	.obj_article_summary,
+	.obj_issue_summary,
+	.obj_announcement_summary {
+		box-shadow: @card-shadow-soft;
+
+		&:hover,
+		&:focus-within {
+			box-shadow: @card-shadow-lift;
+			border-color: @card-border-hover;
+			transform: translateY(-4px);
+		}
+	}
+}
+.modern-card-paint(@flat, @elevated) when (@flat = 0) and (@elevated = 0) {
+	// "soft" — default
+	.obj_article_summary,
+	.obj_issue_summary,
+	.obj_announcement_summary {
+		box-shadow: @card-shadow-soft;
+
+		&:hover,
+		&:focus-within {
+			box-shadow: @card-shadow-lift;
+			border-color: @card-border-hover;
+			transform: translateY(-3px);
+		}
+	}
+}
+.modern-card-paint(@modern-card-flat, @modern-card-elevated);
+
+// Article title hover follows accent
+.obj_article_summary > .title a {
+	color: @text;
+	transition: @transition-base;
+	font-weight: 600;
+
+	&:hover,
+	&:focus {
+		color: @accent;
+	}
+}
+
+// Accent stripe on leading edge
+.obj_article_summary,
+.obj_issue_summary,
+.obj_announcement_summary {
+	position: relative;
+	overflow: hidden;
+
+	&:after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		width: 3px;
+		background: linear-gradient(180deg, @accent, @brand);
+		opacity: 0;
+		transition: @transition-base;
+		border-radius: 0 2px 2px 0;
+	}
+
+	&:hover:after,
+	&:focus-within:after {
+		opacity: 1;
+	}
+}
+
+/* =============================================================
+   Issue TOC — refined section dividers
+   ============================================================= */
+@media (min-width: @screen-tablet) {
+	.obj_issue_toc {
+
+		.galleys,
+		.section {
+			&:before {
+				border-top-color: fade(@accent, 20%);
+			}
+
+			> h2,
+			> h3 {
+				background: @surface-elevated;
+				color: @brand-shade;
+				font-weight: 700;
+				border-radius: @border-radius;
+				border: 1px solid fade(@accent, 15%);
+				letter-spacing: -0.01em;
+			}
+		}
+	}
+}
+
+/* =============================================================
+   Galley link icons — modernise
+   ============================================================= */
+.obj_galley_link {
+	font-weight: 600;
+	transition: @transition-base;
+
+	&.pdf:before { color: #DC2626; }
+	&:hover.pdf:before,
+	&:focus.pdf:before { color: #fff; }
+}
+
+/* =============================================================
+   Sidebar blocks — premium with accent stripe
+   ============================================================= */
+.pkp_block {
+
+	.title {
+		display: flex;
+		align-items: center;
+		gap: 0.5em;
+		color: @brand-shade;
+		font-size: @font-bump;
+		font-weight: 700;
+		letter-spacing: 0.01em;
+
+		&:before {
+			content: '';
+			display: inline-block;
+			width: 3px;
+			height: 1.1em;
+			background: linear-gradient(180deg, @accent, @brand);
+			border-radius: 2px;
+		}
+	}
+}
+
+.block_make_submission a {
+	&:extend(.cmp_button);
+	display: block;
+	width: 100%;
+	text-align: center;
+	font-size: @font-base;
+}
+
+/* =============================================================
+   Footer — clean, minimal
+   ============================================================= */
+.pkp_structure_footer_wrapper {
+	background: linear-gradient(180deg, @surface-sunken 0%, darken(@surface-sunken, 2%) 100%);
+	border-top: 1px solid fade(#000, 4%);
+	margin-top: @quadruple * 1.5;
+}
+
+.pkp_footer_content {
+	color: @text;
+	font-size: @font-sml;
+
+	a {
+		color: @accent-shade;
+		font-weight: 500;
+		transition: @transition-base;
+
+		&:hover { 
+			color: @accent;
+			transform: translateY(-1px);
+		}
+	}
+}
+
+/* =============================================================
+   Pagination — premium pill buttons
+   ============================================================= */
+.cmp_pagination {
+
+	.prev,
+	.next {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.625em 1.25em;
+		background: @surface-elevated;
+		border: 1.5px solid fade(@accent, 20%);
+		border-radius: 9999px;
+		color: @accent;
+		font-weight: 600;
+		transition: @transition-spring;
+
+		&:hover,
+		&:focus {
+			background: @accent;
+			color: #fff;
+			border-color: @accent;
+			transform: translateY(-2px) scale(1.02);
+			box-shadow: 0 8px 20px -6px fade(@accent, 35%);
+		}
+	}
+}
+
+/* =============================================================
+   Notifications — refined with icons
+   ============================================================= */
+.cmp_notification {
+	border-radius: @border-radius;
+	border-left: 4px solid @accent;
+	background: @accent-soft-3;
+	color: @text;
+	font-weight: 500;
+	display: flex;
+	align-items: flex-start;
+	gap: 0.75em;
+
+	&.error,
+	&.no { border-left-color: @no; background: fade(@no, 5%); }
+	&.success,
+	&.yes { border-left-color: @yes; background: fade(@yes, 5%); }
+	&.warning { border-left-color: #F59E0B; background: fade(#F59E0B, 5%); }
+}
+
+/* =============================================================
+   Article details — refined sidebar
+   ============================================================= */
+.obj_article_details {
+
+	> .page_title {
+		font-weight: 800;
+		letter-spacing: -0.025em;
+		line-height: 1.15;
+	}
+
+	.entry_details {
+		.item .label {
+			text-transform: uppercase;
+			font-size: @font-tiny;
+			font-weight: 700;
+			letter-spacing: 0.06em;
+			color: @text-light;
+		}
+	}
+
+	.authors .name {
+		color: @brand-shade;
+		font-weight: 600;
+	}
+}
+
+/* =============================================================
+   Reveal-on-scroll — premium staggered entry
+   ============================================================= */
+[data-reveal] {
+	opacity: 0;
+	transform: translateY(24px);
+	transition: opacity .7s cubic-bezier(.22, 1, .36, 1), transform .7s cubic-bezier(.22, 1, .36, 1);
+	will-change: transform, opacity;
+}
+[data-reveal].is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+// Staggered delays for child elements
+[data-reveal-delay="1"] { transition-delay: .1s; }
+[data-reveal-delay="2"] { transition-delay: .2s; }
+[data-reveal-delay="3"] { transition-delay: .3s; }
+[data-reveal-delay="4"] { transition-delay: .4s; }
+
+/* =============================================================
+   Skip-to-content — visible on focus, themed
+   ============================================================= */
+.cmp_skip_to_content a:focus {
+	background: @accent;
+	color: #fff;
+	border-radius: @border-radius;
+	box-shadow: 0 8px 24px -6px fade(@accent, 50%);
+}
+
+/* =============================================================
+   Print
+   ============================================================= */
+@media print {
+	.pkp_structure_head,
+	.pkp_structure_footer_wrapper,
+	.pkp_structure_sidebar { display: none !important; }
+	.pkp_structure_main { box-shadow: none !important; }
+}
+
+/* =============================================================
+   Utility classes — premium spacing
+   ============================================================= */
+.pkp_helpers_clear {
+	&::after {
+		content: '';
+		display: table;
+		clear: both;
+	}
+}
+
+// Max-width container for content
+.pkp_structure_content {
+	max-width: 100%;
+}
+
+@media (min-width: @screen-desktop) {
+	.pkp_structure_content {
+		max-width: 1400px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+/* =============================================================
+   Country flags — inline with author names
+   ============================================================= */
+.modern-flag {
+	display: inline-block;
+	vertical-align: middle;
+	margin-left: 0.35em;
+	border-radius: 2px;
+	box-shadow: 0 1px 2px fade(#000, 15%);
+}
+
+.modern-author-with-flag {
+	display: inline;
+}
+
+.modern-oa-badge {
+	display: inline-block;
+	background: @yes;
+	color: #fff;
+	font-size: 0.65rem;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	padding: 0.15em 0.5em;
+	border-radius: 4px;
+	vertical-align: top;
+	margin-left: 0.25em;
+}
+
+/* =============================================================
+   View/Download stat badges
+   ============================================================= */
+.modern-stat-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35em;
+	padding: 0.35em 0.75em;
+	background: @surface-sunken;
+	border: 1px solid fade(#000, 6%);
+	border-radius: 9999px;
+	font-size: @font-tiny;
+	font-weight: 600;
+	color: @text-light;
+
+	.fa {
+		font-size: 0.85em;
+	}
+}
+
+.modern-stat-views .fa { color: @accent; }
+.modern-stat-downloads .fa { color: @brand; }
+
+/* =============================================================
+   Collapsible references section
+   ============================================================= */
+.modern-refs-section {
+	.modern-refs-toggle {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		padding: 0.75em 1em;
+		background: @surface-sunken;
+		border: 1px solid fade(#000, 6%);
+		border-radius: @border-radius;
+		cursor: pointer;
+		transition: @transition-base;
+		font-weight: 600;
+		color: @text;
+		text-align: left;
+
+		&:hover {
+			background: fade(@accent, 6%);
+			border-color: fade(@accent, 15%);
+		}
+
+		&:focus {
+			outline: 0;
+			box-shadow: 0 0 0 3px @accent-soft-2;
+		}
+	}
+
+	.modern-refs-count {
+		font-weight: 400;
+		color: @text-light;
+	}
+
+	.modern-refs-chevron {
+		transition: transform .3s ease;
+		font-size: 0.85em;
+		color: @text-light;
+	}
+
+	.modern-refs-body {
+		margin-top: 0.75em;
+	}
+
+	.modern-refs-list {
+		.modern-ref-item {
+			padding: 0.75em 0;
+			border-bottom: 1px solid fade(#000, 5%);
+			font-size: @font-sml;
+			line-height: @line-base;
+			color: @text;
+
+			&:last-child {
+				border-bottom: none;
+			}
+		}
+	}
+}
+
+/* =============================================================
+   Keyword tags
+   ============================================================= */
+.keyword-tag {
+	display: inline-block;
+	padding: 0.2em 0.6em;
+	background: @accent-soft-3;
+	border: 1px solid fade(@accent, 10%);
+	border-radius: 4px;
+	font-size: @font-tiny;
+	font-weight: 500;
+	color: @accent-shade;
+	margin: 0.15em 0;
+}
+
+/* =============================================================
+   Author email link
+   ============================================================= */
+.author-email {
+	display: block;
+	margin-top: 0.25em;
+	font-size: @font-tiny;
+	color: @text-light;
+
+	a {
+		color: @accent-shade;
+		transition: @transition-base;
+
+		&:hover { color: @accent; }
+	}
+
+	.fa { margin-right: 0.25em; }
+}
+
+/* =============================================================
+   ORCID link styling
+   ============================================================= */
+.modern-orcid-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35em;
+	color: @accent;
+	transition: @transition-base;
+
+	&:hover {
+		color: @accent-shade;
+	}
+
+	.ai-orcid::before {
+		content: 'iD';
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.2em;
+		height: 1.2em;
+		background: #A6CE39;
+		color: #fff;
+		border-radius: 50%;
+		font-size: 0.65em;
+		font-weight: 700;
+		font-style: normal;
+	}
+}
+
+/* =============================================================
+   Background image overlay (for homepage/header)
+   ============================================================= */
+.modern-bg-overlay {
+	position: relative;
+
+	&::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(180deg, fade(@bg-base, 60%) 0%, fade(@bg-base, 80%) 100%);
+		z-index: 1;
+		pointer-events: none;
+	}
+}
+
+/* =============================================================
+   Page spacing above breadcrumbs
+   ============================================================= */
+.page {
+	padding-top: @quadruple;
+}
+
+.page_index_journal {
+	padding-top: @quadruple;
+}
+
+/* =============================================================
+   Cover image placeholder fallback
+   ============================================================= */
+.cover img {
+	width: 100%;
+	height: auto;
+	object-fit: cover;
+	border-radius: @border-radius;
+	background: @surface-sunken;
+}
+
+.entry_details .cover_image img {
+	border-radius: @border-radius;
+	background: @surface-sunken;
+}
