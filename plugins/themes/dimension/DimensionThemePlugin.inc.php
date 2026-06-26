@@ -291,6 +291,151 @@ class DimensionThemePlugin extends ThemePlugin {
 		$this->addMenuArea(array('primary', 'user'));
 
 		HookRegistry::register("Templates::Article::Main", array($this, 'ShowViewAndDownload'));
+
+		// Register custom page handlers (arsitektur-legal, kepemimpinan)
+		HookRegistry::register('LoadHandler', array($this, 'handleCustomPages'));
+
+		// Register Smarty function for journal data
+		$smarty = TemplateManager::getManager(Application::get()->getRequest());
+		$smarty->registerPlugin('function', 'journals_json', array($this, 'smartyJournalsJson'));
+
+		// Register Smarty function for auth data
+		$smarty->registerPlugin('function', 'auth_data_json', array($this, 'smartyAuthDataJson'));
+
+		// Register Smarty function for live site stats
+		$smarty->registerPlugin('function', 'site_stats_json', array($this, 'smartySiteStatsJson'));
+
+		// Ensure our indexSite.tpl is used for the site index page
+		HookRegistry::register('TemplateResource::getFilename', array($this, 'handleSiteIndexTemplate'));
+	}
+
+	public function smartyJournalsJson($params, $smarty) {
+		try {
+			$journalDao = DAORegistry::getDAO('JournalDAO');
+			$journals = $journalDao->getAll(true)->toArray();
+		} catch (Exception $e) {
+			error_log('DimensionTheme: journals_json error: ' . $e->getMessage());
+			return '[]';
+		}
+
+		$colors = ['#1e3a8a','#b91c1c','#15803d','#7f1d1d','#115e59','#a16207','#166534','#334155','#0f172a','#0d9488','#1e3a8a','#4d7c0f','#0d9488','#b45309','#64748b','#1e3a8a','#164e63','#581c87'];
+		$themes = ['SCIENCE','COMPUTING','URBAN','LAW','SOCIAL','FINANCE','BIOLOGY','CHEMICAL','ENGINEERING','LANGUAGE','PHYSICS','BUSINESS','RELIGION','LEARNING','CONFERENCE','PEDAGOGY','SPORTS','CULTURE'];
+		$tags = ['premium','engineering','social','education'];
+
+		$publications = [];
+		$i = 0;
+		foreach ($journals as $journal) {
+			$publications[] = [
+				'id' => (int) $journal->getId(),
+				'title' => $journal->getLocalizedName(),
+				'color' => $colors[$i % count($colors)],
+				'theme' => $themes[$i % count($themes)],
+				'tag' => $tags[$i % count($tags)],
+				'abbr' => $journal->getPath(),
+				'coverUrl' => '',
+				'desc' => strip_tags($journal->getLocalizedData('description') ?? ''),
+			];
+			$i++;
+		}
+
+		return json_encode($publications, JSON_UNESCAPED_UNICODE);
+	}
+
+	public function smartyAuthDataJson($params, $smarty) {
+		$request = Application::get()->getRequest();
+		$user = $request->getUser();
+
+		$data = ['user' => null];
+
+		if ($user) {
+			$data['user'] = [
+				'id' => (int) $user->getId(),
+				'fullName' => $user->getFullName(),
+				'email' => $user->getEmail(),
+				'avatar' => 'https://www.gravatar.com/avatar/' . md5(strtolower($user->getEmail())) . '?s=80&d=mp',
+			];
+		}
+
+		return json_encode($data, JSON_UNESCAPED_UNICODE);
+	}
+
+	public function smartySiteStatsJson($params, $smarty) {
+		$cacheDir = BASE_SYS_DIR . '/cache';
+		$cacheFile = $cacheDir . '/_dimension_site_stats.json';
+		$cacheTtl = 3600;
+
+		if (file_exists($cacheFile) && (time() - filemtime($cacheFile)) < $cacheTtl) {
+			$cached = file_get_contents($cacheFile);
+			if ($cached !== false && $cached !== '') {
+				return $cached;
+			}
+		}
+
+		try {
+			$submissionDao = DAORegistry::getDAO('SubmissionDAO');
+			$articleCount = 0;
+			$result = $submissionDao->retrieve('SELECT COUNT(*) AS cnt FROM submissions WHERE status = ?', [STATUS_PUBLISHED]);
+			if ($result && !$result->EOF) {
+				$articleCount = (int) $result->fields['cnt'];
+			}
+
+			$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
+			$reviewerEditorCount = 0;
+			$result = $userGroupDao->retrieve(
+				'SELECT COUNT(DISTINCT u.user_id) AS cnt FROM users u
+				 JOIN user_user_groups uug ON u.user_id = uug.user_id
+				 JOIN user_groups ug ON uug.user_group_id = ug.user_group_id
+				 WHERE ug.role_id IN (?, ?)',
+				[ROLE_ID_MANAGER, ROLE_ID_REVIEWER]
+			);
+			if ($result && !$result->EOF) {
+				$reviewerEditorCount = (int) $result->fields['cnt'];
+			}
+
+			$data = json_encode([
+				'articles' => $articleCount,
+				'reviewerEditor' => $reviewerEditorCount,
+			]);
+
+			file_put_contents($cacheFile, $data);
+			return $data;
+		} catch (Exception $e) {
+			error_log('DimensionTheme: site_stats error: ' . $e->getMessage());
+			return json_encode(['articles' => 0, 'reviewerEditor' => 0]);
+		}
+	}
+
+	public function handleCustomPages($hookName, $params) {
+		$page =& $params[0];
+		$op =& $params[1];
+		$sourceFile =& $params[2];
+
+		if (in_array($page, ['arsitektur-legal', 'kepemimpinan'])) {
+			$sourceFile = $this->getPluginPath() . '/CustomPagesHandler.inc.php';
+			return false;
+		}
+
+		// Also handle /index.php/index/kepemimpinan format
+		$request = Application::get()->getRequest();
+		if ($page === 'index' && in_array($op, ['arsitektur-legal', 'kepemimpinan'])) {
+			$request->redirect($request->getContext(), $op);
+		}
+
+		return false;
+	}
+
+	public function handleSiteIndexTemplate($hookName, $args) {
+		$filePath =& $args[0];
+		$template = $args[1];
+
+		if ($template === 'frontend/pages/indexSite.tpl') {
+			$themePath = $this->getPluginPath() . '/templates/' . $template;
+			if (file_exists($themePath)) {
+				$filePath = $themePath;
+			}
+		}
+
+		return false;
 	}
 
 	public function ShowViewAndDownload($hookName, $params) {
