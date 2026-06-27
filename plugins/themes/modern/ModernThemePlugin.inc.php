@@ -187,7 +187,6 @@ class ModernThemePlugin extends ThemePlugin
 
 		// ---- Popular articles slide ----
 		$this->addOption('showPopularArticles', 'FieldOptions', [
-			'type'    => 'radio',
 			'label'   => 'Popular Articles Slide',
 			'description' => 'Tampilkan 5 artikel terpopuler dalam bentuk slide di bawah header.',
 			'options' => [
@@ -252,7 +251,9 @@ class ModernThemePlugin extends ThemePlugin
 
 		// 10) Register Smarty function for popular articles
 		$smarty = TemplateManager::getManager($request);
-		$smarty->registerPlugin('function', 'popular_articles', [$this, 'smartyPopularArticles']);
+		if (!$smarty->registered_plugins['function']['popular_articles']) {
+			$smarty->registerPlugin('function', 'popular_articles', [$this, 'smartyPopularArticles']);
+		}
 	}
 
 	/**
