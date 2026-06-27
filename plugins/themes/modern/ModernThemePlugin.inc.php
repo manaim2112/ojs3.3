@@ -445,36 +445,16 @@ class ModernThemePlugin extends ThemePlugin
 			$request = Application::get()->getRequest();
 			$context = $request->getContext();
 			if (!$context) {
-				error_log('ModernTheme: no context');
 				return '';
 			}
 			$contextId = (int) $context->getId();
 
-			// Fetch published submissions via the OJS service API
 			$submissions = Services::get('submission')->getMany([
 				'contextId' => $contextId,
 				'status' => STATUS_PUBLISHED,
 				'count' => 20,
 			]);
 
-			// Count total published to verify query works
-			$totalFound = 0;
-			foreach ($submissions as $submission) {
-				$totalFound++;
-			}
-			if ($totalFound === 0) {
-				error_log('ModernTheme: no published submissions found for context ' . $contextId);
-				return '';
-			}
-
-			// Re-fetch since iterator is exhausted
-			$submissions = Services::get('submission')->getMany([
-				'contextId' => $contextId,
-				'status' => STATUS_PUBLISHED,
-				'count' => 20,
-			]);
-
-			// Fetch view counts from metrics table
 			$submissionDao = DAORegistry::getDAO('SubmissionDAO');
 			$result = $submissionDao->retrieve(
 				'SELECT submission_id, SUM(metric) AS total_metric
@@ -488,7 +468,6 @@ class ModernThemePlugin extends ThemePlugin
 				$articleViews[(int) $row['submission_id']] = (int) $row['total_metric'];
 			}
 
-			// Build article list
 			$articles = [];
 			foreach ($submissions as $submission) {
 				$publication = $submission->getCurrentPublication();
@@ -505,18 +484,15 @@ class ModernThemePlugin extends ThemePlugin
 					'title'    => $title,
 					'authors'  => $submission->getAuthorString(),
 					'url'      => $request->getDispatcher()->url($request, ROUTE_PAGE, $context->getPath(), 'article', 'view', $sid),
-					'abstract' => strip_tags($publication->getLocalizedData('abstract') ?? ''),
 					'views'    => $articleViews[$sid] ?? 0,
 					'coverUrl' => $this->_getArticleCover($publication),
 				];
 			}
 
 			if (empty($articles)) {
-				error_log('ModernTheme: articles array empty after building');
 				return '';
 			}
 
-			// Sort by views descending, take top 5
 			usort($articles, function ($a, $b) {
 				return $b['views'] - $a['views'];
 			});
