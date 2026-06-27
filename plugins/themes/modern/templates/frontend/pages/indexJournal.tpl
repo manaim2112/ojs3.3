@@ -18,6 +18,10 @@
  *}
 {include file="frontend/components/header.tpl" pageTitleTranslated=$currentJournal->getLocalizedName()}
 
+{if $activeTheme->getOption('showPopularArticles')}
+{popular_articles}
+{/if}
+
 <div class="page_index_journal">
 
 	{call_hook name="Templates::Index::journal"}
