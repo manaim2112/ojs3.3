@@ -449,27 +449,30 @@ class ModernThemePlugin extends ThemePlugin
 			}
 			$contextId = (int) $context->getId();
 
+			// Fetch published submissions via the OJS service API
+			$submissions = Services::get('submission')->getMany([
+				'contextId' => $contextId,
+				'status' => STATUS_PUBLISHED,
+				'count' => 20,
+			]);
+
+			// Fetch view counts from metrics table
 			$submissionDao = DAORegistry::getDAO('SubmissionDAO');
-
-			// Try metrics-based query first, fall back to most recent
 			$result = $submissionDao->retrieve(
-				'SELECT s.submission_id, COALESCE(SUM(m.metric), 0) AS total_metric
-				 FROM submissions s
-				 LEFT JOIN metrics m ON s.submission_id = m.submission_id AND m.context_id = ?
-				 WHERE s.context_id = ? AND s.status = ?
-				 GROUP BY s.submission_id
-				 ORDER BY total_metric DESC, s.submission_id DESC
-				 LIMIT 5',
-				[$contextId, $contextId, STATUS_PUBLISHED]
+				'SELECT submission_id, SUM(metric) AS total_metric
+				 FROM metrics
+				 WHERE context_id = ? AND submission_id IS NOT NULL
+				 GROUP BY submission_id',
+				[$contextId]
 			);
-
-			$articles = [];
+			$articleViews = [];
 			while ($row = $result->next()) {
-				$submissionId = (int) $row['submission_id'];
-				$submission = Services::get('submission')->get($submissionId);
-				if (!$submission) {
-					continue;
-				}
+				$articleViews[(int) $row['submission_id']] = (int) $row['total_metric'];
+			}
+
+			// Build article list
+			$articles = [];
+			foreach ($submissions as $submission) {
 				$publication = $submission->getCurrentPublication();
 				if (!$publication) {
 					continue;
@@ -478,13 +481,14 @@ class ModernThemePlugin extends ThemePlugin
 				if (empty($title)) {
 					continue;
 				}
+				$sid = $submission->getId();
 				$articles[] = [
-					'id'       => $submissionId,
+					'id'       => $sid,
 					'title'    => $title,
 					'authors'  => $submission->getAuthorString(),
-					'url'      => $request->getDispatcher()->url($request, ROUTE_PAGE, $context->getPath(), 'article', 'view', $submissionId),
+					'url'      => $request->getDispatcher()->url($request, ROUTE_PAGE, $context->getPath(), 'article', 'view', $sid),
 					'abstract' => strip_tags($publication->getLocalizedData('abstract') ?? ''),
-					'views'    => (int) $row['total_metric'],
+					'views'    => $articleViews[$sid] ?? 0,
 					'coverUrl' => $this->_getArticleCover($publication),
 				];
 			}
@@ -492,6 +496,12 @@ class ModernThemePlugin extends ThemePlugin
 			if (empty($articles)) {
 				return '';
 			}
+
+			// Sort by views descending, take top 5
+			usort($articles, function ($a, $b) {
+				return $b['views'] - $a['views'];
+			});
+			$articles = array_slice($articles, 0, 5);
 
 			$smarty->assign('popularArticles', $articles);
 			return $smarty->fetch($this->getTemplateResource('frontend/components/popularArticlesSlide.tpl'));
