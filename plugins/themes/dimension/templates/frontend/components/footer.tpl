@@ -116,6 +116,26 @@
     </div>
 </footer>
 
+{assign var="sc_project" value=$activeTheme->getOption('statCounter_project_id')}
+{assign var="sc_security" value=$activeTheme->getOption('statCounter_security_id')}
+{if $sc_project && $sc_security}
+<script type="text/javascript">
+    var sc_project="{$sc_project}";
+    var sc_invisible=1;
+    var sc_security="{$sc_security}";
+    var scJsHost = "https://";
+    document.write("<sc"+"ript type='text/javascript' src='" +
+    scJsHost+
+    "statcounter.com/counter/counter.js'></"+"script>");
+</script>
+<noscript><div class="statcounter"><a title="Web Analytics
+    Made Easy - Statcounter" href="https://statcounter.com/"
+    target="_blank"><img class="statcounter"
+    src="https://c.statcounter.com/{$sc_project}/0/{$sc_security}/0/"
+    alt="Web Analytics Made Easy - Statcounter"
+    referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+{/if}
+
 {if $activeTheme && $activeTheme->getOption('contactPhone')}
 <a href="https://wa.me/{$activeTheme->getOption('contactPhone')}?text=Halo%20admin%20jurnal%2C%20saya%20punya%20pertanyaan."
    class="fixed bottom-6 right-6 bg-green-500 text-white rounded-full p-4 shadow-lg hover:bg-green-600

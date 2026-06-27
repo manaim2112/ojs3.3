@@ -67,8 +67,34 @@
 })();
 </script>
 
+{assign var="sc_project" value=$activeTheme->getOption('statCounter_project_id')}
+{assign var="sc_security" value=$activeTheme->getOption('statCounter_security_id')}
+{if $sc_project && $sc_security}
+<div style="text-align:center;padding:6px 0;">
+    <a href="https://statcounter.com/p{$sc_project}/?guest=1" target="_blank" rel="noopener">
+        <img src="https://statcounter.com/images/logo-statcounter-arc.svg" alt="StatCounter" style="height:24px;opacity:0.7;">
+    </a>
+</div>
+{/if}
 {load_script context="frontend"}
 
 {call_hook name="Templates::Common::Footer::PageFooter"}
+{if $sc_project && $sc_security}
+<script type="text/javascript">
+    var sc_project="{$sc_project}";
+    var sc_invisible=1;
+    var sc_security="{$sc_security}";
+    var scJsHost = "https://";
+    document.write("<sc"+"ript type='text/javascript' src='" +
+    scJsHost+
+    "statcounter.com/counter/counter.js'></"+"script>");
+</script>
+<noscript><div class="statcounter"><a title="Web Analytics
+    Made Easy - Statcounter" href="https://statcounter.com/"
+    target="_blank"><img class="statcounter"
+    src="https://c.statcounter.com/{$sc_project}/0/{$sc_security}/0/"
+    alt="Web Analytics Made Easy - Statcounter"
+    referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
+{/if}
 </body>
 </html>

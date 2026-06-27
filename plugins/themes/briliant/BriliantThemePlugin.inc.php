@@ -35,6 +35,15 @@ class BriliantThemePlugin extends ThemePlugin {
 			'default' => 'inter',
 		]);
 
+		$this->addOption('statCounter_project_id', 'FieldText', [
+			'label' => 'StatCounter Project ID',
+			'description' => 'pada saat instalasi di statcounter, nanti ada project id nya, eg : 13121706'
+		]);
+		$this->addOption('statCounter_security_id', 'FieldText', [
+			'label' => 'StatCounter Security ID',
+			'description' => 'pada saat instalasi di statcounter, nanti ada Security id nya, eg : 13121706'
+		]);
+
 		$this->addOption('baseColour', 'FieldColor', [
 			'label' => __('plugins.themes.briliant.option.colour.label'),
 			'description' => __('plugins.themes.briliant.option.colour.description'),

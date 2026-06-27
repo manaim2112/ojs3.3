@@ -54,6 +54,15 @@ class DimensionThemePlugin extends ThemePlugin {
 			'default' => '',
 		]);
 
+		$this->addOption('statCounter_project_id', 'FieldText', [
+			'label' => 'StatCounter Project ID',
+			'description' => 'pada saat instalasi di statcounter, nanti ada project id nya, eg : 13121706'
+		]);
+		$this->addOption('statCounter_security_id', 'FieldText', [
+			'label' => 'StatCounter Security ID',
+			'description' => 'pada saat instalasi di statcounter, nanti ada Security id nya, eg : 13121706'
+		]);
+
 		$this->addOption('doiPrefix', 'FieldText', [
 			'label' => 'DOI Prefix',
 			'description' => "Fill in the DOI Prefix",
