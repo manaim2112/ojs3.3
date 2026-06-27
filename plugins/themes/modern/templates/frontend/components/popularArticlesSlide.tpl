@@ -196,6 +196,7 @@
         </div>
     </div>
 </section>
+{literal}
 <script>
 (function(){
     var track = document.querySelector('.popular_articles_track');
@@ -206,3 +207,4 @@
     if (next) next.addEventListener('click', function(){ track.scrollBy({left: 240, behavior:'smooth'}); });
 })();
 </script>
+{/literal}

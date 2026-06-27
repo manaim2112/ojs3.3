@@ -485,7 +485,7 @@ class ModernThemePlugin extends ThemePlugin
 					'authors'  => $submission->getAuthorString(),
 					'url'      => $request->getDispatcher()->url($request, ROUTE_PAGE, $context->getPath(), 'article', 'view', $submissionId),
 					'views'    => (int) $row->total_metric,
-					'coverUrl' => $this->_getArticleCover($publication),
+					'coverUrl' => $this->_getArticleCover($publication, $contextId),
 				];
 			}
 
@@ -504,14 +504,9 @@ class ModernThemePlugin extends ThemePlugin
 	/**
 	 * Helper: get article cover URL if available.
 	 */
-	protected function _getArticleCover($publication)
+	protected function _getArticleCover($publication, $contextId)
 	{
-		$cover = $publication->getLocalizedData('coverImage');
-		if ($cover && !empty($cover['uploadName'])) {
-			$request = Application::get()->getRequest();
-			return $request->getBaseUrl() . '/' . (new PublicFileManager())->getContextFilesPath($publication->getData('contextId')) . '/' . rawurlencode($cover['uploadName']);
-		}
-		return '';
+		return $publication->getLocalizedCoverImageUrl($contextId);
 	}
 
 	/**
