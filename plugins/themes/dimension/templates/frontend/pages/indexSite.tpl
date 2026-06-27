@@ -1304,6 +1304,11 @@
   var chipActiveClass = 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/25 border-indigo-600';
   var chipBaseClass = 'px-6 py-3.5 rounded-full text-[10px] font-black border uppercase tracking-widest transition-all';
 
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+  }
+
   function renderJournals() {
     if (!journalGrid) return;
     var q = journalSearchInput ? journalSearchInput.value.toLowerCase().trim() : '';
@@ -1327,29 +1332,33 @@
     var html = '';
     for (var j = 0; j < filtered.length; j++) {
       var p = filtered[j];
-      var url = 'https://journal.assyfa.com/index.php/' + (p.abbr ? p.abbr.toLowerCase() : '');
+      var abbrSafe = p.abbr ? p.abbr.toLowerCase() : '';
+      var url = 'https://journal.assyfa.com/index.php/' + encodeURIComponent(abbrSafe);
       var bgColor = p.color || '#1e3a8a';
-      var theme = p.theme || 'SCIENCE';
-      var desc = p.desc || '';
+      var theme = escapeHtml(p.theme || 'SCIENCE');
+      var title = escapeHtml(p.title || '');
+      var abbr = escapeHtml(p.abbr || '');
+      var desc = escapeHtml(p.desc || '');
+      var coverUrl = escapeHtml(p.coverUrl || '');
       html += '<div class="journal-container">'
         + '<div class="journal-card group">'
         + '<a href="' + url + '" target="_blank" class="block">'
         + '<div class="journal-cover shadow-2xl relative">'
         + '<div class="spine-effect"></div>'
         + '<div class="cover-gloss"></div>'
-        + (p.coverUrl
-          ? '<img src="' + p.coverUrl + '" alt="' + (p.title||'') + '" loading="lazy">'
+        + (coverUrl
+          ? '<img src="' + coverUrl + '" alt="' + title + '" loading="lazy">'
           : '<div class="w-full h-full flex flex-col justify-between p-6 relative select-none text-left" style="background-color:' + bgColor + '">'
             + '<div class="relative z-10">'
             + '<div class="flex items-center gap-2 mb-4">'
             + '<span class="w-1.5 h-1.5 rounded-full bg-white"></span>'
             + '<span class="text-[9px] font-black text-white/80 uppercase tracking-widest">' + theme + '</span>'
             + '</div>'
-            + '<h3 class="font-serif text-sm font-bold text-white leading-tight uppercase line-clamp-3">' + (p.title||'') + '</h3>'
+            + '<h3 class="font-serif text-sm font-bold text-white leading-tight uppercase line-clamp-3">' + title + '</h3>'
             + '</div>'
             + '<div class="z-10 border-t border-white/20 pt-4">'
             + '<p class="text-[8px] opacity-60 font-black tracking-widest uppercase mb-0.5">Global Nexus</p>'
-            + '<p class="text-[11px] font-extrabold text-white">' + (p.abbr||'') + ' / SER. 2026</p>'
+            + '<p class="text-[11px] font-extrabold text-white">' + abbr + ' / SER. 2026</p>'
             + '</div>'
             + '</div>')
         + '</div></a>'
@@ -1358,7 +1367,7 @@
         + '<span class="w-2 h-2 rounded-full bg-teal-500 shadow-[0_0_10px_rgba(20,184,166,0.6)]"></span>'
         + '<span class="text-[9px] font-black text-slate-500 uppercase tracking-widest">Verified International Journal</span>'
         + '</div>'
-        + '<h4 class="font-black text-md text-slate-950 group-hover:text-indigo-600 transition-all leading-snug line-clamp-2 uppercase">' + (p.title||'') + '</h4>'
+        + '<h4 class="font-black text-md text-slate-950 group-hover:text-indigo-600 transition-all leading-snug line-clamp-2 uppercase">' + title + '</h4>'
         + '<p class="text-xs text-slate-500 leading-relaxed italic">'
         + '<span class="text-indigo-950 font-bold uppercase text-[9px] not-italic block mb-0.5">Focus &amp; Scope:</span>'
         + desc + '</p>'

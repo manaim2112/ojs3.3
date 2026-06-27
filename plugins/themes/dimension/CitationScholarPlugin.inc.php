@@ -10,6 +10,7 @@ class CitationScholarPlugin {
 
     public function __construct($namejournal, $author_id = null, $api_key = null) {
         $this->cache_dir = __DIR__ . '/cache';
+        $namejournal = preg_replace('/[^a-zA-Z0-9._-]/', '', $namejournal);
         $this->cache_file = $this->cache_dir . '/stats-' . $namejournal . '.json';
         $this->api_key = $api_key ?: getenv('SERPAPI_KEY') ?: '';
         $this->author_id = $author_id ?: '';

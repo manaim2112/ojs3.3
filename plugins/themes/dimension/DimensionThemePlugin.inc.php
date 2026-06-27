@@ -214,7 +214,7 @@ class DimensionThemePlugin extends ThemePlugin {
 
 		// Update base colour via inline style
 		$baseColour = $this->getOption('baseColour');
-		if ($baseColour && $baseColour !== '#1E6292') {
+		if ($baseColour && $baseColour !== '#1E6292' && preg_match('/^#[0-9a-fA-F]{3,6}$/', $baseColour)) {
 			$this->addStyle('baseColour',
 				':root { --dim-base: ' . $baseColour . '; }',
 				['inline' => true]
@@ -397,7 +397,10 @@ class DimensionThemePlugin extends ThemePlugin {
 				'reviewerEditor' => $reviewerEditorCount,
 			]);
 
-			file_put_contents($cacheFile, $data);
+			$tmpFile = $cacheFile . '.' . getmypid() . '.tmp';
+			if (file_put_contents($tmpFile, $data) !== false) {
+				rename($tmpFile, $cacheFile);
+			}
 			return $data;
 		} catch (Exception $e) {
 			error_log('DimensionTheme: site_stats error: ' . $e->getMessage());
