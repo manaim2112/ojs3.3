@@ -449,50 +449,44 @@ class ModernThemePlugin extends ThemePlugin
 			}
 			$contextId = (int) $context->getId();
 
-			$metricsDao = DAORegistry::getDAO('MetricsDAO');
 			$submissionDao = DAORegistry::getDAO('SubmissionDAO');
 
-			import('lib.pkp.classes.db.DBResultRange');
-			$range = new DBResultRange(5);
-
-			$filter = [
-				STATISTICS_DIMENSION_CONTEXT_ID => $contextId,
-			];
-
-			$orderBy = [STATISTICS_METRIC => STATISTICS_ORDER_DESC];
-			$columns = [STATISTICS_DIMENSION_SUBMISSION_ID, STATISTICS_METRIC];
-
-			$metricType = defined('OJS_METRIC_TYPE_COUNTER') ? OJS_METRIC_TYPE_COUNTER : 'ojs::counter';
-			$metricsResult = $metricsDao->getMetrics($metricType, $columns, $filter, $orderBy, $range);
+			$result = $submissionDao->retrieve(
+				'SELECT submission_id, SUM(metric) AS total_metric
+				 FROM metrics
+				 WHERE context_id = ? AND submission_id IS NOT NULL
+				 GROUP BY submission_id
+				 ORDER BY total_metric DESC
+				 LIMIT 5',
+				[$contextId]
+			);
 
 			$articles = [];
-			if (!empty($metricsResult)) {
-				foreach ($metricsResult as $record) {
-					$submissionId = (int) $record[STATISTICS_DIMENSION_SUBMISSION_ID];
-					if (!$submissionId) {
-						continue;
-					}
-					$submission = $submissionDao->getById($submissionId);
-					if (!$submission) {
-						continue;
-					}
-					$publication = $submission->getCurrentPublication();
-					if (!$publication) {
-						continue;
-					}
-					$title = $publication->getLocalizedTitle();
-					if (empty($title)) {
-						continue;
-					}
-					$articles[] = [
-						'id'       => $submissionId,
-						'title'    => $title,
-						'authors'  => $submission->getAuthorString(),
-						'url'      => $request->getDispatcher()->url($request, ROUTE_PAGE, $context->getPath(), 'article', 'view', $submissionId),
-						'views'    => (int) $record[STATISTICS_METRIC],
-						'coverUrl' => $this->_getArticleCover($publication),
-					];
+			foreach ($result as $row) {
+				$submissionId = (int) $row->submission_id;
+				if (!$submissionId) {
+					continue;
 				}
+				$submission = $submissionDao->getById($submissionId);
+				if (!$submission) {
+					continue;
+				}
+				$publication = $submission->getCurrentPublication();
+				if (!$publication) {
+					continue;
+				}
+				$title = $publication->getLocalizedTitle();
+				if (empty($title)) {
+					continue;
+				}
+				$articles[] = [
+					'id'       => $submissionId,
+					'title'    => $title,
+					'authors'  => $submission->getAuthorString(),
+					'url'      => $request->getDispatcher()->url($request, ROUTE_PAGE, $context->getPath(), 'article', 'view', $submissionId),
+					'views'    => (int) $row->total_metric,
+					'coverUrl' => $this->_getArticleCover($publication),
+				];
 			}
 
 			if (empty($articles)) {
