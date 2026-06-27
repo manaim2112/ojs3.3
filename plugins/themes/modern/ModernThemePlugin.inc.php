@@ -465,7 +465,7 @@ class ModernThemePlugin extends ThemePlugin
 
 			$articles = [];
 			while ($row = $result->next()) {
-				$submissionId = (int) $row->submission_id;
+				$submissionId = (int) $row['submission_id'];
 				$submission = Services::get('submission')->get($submissionId);
 				if (!$submission) {
 					continue;
@@ -484,7 +484,7 @@ class ModernThemePlugin extends ThemePlugin
 					'authors'  => $submission->getAuthorString(),
 					'url'      => $request->getDispatcher()->url($request, ROUTE_PAGE, $context->getPath(), 'article', 'view', $submissionId),
 					'abstract' => strip_tags($publication->getLocalizedData('abstract') ?? ''),
-					'views'    => (int) $row->total_metric,
+					'views'    => (int) $row['total_metric'],
 					'coverUrl' => $this->_getArticleCover($publication),
 				];
 			}
