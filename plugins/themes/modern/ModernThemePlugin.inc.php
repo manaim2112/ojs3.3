@@ -457,41 +457,42 @@ class ModernThemePlugin extends ThemePlugin
 
 			$filter = [
 				STATISTICS_DIMENSION_CONTEXT_ID => $contextId,
-				STATISTICS_DIMENSION_ASSOC_TYPE => ASSOC_TYPE_SUBMISSION_FILE,
 			];
-			$filter[STATISTICS_DIMENSION_DAY]['from'] = date('Ymd', strtotime('-365 days'));
-			$filter[STATISTICS_DIMENSION_DAY]['to'] = date('Ymd');
 
 			$orderBy = [STATISTICS_METRIC => STATISTICS_ORDER_DESC];
-
 			$columns = [STATISTICS_DIMENSION_SUBMISSION_ID, STATISTICS_METRIC];
 
 			$metricType = defined('OJS_METRIC_TYPE_COUNTER') ? OJS_METRIC_TYPE_COUNTER : 'ojs::counter';
 			$metricsResult = $metricsDao->getMetrics($metricType, $columns, $filter, $orderBy, $range);
 
 			$articles = [];
-			foreach ($metricsResult as $record) {
-				$submissionId = (int) $record[STATISTICS_DIMENSION_SUBMISSION_ID];
-				$submission = $submissionDao->getById($submissionId);
-				if (!$submission) {
-					continue;
+			if (!empty($metricsResult)) {
+				foreach ($metricsResult as $record) {
+					$submissionId = (int) $record[STATISTICS_DIMENSION_SUBMISSION_ID];
+					if (!$submissionId) {
+						continue;
+					}
+					$submission = $submissionDao->getById($submissionId);
+					if (!$submission) {
+						continue;
+					}
+					$publication = $submission->getCurrentPublication();
+					if (!$publication) {
+						continue;
+					}
+					$title = $publication->getLocalizedTitle();
+					if (empty($title)) {
+						continue;
+					}
+					$articles[] = [
+						'id'       => $submissionId,
+						'title'    => $title,
+						'authors'  => $submission->getAuthorString(),
+						'url'      => $request->getDispatcher()->url($request, ROUTE_PAGE, $context->getPath(), 'article', 'view', $submissionId),
+						'views'    => (int) $record[STATISTICS_METRIC],
+						'coverUrl' => $this->_getArticleCover($publication),
+					];
 				}
-				$publication = $submission->getCurrentPublication();
-				if (!$publication) {
-					continue;
-				}
-				$title = $publication->getLocalizedTitle();
-				if (empty($title)) {
-					continue;
-				}
-				$articles[] = [
-					'id'       => $submissionId,
-					'title'    => $title,
-					'authors'  => $submission->getAuthorString(),
-					'url'      => $request->getDispatcher()->url($request, ROUTE_PAGE, $context->getPath(), 'article', 'view', $submissionId),
-					'views'    => (int) $record[STATISTICS_METRIC],
-					'coverUrl' => $this->_getArticleCover($publication),
-				];
 			}
 
 			if (empty($articles)) {
