@@ -454,11 +454,11 @@ class ModernThemePlugin extends ThemePlugin
 			$result = $submissionDao->retrieve(
 				'SELECT submission_id, SUM(metric) AS total_metric
 				 FROM metrics
-				 WHERE context_id = ? AND submission_id IS NOT NULL
+				 WHERE context_id = ? AND submission_id IS NOT NULL AND metric_type = ?
 				 GROUP BY submission_id
 				 ORDER BY total_metric DESC
 				 LIMIT 5',
-				[$contextId]
+				[$contextId, METRIC_TYPE_COUNTER]
 			);
 
 			$articles = [];
