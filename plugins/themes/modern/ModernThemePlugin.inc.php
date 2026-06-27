@@ -445,11 +445,29 @@ class ModernThemePlugin extends ThemePlugin
 			$request = Application::get()->getRequest();
 			$context = $request->getContext();
 			if (!$context) {
+				error_log('ModernTheme: no context');
 				return '';
 			}
 			$contextId = (int) $context->getId();
 
 			// Fetch published submissions via the OJS service API
+			$submissions = Services::get('submission')->getMany([
+				'contextId' => $contextId,
+				'status' => STATUS_PUBLISHED,
+				'count' => 20,
+			]);
+
+			// Count total published to verify query works
+			$totalFound = 0;
+			foreach ($submissions as $submission) {
+				$totalFound++;
+			}
+			if ($totalFound === 0) {
+				error_log('ModernTheme: no published submissions found for context ' . $contextId);
+				return '';
+			}
+
+			// Re-fetch since iterator is exhausted
 			$submissions = Services::get('submission')->getMany([
 				'contextId' => $contextId,
 				'status' => STATUS_PUBLISHED,
@@ -494,6 +512,7 @@ class ModernThemePlugin extends ThemePlugin
 			}
 
 			if (empty($articles)) {
+				error_log('ModernTheme: articles array empty after building');
 				return '';
 			}
 
