@@ -449,27 +449,33 @@ class ModernThemePlugin extends ThemePlugin
 			}
 			$contextId = (int) $context->getId();
 
-			$submissions = Services::get('submission')->getMany([
-				'contextId' => $contextId,
-				'status' => STATUS_PUBLISHED,
-				'count' => 20,
-			]);
-
+			$metricsDao = DAORegistry::getDAO('MetricsDAO');
 			$submissionDao = DAORegistry::getDAO('SubmissionDAO');
-			$result = $submissionDao->retrieve(
-				'SELECT submission_id, SUM(metric) AS total_metric
-				 FROM metrics
-				 WHERE context_id = ? AND submission_id IS NOT NULL
-				 GROUP BY submission_id',
-				[$contextId]
-			);
-			$articleViews = [];
-			while ($row = $result->next()) {
-				$articleViews[(int) $row['submission_id']] = (int) $row['total_metric'];
-			}
+
+			import('lib.pkp.classes.db.DBResultRange');
+			$range = new DBResultRange(5);
+
+			$filter = [
+				STATISTICS_DIMENSION_CONTEXT_ID => $contextId,
+				STATISTICS_DIMENSION_ASSOC_TYPE => ASSOC_TYPE_SUBMISSION_FILE,
+			];
+			$filter[STATISTICS_DIMENSION_DAY]['from'] = date('Ymd', strtotime('-365 days'));
+			$filter[STATISTICS_DIMENSION_DAY]['to'] = date('Ymd');
+
+			$orderBy = [STATISTICS_METRIC => STATISTICS_ORDER_DESC];
+
+			$columns = [STATISTICS_DIMENSION_SUBMISSION_ID, STATISTICS_METRIC];
+
+			$metricType = defined('OJS_METRIC_TYPE_COUNTER') ? OJS_METRIC_TYPE_COUNTER : 'ojs::counter';
+			$metricsResult = $metricsDao->getMetrics($metricType, $columns, $filter, $orderBy, $range);
 
 			$articles = [];
-			foreach ($submissions as $submission) {
+			foreach ($metricsResult as $record) {
+				$submissionId = (int) $record[STATISTICS_DIMENSION_SUBMISSION_ID];
+				$submission = $submissionDao->getById($submissionId);
+				if (!$submission) {
+					continue;
+				}
 				$publication = $submission->getCurrentPublication();
 				if (!$publication) {
 					continue;
@@ -478,13 +484,12 @@ class ModernThemePlugin extends ThemePlugin
 				if (empty($title)) {
 					continue;
 				}
-				$sid = $submission->getId();
 				$articles[] = [
-					'id'       => $sid,
+					'id'       => $submissionId,
 					'title'    => $title,
 					'authors'  => $submission->getAuthorString(),
-					'url'      => $request->getDispatcher()->url($request, ROUTE_PAGE, $context->getPath(), 'article', 'view', $sid),
-					'views'    => $articleViews[$sid] ?? 0,
+					'url'      => $request->getDispatcher()->url($request, ROUTE_PAGE, $context->getPath(), 'article', 'view', $submissionId),
+					'views'    => (int) $record[STATISTICS_METRIC],
 					'coverUrl' => $this->_getArticleCover($publication),
 				];
 			}
@@ -492,11 +497,6 @@ class ModernThemePlugin extends ThemePlugin
 			if (empty($articles)) {
 				return '';
 			}
-
-			usort($articles, function ($a, $b) {
-				return $b['views'] - $a['views'];
-			});
-			$articles = array_slice($articles, 0, 5);
 
 			$smarty->assign('popularArticles', $articles);
 			return $smarty->fetch($this->getTemplateResource('frontend/components/popularArticlesSlide.tpl'));
