@@ -251,8 +251,10 @@ class ModernThemePlugin extends ThemePlugin
 
 		// 10) Register Smarty function for popular articles
 		$smarty = TemplateManager::getManager($request);
-		if (!$smarty->registered_plugins['function']['popular_articles']) {
-			$smarty->registerPlugin('function', 'popular_articles', [$this, 'smartyPopularArticles']);
+		try {
+			$smarty->registerPlugin('function', 'modern_popular_articles', [$this, 'smartyPopularArticles']);
+		} catch (Exception $e) {
+			error_log('ModernTheme: popular articles registration skipped: ' . $e->getMessage());
 		}
 	}
 
@@ -434,59 +436,69 @@ class ModernThemePlugin extends ThemePlugin
 
 	/**
 	 * Smarty function: fetch top 5 most-viewed published articles in current journal.
-	 * Usage in template: {popular_articles}
+	 * Usage in template: {modern_popular_articles}
 	 * Returns HTML for a horizontal slide.
 	 */
 	public function smartyPopularArticles($params, $smarty)
 	{
-		$request = Application::get()->getRequest();
-		$context = $request->getContext();
-		if (!$context) {
+		try {
+			$request = Application::get()->getRequest();
+			$context = $request->getContext();
+			if (!$context) {
+				return '';
+			}
+			$contextId = (int) $context->getId();
+
+			$submissionDao = DAORegistry::getDAO('SubmissionDAO');
+
+			// Try metrics-based query first, fall back to most recent
+			$result = $submissionDao->retrieve(
+				'SELECT s.submission_id, COALESCE(SUM(m.metric), 0) AS total_metric
+				 FROM submissions s
+				 LEFT JOIN metrics m ON s.submission_id = m.submission_id AND m.context_id = ?
+				 WHERE s.context_id = ? AND s.status = ?
+				 GROUP BY s.submission_id
+				 ORDER BY total_metric DESC, s.submission_id DESC
+				 LIMIT 5',
+				[$contextId, $contextId, STATUS_PUBLISHED]
+			);
+
+			$articles = [];
+			while ($row = $result->next()) {
+				$submissionId = (int) $row->submission_id;
+				$submission = Services::get('submission')->get($submissionId);
+				if (!$submission) {
+					continue;
+				}
+				$publication = $submission->getCurrentPublication();
+				if (!$publication) {
+					continue;
+				}
+				$title = $publication->getLocalizedTitle();
+				if (empty($title)) {
+					continue;
+				}
+				$articles[] = [
+					'id'       => $submissionId,
+					'title'    => $title,
+					'authors'  => $submission->getAuthorString(),
+					'url'      => $request->getDispatcher()->url($request, ROUTE_PAGE, $context->getPath(), 'article', 'view', $submissionId),
+					'abstract' => strip_tags($publication->getLocalizedData('abstract') ?? ''),
+					'views'    => (int) $row->total_metric,
+					'coverUrl' => $this->_getArticleCover($publication),
+				];
+			}
+
+			if (empty($articles)) {
+				return '';
+			}
+
+			$smarty->assign('popularArticles', $articles);
+			return $smarty->fetch($this->getTemplateResource('frontend/components/popularArticlesSlide.tpl'));
+		} catch (Exception $e) {
+			error_log('ModernTheme: smartyPopularArticles error: ' . $e->getMessage());
 			return '';
 		}
-		$contextId = (int) $context->getId();
-		$locale = AppLocale::getLocale();
-
-		$submissionDao = DAORegistry::getDAO('SubmissionDAO');
-		$result = $submissionDao->retrieve(
-			'SELECT s.submission_id, COALESCE(SUM(m.metric), 0) AS total_metric
-			 FROM submissions s
-			 LEFT JOIN metrics m ON s.submission_id = m.submission_id AND m.context_id = ?
-			 WHERE s.context_id = ? AND s.status = ?
-			 GROUP BY s.submission_id
-			 ORDER BY total_metric DESC
-			 LIMIT 5',
-			[$contextId, $contextId, STATUS_PUBLISHED]
-		);
-
-		$articles = [];
-		while ($row = $result->next()) {
-			$submissionId = (int) $row->submission_id;
-			$submission = Services::get('submission')->get($submissionId);
-			if (!$submission) {
-				continue;
-			}
-			$publication = $submission->getCurrentPublication();
-			if (!$publication) {
-				continue;
-			}
-			$articles[] = [
-				'id'       => $submissionId,
-				'title'    => $publication->getLocalizedTitle(),
-				'authors'  => $submission->getAuthorString(),
-				'url'      => $request->getDispatcher()->url($request, PKPApplication::ROUTE_PAGE, $context->getPath(), 'article', 'view', $submissionId),
-				'abstract' => strip_tags($publication->getLocalizedData('abstract') ?? ''),
-				'views'    => (int) $row->total_metric,
-				'coverUrl' => $this->_getArticleCover($publication),
-			];
-		}
-
-		if (empty($articles)) {
-			return '';
-		}
-
-		$smarty->assign('popularArticles', $articles);
-		return $smarty->fetch($this->getTemplateResource('frontend/components/popularArticlesSlide.tpl'));
 	}
 
 	/**

@@ -19,7 +19,7 @@
 {include file="frontend/components/header.tpl" pageTitleTranslated=$currentJournal->getLocalizedName()}
 
 {if $activeTheme->getOption('showPopularArticles')}
-{popular_articles}
+{modern_popular_articles}
 {/if}
 
 <div class="page_index_journal">
