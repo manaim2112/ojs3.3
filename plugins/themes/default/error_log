@@ -1,0 +1,65 @@
+[28-Dec-2025 07:58:22 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function import() in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php:16
+Stack trace:
+#0 /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/index.php(19): require_once()
+#1 {main}
+  thrown in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php on line 16
+[28-Dec-2025 07:58:23 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function import() in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php:16
+Stack trace:
+#0 /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/index.php(19): require_once()
+#1 {main}
+  thrown in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php on line 16
+[25-Jan-2026 10:42:17 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function import() in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php:16
+Stack trace:
+#0 /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/index.php(19): require_once()
+#1 {main}
+  thrown in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php on line 16
+[17-Feb-2026 23:04:11 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function import() in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php:16
+Stack trace:
+#0 /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/index.php(19): require_once()
+#1 {main}
+  thrown in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php on line 16
+[17-Feb-2026 23:04:11 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function import() in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php:16
+Stack trace:
+#0 /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/index.php(19): require_once()
+#1 {main}
+  thrown in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php on line 16
+[26-Mar-2026 19:40:04 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function import() in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php:16
+Stack trace:
+#0 /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/index.php(19): require_once()
+#1 {main}
+  thrown in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php on line 16
+[28-Mar-2026 11:41:20 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function import() in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php:16
+Stack trace:
+#0 /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/index.php(19): require_once()
+#1 {main}
+  thrown in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php on line 16
+[28-Mar-2026 11:46:57 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function import() in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php:16
+Stack trace:
+#0 /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/index.php(19): require_once()
+#1 {main}
+  thrown in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php on line 16
+[01-Apr-2026 10:24:02 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function import() in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php:16
+Stack trace:
+#0 /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/index.php(19): require_once()
+#1 {main}
+  thrown in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php on line 16
+[01-Apr-2026 10:32:14 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function import() in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php:16
+Stack trace:
+#0 /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/index.php(19): require_once()
+#1 {main}
+  thrown in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php on line 16
+[13-Apr-2026 06:18:42 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function import() in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php:16
+Stack trace:
+#0 /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/index.php(19): require_once()
+#1 {main}
+  thrown in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php on line 16
+[13-Apr-2026 13:16:55 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function import() in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php:16
+Stack trace:
+#0 /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/index.php(19): require_once()
+#1 {main}
+  thrown in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php on line 16
+[29-Apr-2026 15:57:16 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function import() in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php:16
+Stack trace:
+#0 /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/index.php(19): require_once()
+#1 {main}
+  thrown in /home/assyfaco/journal.assyfa.com/public_html/plugins/themes/default/DefaultThemePlugin.inc.php on line 16
