@@ -61,10 +61,7 @@
 		</a>
 
         <div class="hidden md:flex md:flex-grow md:justify-end md:items-center">
-            {capture assign="primaryMenu"}
-                {load_menu name="primary" id="navigationPrimary" ulClass="pkp_navigation_primary flex space-x-2 items-center" liClass="relative group"}
-            {/capture}
-            {$primaryMenu}
+            {load_menu name="primary" id="navigationPrimary" ulClass="pkp_navigation_primary flex space-x-2 items-center" liClass="relative group"}
         </div>
 
             <div class="relative ml-4 z-50 flex items-center gap-2">
@@ -139,10 +136,7 @@
             
             <nav class="mt-10">
                 <ul class="space-y-3">
-                    {capture assign="mobilePrimaryMenu"}
-                        {load_menu name="primary" id="mobileNavigationPrimary" ulClass="space-y-2" liClass="mobile-menu-item"}
-                    {/capture}
-                    {$mobilePrimaryMenu}
+                    {load_menu name="primary" id="mobileNavigationPrimary" ulClass="space-y-2" liClass="mobile-menu-item"}
                 </ul>
             </nav>
         </div>
