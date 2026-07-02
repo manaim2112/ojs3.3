@@ -60,11 +60,10 @@
         	{/if}
 		</a>
 
-        <div class="hidden md:flex md:flex-grow md:justify-end md:items-center">
-            {capture assign="primaryMenu"}
-                {load_menu name="primary" id="navigationPrimary" ulClass="pkp_navigation_primary flex space-x-2 items-center" liClass="relative group"}
-            {/capture}
-            {$primaryMenu}
+        <div class="hidden md:flex md:flex-grow md:justify-end md:items-center gap-1">
+            <a href="{url page="about"}" class="text-white/90 hover:text-white px-3 py-1.5 text-sm font-medium transition-colors rounded-lg hover:bg-white/10">History</a>
+            <a href="{url page="about" op="editorialTeam"}" class="text-white/90 hover:text-white px-3 py-1.5 text-sm font-medium transition-colors rounded-lg hover:bg-white/10">Tim</a>
+            <a href="{url page="about"}" class="text-white/90 hover:text-white px-3 py-1.5 text-sm font-medium transition-colors rounded-lg hover:bg-white/10">Organization</a>
         </div>
 
             <div class="relative ml-4 z-50 flex items-center gap-2">
@@ -139,10 +138,9 @@
             
             <nav class="mt-10">
                 <ul class="space-y-3">
-                    {capture assign="mobilePrimaryMenu"}
-                        {load_menu name="primary" id="mobileNavigationPrimary" ulClass="space-y-2" liClass="mobile-menu-item"}
-                    {/capture}
-                    {$mobilePrimaryMenu}
+                    <li class="mobile-menu-item"><a href="{url page="about"}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors">History</a></li>
+                    <li class="mobile-menu-item"><a href="{url page="about" op="editorialTeam"}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors">Tim</a></li>
+                    <li class="mobile-menu-item"><a href="{url page="about"}" class="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition-colors">Organization</a></li>
                 </ul>
             </nav>
         </div>
