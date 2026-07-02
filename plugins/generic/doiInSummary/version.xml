@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE version SYSTEM "../../../lib/pkp/dtd/pluginVersion.dtd">
+
+<!--
+  * Copyright (c) 2015-2023 Lepidus Tecnologia
+  * Distributed under the GNU GPL v3. For full terms see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt.
+-->
+
+<version>
+	<application>doiInSummary</application>
+	<type>plugins.generic</type>
+	<release>1.4.1.1</release>
+	<date>2026-03-16</date>
+	<lazy-load>0</lazy-load>
+	<class>DoiInSummaryPlugin</class>
+</version>

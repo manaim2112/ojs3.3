@@ -100,17 +100,16 @@ class MostReadBlockPlugin extends BlockPlugin {
 		$context = $request->getContext();
 		if (!$context) return '';
 
-		$metricsDao = DAORegistry::getDAO('MetricsDAO');
-		
 		$cacheManager = CacheManager::getManager();
 		$cache = $cacheManager->getCache($context->getId(), 'mostread' , array($this, '_cacheMiss'));
 
 		$daysToStale = 1;
-
-		if (time() - $cache->getCacheTime() > 60 * 60 * 24 * $daysToStale) {
-			$cache->flush();
-		}
 		$resultMetrics = $cache->getContents();
+
+		if (empty($resultMetrics) || time() - $cache->getCacheTime() > 60 * 60 * 24 * $daysToStale) {
+			$cache->flush();
+			$resultMetrics = $cache->getContents();
+		}
 
 		$templateMgr->assign('resultMetrics', $resultMetrics);
 

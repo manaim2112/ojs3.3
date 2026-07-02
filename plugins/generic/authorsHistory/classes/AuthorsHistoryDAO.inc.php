@@ -1,0 +1,98 @@
+<?php
+
+/**
+ * @file plugins/generic/authorsHistory/classes/AuthorsHistoryDAO.inc.php
+ *
+ * Copyright (c) 2020-2023 Lepidus Tecnologia
+ * Copyright (c) 2020-2023 SciELO
+ * Distributed under the GNU GPL v3. For full terms see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @class AuthorsHistoryDAO
+ * @ingroup plugins_generic_authorsHistory
+ * @brief Operations for retrieving authors data
+ */
+
+import('lib.pkp.classes.db.DAO');
+
+class AuthorsHistoryDAO extends DAO
+{
+    public function getAuthorsByORCID($orcid)
+    {
+        $authorsResult = $this->retrieve(
+            "SELECT author_id FROM author_settings WHERE setting_name = 'orcid' AND setting_value = ?",
+            [$orcid]
+        );
+        $authors = (new DAOResultFactory($authorsResult, $this, '_authorFromRow'))->toArray();
+
+        return $authors;
+    }
+
+    public function getAuthorsByEmail($email)
+    {
+        $authorsResult = $this->retrieve(
+            "SELECT author_id FROM authors WHERE email = ?",
+            [$email]
+        );
+        $authors = (new DAOResultFactory($authorsResult, $this, '_authorFromRow'))->toArray();
+
+        return $authors;
+    }
+
+
+    public function getAuthorIdByGivenNameAndEmail($givenName, $email)
+    {
+        $authorsResult = $this->retrieve(
+            "SELECT authors.author_id FROM authors
+            INNER JOIN author_settings
+            ON authors.author_id = author_settings.author_id
+            AND author_settings.setting_name = 'givenName' AND author_settings.setting_value = ?
+            WHERE authors.email = ?",
+            [$givenName, $email]
+        );
+        $authors = (new DAOResultFactory($authorsResult, $this, '_authorFromRow'))->toArray();
+
+        return $authors;
+    }
+
+    public function getSimilarAuthors($email, $orcid, $givenName, $itemsPerPageLimit)
+    {
+        $authors = [];
+
+        if (!empty($email)) {
+            $authorsByEmail = $this->getAuthorsByEmail($email);
+            $authors = (sizeof($authorsByEmail) > $itemsPerPageLimit) ? $this->getAuthorIdByGivenNameAndEmail($givenName, $email) : $authorsByEmail;
+        }
+
+        if (!empty($orcid)) {
+            $authorsFromOrcid = $this->getAuthorsByORCID($orcid);
+            $authors = array_unique(array_merge($authors, $authorsFromOrcid));
+        }
+
+        return $authors;
+    }
+
+    public function getAuthorSubmissions($contextId, $orcid, $email, $givenName, $itemsPerPageLimit)
+    {
+        $authors = $this->getSimilarAuthors($email, $orcid, $givenName, $itemsPerPageLimit);
+        $submissions = array();
+        foreach ($authors as $autorId) {
+            $author = DAOregistry::getDAO('AuthorDAO')->getById($autorId);
+
+            if (!is_null($author)) {
+                $authorPublication = DAORegistry::getDAO('PublicationDAO')->getById($author->getData('publicationId'));
+                $authorSubmission = DAORegistry::getDAO('SubmissionDAO')->getById($authorPublication->getData('submissionId'));
+
+                if ($authorSubmission->getData('contextId') == $contextId && $authorSubmission->getData('dateSubmitted') && !in_array($authorSubmission, $submissions)) {
+                    $submissions[] = $authorSubmission;
+                }
+            }
+        }
+
+        return $submissions;
+    }
+
+    public function _authorFromRow($row)
+    {
+        return $row['author_id'];
+    }
+}

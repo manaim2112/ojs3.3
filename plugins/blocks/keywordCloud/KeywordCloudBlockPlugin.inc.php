@@ -65,71 +65,75 @@ class KeywordCloudBlockPlugin extends BlockPlugin
         return parent::getContents($templateMgr, $request);
     }
 
-    private function getCachedKeywords($context, $locale)
-    {
-        $cacheManager = CacheManager::getManager();
-        $cache = $cacheManager->getFileCache(
-            $context->getId(),
-            'keywords_' . $locale,
-            [$this, 'cacheDismiss']
-        );
+	private function getCachedKeywords($context, $locale)
+	{
+		$cacheManager = CacheManager::getManager();
+		$cache = $cacheManager->getFileCache(
+			$context->getId(),
+			'keywords_' . $locale,
+			[$this, 'cacheDismiss']
+		);
 
-        $keywords = & $cache->getContents();
-        $currentCacheTime = time() - $cache->getCacheTime();
+		$keywords = $cache->getContents();
+		$currentCacheTime = time() - $cache->getCacheTime();
 
-        if (
-            ($keywords && $keywords != '[]')
-            && $currentCacheTime < TWO_DAYS_SECONDS
-        ) {
-            return $keywords;
-        }
+		if (
+			($keywords && $keywords != '[]')
+			&& $currentCacheTime < TWO_DAYS_SECONDS
+		) {
+			return $keywords;
+		}
 
-        if ($currentCacheTime > TWO_DAYS_SECONDS) {
-            $cache->flush();
-        }
+		if ($currentCacheTime > TWO_DAYS_SECONDS) {
+			$cache->flush();
+		}
 
-        $cache->setEntireCache($this->getContextKeywords($context->getId(), $locale));
-        $keywords = & $cache->getContents();
+		$cache->setEntireCache($this->getContextKeywords($context->getId(), $locale));
+		$keywords = $cache->getContents();
 
-        return $keywords;
-    }
+		return $keywords;
+	}
 
-    private function getContextKeywords($contextId, $locale)
-    {
-        $publicationIds = Services::get('publication')
-            ->getQueryBuilder([
-                'contextIds' => [$contextId]
-            ])
-            ->getQuery()
-            ->whereIn('s.status', [STATUS_PUBLISHED])
-            ->select('p.publication_id')
-            ->pluck('p.publication_id')
-            ->toArray();
+	private function getContextKeywords($contextId, $locale)
+	{
+		$publicationIds = Services::get('publication')
+			->getQueryBuilder([
+				'contextIds' => [$contextId]
+			])
+			->getQuery()
+			->whereIn('s.status', [STATUS_PUBLISHED])
+			->select('p.publication_id')
+			->pluck('p.publication_id')
+			->toArray();
 
-        $allKeywords = array();
-        $submissionKeywordDao = DAORegistry::getDAO('SubmissionKeywordDAO');
-        foreach ($publicationIds as $publicationId) {
-            $publicationKeywords = $submissionKeywordDao->getKeywords($publicationId, [$locale]);
+		if (empty($publicationIds)) {
+			return '[]';
+		}
 
-            if (count($publicationKeywords) > 0) {
-                $allKeywords = array_merge($allKeywords, $publicationKeywords[$locale]);
-            }
-        }
+		$allKeywords = array();
+		$submissionKeywordDao = DAORegistry::getDAO('SubmissionKeywordDAO');
+		foreach ($publicationIds as $publicationId) {
+			$publicationKeywords = $submissionKeywordDao->getKeywords($publicationId, [$locale]);
 
-        $uniqueKeywords = array_unique(array_map('strtolower', $allKeywords));
-        $countKeywords = array_count_values($uniqueKeywords);
-        arsort($countKeywords, SORT_NUMERIC);
+			if (count($publicationKeywords) > 0) {
+				$allKeywords = array_merge($allKeywords, $publicationKeywords[$locale]);
+			}
+		}
 
-        $topKeywords = array_slice($countKeywords, 0, KEYWORD_BLOCK_MAX_ITEMS);
-        $keywords = array();
+		$normalizedKeywords = array_map('strtolower', $allKeywords);
+		$countKeywords = array_count_values($normalizedKeywords);
+		arsort($countKeywords, SORT_NUMERIC);
 
-        foreach ($topKeywords as $key => $countKey) {
-            $keyword = new stdClass();
-            $keyword->text = $key;
-            $keyword->size = $countKey;
-            $keywords[] = $keyword;
-        }
+		$topKeywords = array_slice($countKeywords, 0, KEYWORD_BLOCK_MAX_ITEMS);
+		$keywords = array();
 
-        return json_encode($keywords);
-    }
+		foreach ($topKeywords as $key => $countKey) {
+			$keyword = new stdClass();
+			$keyword->text = $key;
+			$keyword->size = $countKey;
+			$keywords[] = $keyword;
+		}
+
+		return json_encode($keywords);
+	}
 }

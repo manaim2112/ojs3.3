@@ -1,0 +1,5 @@
+[26-Mar-2026 19:40:04 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function import() in /home/assyfaco/journal.assyfa.com/public_html/plugins/importexport/copernicus/CopernicusExportPlugin.inc.php:15
+Stack trace:
+#0 /home/assyfaco/journal.assyfa.com/public_html/plugins/importexport/copernicus/index.php(19): require_once()
+#1 {main}
+  thrown in /home/assyfaco/journal.assyfa.com/public_html/plugins/importexport/copernicus/CopernicusExportPlugin.inc.php on line 15

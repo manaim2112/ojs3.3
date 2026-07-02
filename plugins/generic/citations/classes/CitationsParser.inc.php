@@ -4,6 +4,13 @@ use GuzzleHttp\Exception\GuzzleException;
 
 class CitationsParser
 {
+	const CACHE_TTL = 86400;
+
+	public function cacheMiss()
+	{
+		return null;
+	}
+
 	function getScopusCitedBy($doi, $apiKey, $loadList)
 	{
 		if ($apiKey == null || $apiKey == '' || $doi == null || $doi == '') {
@@ -64,7 +71,7 @@ class CitationsParser
 		$ret["crossref_list"] = null;
 		$ret["crossref_list"] = [];
 		$crossref_list = array();
-		if ($data != null && strpos($data, "<crossref_result") == true) {
+		if ($data != null && strpos($data, "<crossref_result") !== false) {
 			$xml = simplexml_load_string($data);
 			$link_list = $xml->{"query_result"}->{"body"}->{"forward_link"};
 			if ($link_list && sizeof($link_list) > 0) {
@@ -105,6 +112,14 @@ class CitationsParser
 
 	private function getAPIContent($url, $type = "text/xml")
 	{
+		$cacheKey = 'citation_' . md5($url);
+		$cacheManager = CacheManager::getManager();
+		$cache = $cacheManager->getFileCache('citations', $cacheKey, [$this, 'cacheMiss']);
+		$cached = $cache->getContents();
+		if ($cached && time() - $cache->getCacheTime() < self::CACHE_TTL) {
+			return $cached;
+		}
+
 		$data = null;
 		$httpClient = Application::get()->getHttpClient();
 		try {
@@ -125,7 +140,13 @@ class CitationsParser
 		} catch (GuzzleException $e) {
 		}
 
-		return $data;
+		if ($data !== null) {
+			$cache->flush();
+			$cache->setEntireCache($data);
+			return $data;
+		}
+
+		return $cached;
 	}
 
 	/**

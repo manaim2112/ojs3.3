@@ -304,15 +304,15 @@ class DimensionThemePlugin extends ThemePlugin {
 		// Register custom page handlers (arsitektur-legal, kepemimpinan)
 		HookRegistry::register('LoadHandler', array($this, 'handleCustomPages'));
 
-		// Register Smarty function for journal data
+		// Register Smarty functions (guard against double init)
 		$smarty = TemplateManager::getManager(Application::get()->getRequest());
-		$smarty->registerPlugin('function', 'journals_json', array($this, 'smartyJournalsJson'));
-
-		// Register Smarty function for auth data
-		$smarty->registerPlugin('function', 'auth_data_json', array($this, 'smartyAuthDataJson'));
-
-		// Register Smarty function for live site stats
-		$smarty->registerPlugin('function', 'site_stats_json', array($this, 'smartySiteStatsJson'));
+		static $smartyPluginsRegistered = false;
+		if (!$smartyPluginsRegistered) {
+			$smartyPluginsRegistered = true;
+			$smarty->registerPlugin('function', 'journals_json', array($this, 'smartyJournalsJson'));
+			$smarty->registerPlugin('function', 'auth_data_json', array($this, 'smartyAuthDataJson'));
+			$smarty->registerPlugin('function', 'site_stats_json', array($this, 'smartySiteStatsJson'));
+		}
 
 		// Ensure our indexSite.tpl is used for the site index page
 		HookRegistry::register('TemplateResource::getFilename', array($this, 'handleSiteIndexTemplate'));

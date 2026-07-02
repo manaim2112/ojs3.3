@@ -1,0 +1,116 @@
+<?php
+
+/**
+ * @file plugins/generic/AuthorsHistory/AuthorsHistoryPlugin.inc.php
+ *
+ * Copyright (c) 2020-2023 Lepidus Tecnologia
+ * Copyright (c) 2020-2023 SciELO
+ * Distributed under the GNU GPL v3. For full terms see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt
+ *
+ * @class AuthorsHistoryPlugin
+ * @ingroup plugins_generic_authorsHistory
+ * @brief Plugin class for the Authors History plugin.
+ */
+import('lib.pkp.classes.plugins.GenericPlugin');
+import('plugins.generic.authorsHistory.classes.AuthorsHistoryDAO');
+
+
+class AuthorsHistoryPlugin extends GenericPlugin
+{
+    public function register($category, $path, $mainContextId = null)
+    {
+        $success = parent::register($category, $path, $mainContextId);
+
+        if (!Config::getVar('general', 'installed') || defined('RUNNING_UPGRADE')) {
+            return true;
+        }
+
+        if ($success && $this->getEnabled($mainContextId)) {
+            $authorsHistoryDAO = new AuthorsHistoryDAO();
+            DAORegistry::registerDAO('AuthorsHistoryDAO', $authorsHistoryDAO);
+
+            HookRegistry::register('Template::Workflow::Publication', array($this, 'addToWorkflow'));
+        }
+
+        return $success;
+    }
+
+    private function getAuthorsData($submission, $itemsPerPageLimit)
+    {
+        $listAuthorsData = array();
+        $correspondenceContact = $submission->getCurrentPublication()->getData('primaryContactId');
+        $contextId = $submission->getData('contextId');
+
+        foreach ($submission->getAuthors() as $author) {
+            $authorData = [
+                'name' => $author->getFullName(),
+                'orcid' => $author->getOrcid(),
+                'email' => $author->getEmail(),
+                'correspondingAuthor' => ($correspondenceContact == $author->getId()),
+            ];
+
+            $givenName = $author->getLocalizedGivenName();
+            $authorsHistoryDAO = new AuthorsHistoryDAO();
+
+            $authorData['submissions'] = $authorsHistoryDAO->getAuthorSubmissions(
+                $contextId,
+                $authorData['orcid'],
+                $authorData['email'],
+                $givenName,
+                $itemsPerPageLimit
+            );
+
+            $listAuthorsData[] = $authorData;
+        }
+        return $listAuthorsData;
+    }
+
+    public function addToWorkflow($hookName, $params)
+    {
+        $smarty = &$params[1];
+        $output = &$params[2];
+        $submission = $smarty->get_template_vars('submission');
+        $request = Application::get()->getRequest();
+        $user = $request->getUser();
+
+        $smarty->assign(
+            'userIsManager',
+            $user->hasRole(Application::getWorkflowTypeRoles()[WORKFLOW_TYPE_EDITORIAL], $request->getContext()->getId())
+        );
+        $itemsPerPage = $request->getContext()->getData('itemsPerPage');
+        $itemsPerPage = (int)$itemsPerPage == 0 ? 10 : $itemsPerPage;
+
+        $smarty->assign([
+            'listDataAuthors' => $this->getAuthorsData($submission, $itemsPerPage),
+            'itemsPerPage' => $itemsPerPage,
+            'submissionType' => $this->getSubmissionType()
+        ]);
+
+        $output .= sprintf(
+            '<tab id="authorsHistory" label="%s">%s</tab>',
+            __('plugins.generic.authorsHistory.displayName'),
+            $smarty->fetch($this->getTemplateResource('authorsHistory.tpl'))
+        );
+    }
+
+    private function getSubmissionType(): string
+    {
+        $applicationName = substr(Application::getName(), 0, 3);
+
+        if ($applicationName == 'ops') {
+            return 'preprint';
+        }
+
+        return 'article';
+    }
+
+    public function getDisplayName()
+    {
+        return __('plugins.generic.authorsHistory.displayName');
+    }
+
+    public function getDescription()
+    {
+        return __('plugins.generic.authorsHistory.description');
+    }
+}

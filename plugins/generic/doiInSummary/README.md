@@ -1,0 +1,24 @@
+# DOI in TOC
+
+This plugin was built with the purpose of facilitating the visualization of the Digital Object Identifier (DOI) in the Table of Contents (TOC) of the issues of a journal.
+
+# Compatibility
+
+A version compatible with OJS 3.3.0.x is available in the [stable-3_3_0](https://github.com/lepidus/doiInSummary/tree/stable-3_3_0) branch.
+
+* Plugin version v1.x.x.x is compatible with OJS 3.3.0.x
+
+You can find the latest version of the plugin compatible with your OJS version in the [Releases page](https://github.com/lepidus/doiInSummary/releases).
+
+# Installation
+
+1. Enter the administration area of ​​your OJS/OPS website through the __Dashboard__.
+2. Navigate to `Settings`>` Website`> `Plugins`> `Upload a new plugin`.
+3. Under __Upload file__ select the file __doiInSummary.tar.gz__.
+4. Click __Save__ and the plugin will be installed on your website.
+
+# License
+
+__This plugin is licensed under the GNU General Public License v3__
+
+__Copyright (c) 2015-2023 Lepidus Tecnologia__
