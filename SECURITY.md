@@ -86,3 +86,12 @@ PKP-maintained fixes; our local fork (`manaim2112/pkp-lib`) did not have them.
 - **Note**: Caching only stores the lightweight `submission_id => count` map,
   never hydrated objects, so invalidation is safe (cache auto-expires by TTL
   and is cleared by the standard OJS cache-clear tooling).
+
+### Search N+1 query reduction
+- **File**: `classes/search/ArticleSearch.inc.php`
+- **Fix**: `getSparseArray()` now batch-loads all submissions for `authors`/
+  `title` sorting in a single `IN()` query instead of one `getById()` per
+  result. `formatResults()` batch-loads the current page's submissions in one
+  query instead of `Services::get('submission')->get()` per result.
+- **Impact**: Turns O(N) submission queries per search into O(1) for both the
+  merge/sort step (all results) and the formatting step (current page).

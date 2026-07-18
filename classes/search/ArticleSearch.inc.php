@@ -71,18 +71,35 @@ class ArticleSearch extends SubmissionSearch {
 		}
 
 		$i=0; // Used to prevent ties from clobbering each other
+
+		// Batch-load submissions once for authors/title sorting instead of
+		// issuing one getById() query per result (N+1 avoidance).
+		$submissionCache = array();
+		if ($orderBy == 'authors' || $orderBy == 'title') {
+			$submissionIds = array_map('intval', array_keys($unorderedResults));
+			if (!empty($submissionIds)) {
+				$inClause = implode(',', $submissionIds);
+				import('lib.pkp.classes.db.DAOResultFactory');
+				$resultSet = $submissionDao->retrieve('SELECT s.* FROM submissions s WHERE s.submission_id IN (' . $inClause . ')');
+				$factory = new DAOResultFactory($resultSet, $submissionDao, '_fromRow');
+				while ($submission = $factory->next()) {
+					$submissionCache[$submission->getId()] = $submission;
+				}
+			}
+		}
+
 		foreach ($unorderedResults as $submissionId => $data) {
 			// Exclude unwanted IDs.
 			if (in_array($submissionId, $exclude)) continue;
 
 			switch ($orderBy) {
 				case 'authors':
-					$submission = $submissionDao->getById($submissionId);
+					$submission = isset($submissionCache[$submissionId]) ? $submissionCache[$submissionId] : $submissionDao->getById($submissionId);
 					$orderKey = $submission->getAuthorString();
 					break;
 
 				case 'title':
-					$submission = $submissionDao->getById($submissionId);
+					$submission = isset($submissionCache[$submissionId]) ? $submissionCache[$submissionId] : $submissionDao->getById($submissionId);
 					$orderKey = '';
 					if (!empty($submission->getCurrentPublication())) {
 						$orderKey = $submission->getCurrentPublication()->getLocalizedData('title');
@@ -242,9 +259,24 @@ class ArticleSearch extends SubmissionSearch {
 		$contextCache = array();
 		$sectionCache = array();
 
+		// Batch-load all submissions for this page in a single query instead
+		// of one Services::get('submission')->get() call per result (N+1 avoidance).
+		$submissionIds = array_map('intval', $results);
+		if (!empty($submissionIds)) {
+			$submissionDao = DAORegistry::getDAO('SubmissionDAO'); /* @var $submissionDao SubmissionDAO */
+			import('lib.pkp.classes.db.DAOResultFactory');
+			$resultSet = $submissionDao->retrieve('SELECT s.* FROM submissions s WHERE s.submission_id IN (' . implode(',', $submissionIds) . ')');
+			$factory = new DAOResultFactory($resultSet, $submissionDao, '_fromRow');
+			while ($submission = $factory->next()) {
+				$articleCache[$submission->getId()] = $submission;
+				$publishedSubmissionCache[$submission->getId()] = $submission;
+			}
+		}
+
 		$returner = array();
 		foreach ($results as $articleId) {
-			// Get the article, storing in cache if necessary.
+			// Get the article from the batch-loaded cache (falls back to the
+			// service for any ID not returned by the batch query).
 			if (!isset($articleCache[$articleId])) {
 				$submission = Services::get('submission')->get($articleId);
 				$publishedSubmissionCache[$articleId] = $submission;
