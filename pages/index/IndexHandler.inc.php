@@ -14,6 +14,8 @@
  */
 
 import('lib.pkp.pages.index.PKPIndexHandler');
+import('lib.pkp.classes.cache.CacheManager');
+import('lib.pkp.classes.config.Config');
 
 class IndexHandler extends PKPIndexHandler {
 	//
@@ -46,6 +48,27 @@ class IndexHandler extends PKPIndexHandler {
 		$router = $request->getRouter();
 		$templateMgr = TemplateManager::getManager($request);
 		if ($journal) {
+			// Serve a cached, fully-rendered journal landing page for anonymous
+			// visitors when enabled. Avoids re-rendering the current-issue TOC
+			// and announcements on every request (no cron required; TTL-based).
+			$cacheHours = (int) Config::getVar('cache', 'journal_page_cache_hours', 0);
+			$user = $request->getUser();
+			if ($cacheHours > 0 && !$user && !$journal->getData('restrictSiteAccess')) {
+				$locale = AppLocale::getLocale();
+				$cache = CacheManager::getManager()->getFileCache('journalpage', $journal->getId() . '-' . $locale, null);
+				if ($cache) {
+					$cacheTime = $cache->getCacheTime();
+					if ($cacheTime !== null && (time() - $cacheTime) < ($cacheHours * 3600)) {
+						$cached = $cache->getContents();
+						if (isset($cached['html'])) {
+							header('X-OJS-Cache: HIT');
+							echo $cached['html'];
+							return;
+						}
+					}
+				}
+			}
+
 			// Assign header and content for home page
 			$templateMgr->assign(array(
 				'additionalHomeContent' => $journal->getLocalizedData('additionalHomeContent'),
@@ -71,7 +94,14 @@ class IndexHandler extends PKPIndexHandler {
 				$templateMgr->setCacheability(CACHEABILITY_PUBLIC);
 			}
 
-			$templateMgr->display('frontend/pages/indexJournal.tpl');
+			$html = $templateMgr->fetch('frontend/pages/indexJournal.tpl');
+
+			// Store the rendered HTML in the file cache for subsequent requests.
+			if ($cacheHours > 0 && !$user && !$journal->getData('restrictSiteAccess') && isset($cache)) {
+				$cache->setEntireCache(array('html' => $html));
+			}
+
+			echo $html;
 		} else {
 			$journalDao = DAORegistry::getDAO('JournalDAO'); /* @var $journalDao JournalDAO */
 			$site = $request->getSite();

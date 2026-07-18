@@ -100,16 +100,16 @@ PKP-maintained fixes; our local fork (`manaim2112/pkp-lib`) did not have them.
 - **Symptom**: Journal home pages (e.g. `index.php/alj`) were intermittently
   slow because every anonymous request re-rendered the full current-issue TOC
   and announcements from scratch.
-- **Fix**: `pages/index/IndexHandler.inc.php` now marks the journal landing
-  page `CACHEABILITY_PUBLIC` (guarded by `restrictSiteAccess`), matching the
-  site-index behaviour.
-- **Required config** (`config.inc.php`, NOT tracked by git): enable the
-  server-side web cache so the marked page is actually cached:
+- **Fix (TTL file cache, no cron)**: `pages/index/IndexHandler.inc.php` now
+  caches the fully-rendered HTML of the journal landing page in a `FileCache`
+  for anonymous, non-restricted visitors. Served until the TTL expires.
+  Auto-cleared when OJS cache is cleared (no cron required). A `X-OJS-Cache: HIT`
+  header is sent on cache hits for debugging.
+- **Config** (`config.inc.php`, NOT tracked by git):
   ```ini
-  web_cache = On
-  web_cache_hours = 1
+  [cache]
+  journal_page_cache_hours = 1   ; 0 disables
   ```
-  Also configure a cron job to clear stale cache files, e.g.:
-  `find .../ojs/cache -maxdepth 1 -name wc-\*.html -mtime +1 -exec rm "{}" ";"`
-- **Note**: Without `web_cache = On`, `setCacheability()` only affects
-  browser/CDN caching headers, not server-side render cost.
+- **Alternative**: `web_cache = On` also works but requires a cron job to
+  clear stale `wc-*.html` files. The FileCache approach above is preferred
+  because it is TTL-based and self-expiring.
