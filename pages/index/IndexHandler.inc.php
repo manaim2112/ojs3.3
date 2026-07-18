@@ -64,6 +64,13 @@ class IndexHandler extends PKPIndexHandler {
 
 			$this->_setupAnnouncements($journal, $templateMgr);
 
+			// Allow public caching of the (mostly static) journal landing page
+			// so anonymous visitors don't re-render the full current-issue TOC
+			// and announcements on every request. Skip when access is restricted.
+			if (!$journal->getData('restrictSiteAccess')) {
+				$templateMgr->setCacheability(CACHEABILITY_PUBLIC);
+			}
+
 			$templateMgr->display('frontend/pages/indexJournal.tpl');
 		} else {
 			$journalDao = DAORegistry::getDAO('JournalDAO'); /* @var $journalDao JournalDAO */

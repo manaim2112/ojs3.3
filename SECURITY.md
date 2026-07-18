@@ -95,3 +95,21 @@ PKP-maintained fixes; our local fork (`manaim2112/pkp-lib`) did not have them.
   query instead of `Services::get('submission')->get()` per result.
 - **Impact**: Turns O(N) submission queries per search into O(1) for both the
   merge/sort step (all results) and the formatting step (current page).
+
+### Journal landing page (`index.php/<journal>`) caching
+- **Symptom**: Journal home pages (e.g. `index.php/alj`) were intermittently
+  slow because every anonymous request re-rendered the full current-issue TOC
+  and announcements from scratch.
+- **Fix**: `pages/index/IndexHandler.inc.php` now marks the journal landing
+  page `CACHEABILITY_PUBLIC` (guarded by `restrictSiteAccess`), matching the
+  site-index behaviour.
+- **Required config** (`config.inc.php`, NOT tracked by git): enable the
+  server-side web cache so the marked page is actually cached:
+  ```ini
+  web_cache = On
+  web_cache_hours = 1
+  ```
+  Also configure a cron job to clear stale cache files, e.g.:
+  `find .../ojs/cache -maxdepth 1 -name wc-\*.html -mtime +1 -exec rm "{}" ";"`
+- **Note**: Without `web_cache = On`, `setCacheability()` only affects
+  browser/CDN caching headers, not server-side render cost.
