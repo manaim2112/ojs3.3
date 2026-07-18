@@ -16,6 +16,8 @@
  */
 
 import('lib.pkp.classes.search.SubmissionSearch');
+import('lib.pkp.classes.cache.CacheManager');
+import('lib.pkp.classes.config.Config');
 
 class ArticleSearch extends SubmissionSearch {
 	/**
@@ -317,6 +319,51 @@ class ArticleSearch extends SubmissionSearch {
 		}
 
 		return $searchTerms;
+	}
+
+	/**
+	 * Cache the (expensive) merged keyword/phrase query so that repeated
+	 * identical searches do not re-run the submission_search keyword JOINs.
+	 *
+	 * Only the merged ID => count array is cached (cheap, serializable).
+	 * Ordering (getSparseArray) and per-result hydration (formatResults)
+	 * still run afterwards, but the costly phrase-merge is skipped on a hit.
+	 *
+	 * Caching is bypassed when search caching is disabled via config.
+	 *
+	 * @copydoc SubmissionSearch::_getMergedArray()
+	 */
+	function _getMergedArray($context, &$keywords, $publishedFrom, $publishedTo) {
+		$cacheHours = (int) Config::getVar('search', 'search_cache_hours', 0);
+		if ($cacheHours <= 0) {
+			return parent::_getMergedArray($context, $keywords, $publishedFrom, $publishedTo);
+		}
+
+		$contextId = $context ? $context->getId() : 0;
+		$cacheKey = serialize(array(
+			'c' => $contextId,
+			'k' => $keywords,
+			'f' => $publishedFrom,
+			't' => $publishedTo,
+		));
+		$cacheId = md5($cacheKey);
+		$cache = CacheManager::getManager()->getFileCache('search', $cacheId, null);
+
+		if ($cache) {
+			$cacheTime = $cache->getCacheTime();
+			if ($cacheTime !== null && (time() - $cacheTime) < ($cacheHours * 3600)) {
+				$contents = $cache->getContents();
+				if (isset($contents['merged'])) {
+					return $contents['merged'];
+				}
+			}
+		}
+
+		$merged = parent::_getMergedArray($context, $keywords, $publishedFrom, $publishedTo);
+		if ($cache) {
+			$cache->setEntireCache(array('merged' => $merged));
+		}
+		return $merged;
 	}
 
 	public function getIndexFieldMap() {

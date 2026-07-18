@@ -70,3 +70,19 @@ PKP-maintained fixes; our local fork (`manaim2112/pkp-lib`) did not have them.
 > **Action required after every `lib/pkp` update**: re-apply the stricter
 > `LoginHandler.inc.php` regex fix for CVE-2024-7902, since PKP upstream uses
 > the weaker `str_replace('@', ...)` approach.
+
+---
+
+## Performance Hardening (availability / DoS resistance)
+
+### Search result caching
+- **File**: `classes/search/ArticleSearch.inc.php`, `config.inc.php`
+- **Fix**: Overrides `_getMergedArray()` to cache the expensive keyword/phrase
+  search merge (the `submission_search` JOINs) in a `FileCache` for anonymous
+  visitors. Repeated identical searches skip the DB-heavy phrase merge.
+- **Config**: `[search] search_cache_hours = 6` (set `0` to disable).
+- **Bypass**: Logged-in users and personalised (`$exclude`) searches always
+  bypass the cache, because article/issue availability can vary per user.
+- **Note**: Caching only stores the lightweight `submission_id => count` map,
+  never hydrated objects, so invalidation is safe (cache auto-expires by TTL
+  and is cleared by the standard OJS cache-clear tooling).
