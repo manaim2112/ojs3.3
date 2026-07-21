@@ -53,16 +53,12 @@ class LoAHandler extends Handler {
 			'baseUrl' => $baseUrl,
 		]);
 
-		$journalPath = $context->getPath();
 		$pluginPath = dirname(__FILE__) . '/..';
 		$defaultTemplate = $pluginPath . '/templates/journals/default/loaView.tpl';
-		$journalTemplate = $pluginPath . '/templates/journals/' . $journalPath . '/loaView.tpl';
+		$journalTemplate = $pluginPath . '/templates/journals/' . $context->getPath() . '/loaView.tpl';
 
-		if (file_exists($journalTemplate)) {
-			$templateMgr->display($journalTemplate);
-		} else {
-			$templateMgr->display($defaultTemplate);
-		}
+		$templatePath = file_exists($journalTemplate) ? $journalTemplate : $defaultTemplate;
+		$templateMgr->display('file:' . $templatePath);
 	}
 
 	function generate($args, $request) {
