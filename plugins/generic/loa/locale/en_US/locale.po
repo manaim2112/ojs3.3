@@ -141,7 +141,7 @@ msgid "plugins.generic.loa.customBodyHtml"
 msgstr "Custom Letter Body (HTML)"
 
 msgid "plugins.generic.loa.customBodyHtmlHelp"
-msgstr "Leave empty to use the default letter text. You can use HTML tags for formatting. Available variables: {$articleTitle}, {$authors}, {$journalName}, {$dateGenerated}, {$uniqueCode}"
+msgstr "Leave empty to use the default letter text. You can use HTML tags for formatting. Available variables: {$articleTitle}, {$authors}, {$journalName}, {$dateGenerated}, {$uniqueCode}, {$submissionId}"
 
 msgid "plugins.generic.loa.signatureCaption"
 msgstr "Signed,"

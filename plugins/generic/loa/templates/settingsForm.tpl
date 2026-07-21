@@ -41,7 +41,7 @@
 
 		{fbvFormSection title="plugins.generic.loa.customBodyHtml"}
 			<p class="pkp_help">{translate key="plugins.generic.loa.customBodyHtmlHelp"}</p>
-			<textarea name="customBodyHtml" id="customBodyHtml" rows="15" class="pkp_form_textarea" style="width:100%;">{$customBodyHtml|escape}</textarea>
+			<textarea name="customBodyHtml" class="pkp_form_textarea" rows="15" style="width:100%;">{$customBodyHtml|escape}</textarea>
 		{/fbvFormSection}
 	{/fbvFormArea}
 

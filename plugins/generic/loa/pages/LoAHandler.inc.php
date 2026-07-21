@@ -41,6 +41,30 @@ class LoAHandler extends Handler {
 		$plugin = self::$plugin;
 		$baseUrl = $request->getBaseUrl();
 
+		$authorNames = [];
+		$authors = $publication->getData('authors');
+		if ($authors) {
+			foreach ($authors as $author) {
+				$authorNames[] = $author->getFullName();
+			}
+		}
+
+		$customHtml = $plugin->getSetting($context->getId(), 'customBodyHtml');
+		if ($customHtml) {
+			$customHtml = str_replace(
+				['{$articleTitle}', '{$authors}', '{$journalName}', '{$dateGenerated}', '{$uniqueCode}', '{$submissionId}'],
+				[
+					$publication->getLocalizedTitle(),
+					implode(', ', $authorNames),
+					$context->getLocalizedData('name'),
+					$loa->getDateGenerated(),
+					$loa->getUniqueCode(),
+					$submission->getId(),
+				],
+				$customHtml
+			);
+		}
+
 		$templateMgr->assign([
 			'loa' => $loa,
 			'submission' => $submission,
@@ -50,7 +74,7 @@ class LoAHandler extends Handler {
 			'editorInChiefTitle' => $plugin->getSetting($context->getId(), 'editorInChiefTitle'),
 			'signatureImage' => $plugin->getSetting($context->getId(), 'signatureImage'),
 			'stampImage' => $plugin->getSetting($context->getId(), 'stampImage'),
-			'customBodyHtml' => $plugin->getSetting($context->getId(), 'customBodyHtml'),
+			'customBodyHtml' => $customHtml,
 			'baseUrl' => $baseUrl,
 		]);
 
