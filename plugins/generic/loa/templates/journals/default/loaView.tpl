@@ -1,3 +1,52 @@
+{**
+ * TEMPLATE DEFAULT LoA (Letter of Acceptance)
+ * ============================================
+ * Copy file ini ke: templates/journals/{slug_journal}/loaView.tpl
+ * lalu edit sesuai kebutuhan.
+ *
+ * VARIABLE YANG TERSEDIA:
+ * ------------------------
+ * {$loa}                   → Object LoA
+ *   {$loa->getUniqueCode()}    Kode unik (contoh: LOA-1-142-2C7FD470)
+ *   {$loa->getDateGenerated()} Tanggal generate
+ *   {$loa->getStatus()}        Status: 'active' atau 'revoked'
+ *   {$loa->getDateDownloaded()} Terakhir di-download (nullable)
+ *
+ * {$submission}            → Object Submission (artikel)
+ *   {$submission->getId()}      ID submission
+ *
+ * {$publication}           → Object Publication
+ *   {$publication->getLocalizedTitle()} Judul artikel
+ *   {$publication->getData('authors')}  Array penulis
+ *
+ * {$context}               → Object Journal
+ *   {$context->getLocalizedData('name')} Nama jurnal
+ *   {$context->getPath()}              Slug jurnal (alj, rjme, dll)
+ *   {$context->getId()}                ID jurnal
+ *
+ * {$editorInChiefName}     → string Nama Editor-in-Chief (dari settings)
+ * {$editorInChiefTitle}    → string Jabatan (dari settings)
+ * {$signatureImage}        → string Path gambar tanda tangan (dari settings)
+ * {$stampImage}            → string Path gambar stempel (dari settings)
+ * {$baseUrl}               → string Base URL website
+ * {$currentLocale}         → string Locale saat ini (contoh: en_US, id_ID)
+ *
+ * LOCALIZATION (translate key):
+ *   {translate key="plugins.generic.loa.documentTitle"}   → "Letter of Acceptance"
+ *   {translate key="plugins.generic.loa.intro"}            → Teks pembuka
+ *   {translate key="plugins.generic.loa.articleTitle"}     → "Article Title"
+ *   {translate key="plugins.generic.loa.authors"}          → "Authors"
+ *   {translate key="plugins.generic.loa.dateGenerated"}    → "Date Generated"
+ *   {translate key="plugins.generic.loa.status"}           → "Status"
+ *   {translate key="plugins.generic.loa.statusActive"}     → "Active"
+ *   {translate key="plugins.generic.loa.statusRevoked"}    → "Revoked"
+ *   {translate key="plugins.generic.loa.verificationCode"} → "Verification Code"
+ *   {translate key="plugins.generic.loa.signatureCaption"} → "Signed,"
+ *   {translate key="plugins.generic.loa.stampCaption"}     → "Official Stamp"
+ *   {translate key="plugins.generic.loa.disclaimer"}       → Teks disclaimer
+ *   {translate key="plugins.generic.loa.footer"}           → Teks footer
+ *   {translate key="plugins.generic.loa.print"}            → "Print"
+ *}
 <!DOCTYPE html>
 <html lang="{$currentLocale|replace:"_":"-"|truncate:5:"":true}">
 <head>
@@ -12,7 +61,6 @@
 		.header h2 { font-size: 18px; margin: 0; color: #555; }
 		.content { margin-bottom: 30px; }
 		.content p { font-size: 14px; line-height: 1.8; text-align: justify; }
-
 		.loa-code { text-align: center; margin: 30px 0; padding: 20px; background: #f5f5f5; border: 1px dashed #333; }
 		.loa-code .label { font-size: 12px; text-transform: uppercase; color: #777; }
 		.loa-code .code { font-size: 28px; font-weight: bold; letter-spacing: 3px; color: #000; margin-top: 5px; }
