@@ -41,30 +41,6 @@ class LoAHandler extends Handler {
 		$plugin = self::$plugin;
 		$baseUrl = $request->getBaseUrl();
 
-		$authorNames = [];
-		$authors = $publication->getData('authors');
-		if ($authors) {
-			foreach ($authors as $author) {
-				$authorNames[] = $author->getFullName();
-			}
-		}
-
-		$customHtml = $plugin->getSetting($context->getId(), 'customBodyHtml');
-		if ($customHtml) {
-			$customHtml = str_replace(
-				['{$articleTitle}', '{$authors}', '{$journalName}', '{$dateGenerated}', '{$uniqueCode}', '{$submissionId}'],
-				[
-					$publication->getLocalizedTitle(),
-					implode(', ', $authorNames),
-					$context->getLocalizedData('name'),
-					$loa->getDateGenerated(),
-					$loa->getUniqueCode(),
-					$submission->getId(),
-				],
-				$customHtml
-			);
-		}
-
 		$templateMgr->assign([
 			'loa' => $loa,
 			'submission' => $submission,
@@ -74,11 +50,19 @@ class LoAHandler extends Handler {
 			'editorInChiefTitle' => $plugin->getSetting($context->getId(), 'editorInChiefTitle'),
 			'signatureImage' => $plugin->getSetting($context->getId(), 'signatureImage'),
 			'stampImage' => $plugin->getSetting($context->getId(), 'stampImage'),
-			'customBodyHtml' => $customHtml,
 			'baseUrl' => $baseUrl,
 		]);
 
-		$templateMgr->display(self::$plugin->getTemplateResource('loaView.tpl'));
+		$journalPath = $context->getPath();
+		$pluginPath = dirname(__FILE__) . '/..';
+		$defaultTemplate = $pluginPath . '/templates/journals/default/loaView.tpl';
+		$journalTemplate = $pluginPath . '/templates/journals/' . $journalPath . '/loaView.tpl';
+
+		if (file_exists($journalTemplate)) {
+			$templateMgr->display($journalTemplate);
+		} else {
+			$templateMgr->display($defaultTemplate);
+		}
 	}
 
 	function generate($args, $request) {

@@ -39,10 +39,6 @@
 			<input type="file" name="stampImage" id="stampImage" class="pkp_form_file_input">
 		{/fbvFormSection}
 
-		{fbvFormSection title="plugins.generic.loa.customBodyHtml"}
-			<p class="pkp_help">{translate key="plugins.generic.loa.customBodyHtmlHelp"}</p>
-			<textarea name="customBodyHtml" class="pkp_form_textarea" rows="15" style="width:100%;">{$customBodyHtml|escape}</textarea>
-		{/fbvFormSection}
 	{/fbvFormArea}
 
 	{fbvFormButtons submitText="plugins.generic.loa.save"}

@@ -137,12 +137,6 @@ msgstr "Gambar Tanda Tangan"
 msgid "plugins.generic.loa.stampImage"
 msgstr "Stempel Resmi"
 
-msgid "plugins.generic.loa.customBodyHtml"
-msgstr "Konten Surat Kustom (HTML)"
-
-msgid "plugins.generic.loa.customBodyHtmlHelp"
-msgstr "Kosongkan untuk menggunakan teks bawaan. Anda bisa menggunakan tag HTML. Variabel yang tersedia: {$articleTitle}, {$authors}, {$journalName}, {$dateGenerated}, {$uniqueCode}, {$submissionId}"
-
 msgid "plugins.generic.loa.signatureCaption"
 msgstr "Mengetahui,"
 msgid "plugins.generic.loa.stampCaption"

@@ -75,20 +75,46 @@ plugins/generic/loa/
   - **Editor-in-Chief Title** — Jabatan (e.g. "Editor-in-Chief" / "Pemimpin Redaksi")
   - **Signature Image** — Upload gambar tanda tangan (png/jpg)
   - **Stamp Image** — Upload gambar stempel resmi
-  - **Custom Body HTML** — Konten surat kustom (HTML), bisa pakai WYSIWYG editor
-    - Kosongkan untuk menggunakan teks bawaan
-    - Variabel yang tersedia: `{$articleTitle}`, `{$authors}`, `{$journalName}`, `{$dateGenerated}`, `{$uniqueCode}`
 - Data disimpan di table `plugin_settings` per context (journal)
 
-### 6. View LoA dengan EIC & Stempel
+### 6. Custom Template per Journal
+Template LoA bisa dikustomisasi per journal dengan membuat file `.tpl`:
+
+```
+plugins/generic/loa/templates/journals/
+├── default/loaView.tpl       ← Template default (fallback)
+├── alj/loaView.tpl           ← Template khusus journal "alj"
+├── rjme/loaView.tpl          ← Template khusus journal "rjme"
+└── .../loaView.tpl           ← dst. (sesuai slug journal)
+```
+
+Cara pakai:
+1. Copy `journals/default/loaView.tpl` ke folder `journals/{slug_journal}/`
+2. Edit sesuai kebutuhan (HTML + CSS + Smarty)
+3. Template otomatis terpakai untuk journal tersebut
+
+**Variable Smarty yang tersedia di template:**
+| Variable | Tipe | Keterangan |
+|---|---|---|
+| `{$loa}` | LoA | Data LoA (getUniqueCode, getDateGenerated, getStatus) |
+| `{$submission}` | Submission | Data submission |
+| `{$publication}` | Publication | Publikasi terkait |
+| `{$context}` | Journal | Objek journal (getLocalizedData('name'), getPath, etc) |
+| `{$editorInChiefName}` | string | Nama Editor-in-Chief |
+| `{$editorInChiefTitle}` | string | Jabatan Editor-in-Chief |
+| `{$signatureImage}` | string | Path gambar tanda tangan |
+| `{$stampImage}` | string | Path gambar stempel |
+| `{$baseUrl}` | string | Base URL website |
+
+### 7. View LoA dengan EIC & Stempel
 - Halaman `/loa/view/{unique_code}` menampilkan:
+  - Template dari `journals/{slug}/` atau `journals/default/`
   - Kop surat jurnal
-  - Konten surat (default atau kustom HTML)
   - Metadata artikel (judul, penulis, tanggal, status)
   - Kode verifikasi unik
-  - **Tanda tangan + nama Editor-in-Chief**
-  - **Stempel resmi jurnal**
-  - Disclaimer & footer
+  - **Tanda tangan + nama Editor-in-Chief** (dari settings)
+  - **Stempel resmi jurnal** (dari settings)
+  - Disclaimer & footer (default template)
 
 ### 7. Install/Enable
 - Cek table `article_loa_codes` → CREATE jika blm ada

@@ -25,7 +25,6 @@ class LoASettingsForm extends Form {
 		$this->_data = [
 			'editorInChiefName' => $plugin->getSetting($contextId, 'editorInChiefName'),
 			'editorInChiefTitle' => $plugin->getSetting($contextId, 'editorInChiefTitle'),
-			'customBodyHtml' => $plugin->getSetting($contextId, 'customBodyHtml'),
 			'signatureImage' => $plugin->getSetting($contextId, 'signatureImage'),
 			'stampImage' => $plugin->getSetting($contextId, 'stampImage'),
 		];
@@ -41,7 +40,6 @@ class LoASettingsForm extends Form {
 		$this->readUserVars([
 			'editorInChiefName',
 			'editorInChiefTitle',
-			'customBodyHtml',
 		]);
 	}
 
@@ -51,7 +49,6 @@ class LoASettingsForm extends Form {
 
 		$plugin->updateSetting($contextId, 'editorInChiefName', $this->getData('editorInChiefName'), 'string');
 		$plugin->updateSetting($contextId, 'editorInChiefTitle', $this->getData('editorInChiefTitle'), 'string');
-		$plugin->updateSetting($contextId, 'customBodyHtml', $this->getData('customBodyHtml'), 'string');
 
 		$request = Application::get()->getRequest();
 		$user = $request->getUser();
