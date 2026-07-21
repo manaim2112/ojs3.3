@@ -121,3 +121,45 @@ msgstr "Please enter a LoA code to verify."
 
 msgid "plugins.generic.loa.backToHome"
 msgstr "Back to Home"
+
+msgid "plugins.generic.loa.settings"
+msgstr "LoA Settings"
+
+msgid "plugins.generic.loa.editorInChiefName"
+msgstr "Editor-in-Chief Name"
+
+msgid "plugins.generic.loa.editorInChiefTitle"
+msgstr "Editor-in-Chief Title"
+
+msgid "plugins.generic.loa.signatureImage"
+msgstr "Signature Image"
+
+msgid "plugins.generic.loa.stampImage"
+msgstr "Official Stamp/Seal"
+
+msgid "plugins.generic.loa.customBodyHtml"
+msgstr "Custom Letter Body (HTML)"
+
+msgid "plugins.generic.loa.customBodyHtmlHelp"
+msgstr "Leave empty to use the default letter text. You can use HTML tags for formatting. Available variables: {$articleTitle}, {$authors}, {$journalName}, {$dateGenerated}, {$uniqueCode}"
+
+msgid "plugins.generic.loa.signatureCaption"
+msgstr "Signed,"
+msgid "plugins.generic.loa.stampCaption"
+msgstr "Official Stamp"
+
+msgid "plugins.generic.loa.settingsSaved"
+msgstr "LoA settings saved successfully."
+
+msgid "plugins.generic.loa.currentSignature"
+msgstr "Current Signature"
+msgid "plugins.generic.loa.currentStamp"
+msgstr "Current Stamp"
+msgid "plugins.generic.loa.uploadNewSignature"
+msgstr "Upload New Signature"
+msgid "plugins.generic.loa.uploadNewStamp"
+msgstr "Upload New Stamp"
+msgid "plugins.generic.loa.save"
+msgstr "Save Settings"
+msgid "plugins.generic.loa.cancel"
+msgstr "Cancel"

@@ -121,3 +121,45 @@ msgstr "Silakan masukkan kode LoA untuk verifikasi."
 
 msgid "plugins.generic.loa.backToHome"
 msgstr "Kembali ke Beranda"
+
+msgid "plugins.generic.loa.settings"
+msgstr "Pengaturan LoA"
+
+msgid "plugins.generic.loa.editorInChiefName"
+msgstr "Nama Pemimpin Redaksi / Editor-in-Chief"
+
+msgid "plugins.generic.loa.editorInChiefTitle"
+msgstr "Jabatan Pemimpin Redaksi"
+
+msgid "plugins.generic.loa.signatureImage"
+msgstr "Gambar Tanda Tangan"
+
+msgid "plugins.generic.loa.stampImage"
+msgstr "Stempel Resmi"
+
+msgid "plugins.generic.loa.customBodyHtml"
+msgstr "Konten Surat Kustom (HTML)"
+
+msgid "plugins.generic.loa.customBodyHtmlHelp"
+msgstr "Kosongkan untuk menggunakan teks bawaan. Anda bisa menggunakan tag HTML. Variabel yang tersedia: {$articleTitle}, {$authors}, {$journalName}, {$dateGenerated}, {$uniqueCode}"
+
+msgid "plugins.generic.loa.signatureCaption"
+msgstr "Mengetahui,"
+msgid "plugins.generic.loa.stampCaption"
+msgstr "Stempel Resmi"
+
+msgid "plugins.generic.loa.settingsSaved"
+msgstr "Pengaturan LoA berhasil disimpan."
+
+msgid "plugins.generic.loa.currentSignature"
+msgstr "Tanda Tangan Saat Ini"
+msgid "plugins.generic.loa.currentStamp"
+msgstr "Stempel Saat Ini"
+msgid "plugins.generic.loa.uploadNewSignature"
+msgstr "Upload Tanda Tangan Baru"
+msgid "plugins.generic.loa.uploadNewStamp"
+msgstr "Upload Stempel Baru"
+msgid "plugins.generic.loa.save"
+msgstr "Simpan Pengaturan"
+msgid "plugins.generic.loa.cancel"
+msgstr "Batal"

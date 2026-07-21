@@ -41,6 +41,45 @@ class LoAPlugin extends GenericPlugin {
 		}
 	}
 
+	public function getActions($request, $verb) {
+		$router = $request->getRouter();
+		import('lib.pkp.classes.linkAction.request.AjaxModal');
+		return array_merge(
+			$this->getEnabled() ? [
+				new LinkAction(
+					'settings',
+					new AjaxModal(
+						$router->url($request, null, null, 'manage', null, ['verb' => 'settings', 'plugin' => $this->getName(), 'category' => $this->getCategory()]),
+						$this->getDisplayName()
+					),
+					__('plugins.generic.loa.settings'),
+					null
+				),
+			] : [],
+			parent::getActions($request, $verb)
+		);
+	}
+
+	public function manage($args, $request) {
+		$context = $request->getContext();
+		switch ($request->getUserVar('verb')) {
+			case 'settings':
+				$this->import('LoASettingsForm');
+				$form = new LoASettingsForm($this, $context->getId());
+				if ($request->getUserVar('save')) {
+					$form->readInputData();
+					if ($form->validate()) {
+						$form->execute();
+						return new JSONMessage(true, __('plugins.generic.loa.settingsSaved'));
+					}
+				} else {
+					$form->initData();
+				}
+				return new JSONMessage(true, $form->fetch($request));
+		}
+		return parent::manage($args, $request);
+	}
+
 	public function getDisplayName() {
 		return __('plugins.generic.loa.displayName');
 	}

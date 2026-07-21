@@ -6,8 +6,10 @@
 plugins/generic/loa/
 ├── index.php                                    # [DONE] Entry point
 ├── LoAPlugin.inc.php                            # [DONE] Main plugin class
+├── LoASettingsForm.inc.php                      # [DONE] Settings form (EIC, signature, stamp, custom HTML)
 ├── LoASchemaMigration.inc.php                   # [DONE] DB migration
 ├── version.xml                                  # [DONE] Version metadata
+├── images/                                      # [DONE] Uploaded signature & stamp images
 ├── classes/
 │   ├── LoA.inc.php                              # [DONE] Data Object
 │   └── LoADAO.inc.php                           # [DONE] Data Access Object
@@ -18,8 +20,9 @@ plugins/generic/loa/
 │   └── id_ID/locale.po                          # [DONE] Indonesian
 └── templates/
     ├── loaTab.tpl                               # [DONE] Tab di workflow publication
-    ├── loaView.tpl                              # [DONE] View LoA public
-    └── loaVerification.tpl                      # [DONE] Verification form
+    ├── loaView.tpl                              # [DONE] View LoA public (EIC, signature, stamp)
+    ├── loaVerification.tpl                      # [DONE] Verification form
+    └── settingsForm.tpl                         # [DONE] Settings form template
 ```
 
 ## Database Table: `article_loa_codes`
@@ -65,6 +68,28 @@ plugins/generic/loa/
 - GET: Form input kode
 - POST: Validasi, tampilkan hasil
 
-### 5. Install/Enable
+### 5. Settings Plugin (LoA Settings)
+- Tombol **Settings** di plugin gallery (halaman Management → Plugins → Generic Plugin)
+- Modal form dengan:
+  - **Editor-in-Chief Name** — Nama pemimpin redaksi
+  - **Editor-in-Chief Title** — Jabatan (e.g. "Editor-in-Chief" / "Pemimpin Redaksi")
+  - **Signature Image** — Upload gambar tanda tangan (png/jpg)
+  - **Stamp Image** — Upload gambar stempel resmi
+  - **Custom Body HTML** — Konten surat kustom (HTML), bisa pakai WYSIWYG editor
+    - Kosongkan untuk menggunakan teks bawaan
+    - Variabel yang tersedia: `{$articleTitle}`, `{$authors}`, `{$journalName}`, `{$dateGenerated}`, `{$uniqueCode}`
+- Data disimpan di table `plugin_settings` per context (journal)
+
+### 6. View LoA dengan EIC & Stempel
+- Halaman `/loa/view/{unique_code}` menampilkan:
+  - Kop surat jurnal
+  - Konten surat (default atau kustom HTML)
+  - Metadata artikel (judul, penulis, tanggal, status)
+  - Kode verifikasi unik
+  - **Tanda tangan + nama Editor-in-Chief**
+  - **Stempel resmi jurnal**
+  - Disclaimer & footer
+
+### 7. Install/Enable
 - Cek table `article_loa_codes` → CREATE jika blm ada
 - Register DAO & hooks

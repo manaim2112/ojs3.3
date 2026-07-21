@@ -38,11 +38,20 @@ class LoAHandler extends Handler {
 		$templateMgr = TemplateManager::getManager($request);
 		$this->setupTemplate($request);
 
+		$plugin = self::$plugin;
+		$baseUrl = $request->getBaseUrl();
+
 		$templateMgr->assign([
 			'loa' => $loa,
 			'submission' => $submission,
 			'publication' => $publication,
 			'context' => $context,
+			'editorInChiefName' => $plugin->getSetting($context->getId(), 'editorInChiefName'),
+			'editorInChiefTitle' => $plugin->getSetting($context->getId(), 'editorInChiefTitle'),
+			'signatureImage' => $plugin->getSetting($context->getId(), 'signatureImage'),
+			'stampImage' => $plugin->getSetting($context->getId(), 'stampImage'),
+			'customBodyHtml' => $plugin->getSetting($context->getId(), 'customBodyHtml'),
+			'baseUrl' => $baseUrl,
 		]);
 
 		$templateMgr->display(self::$plugin->getTemplateResource('loaView.tpl'));
