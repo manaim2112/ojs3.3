@@ -1,0 +1,123 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-07-21T00:00:00+00:00\n"
+"PO-Revision-Date: 2026-07-21T00:00:00+00:00\n"
+"Language: \n"
+
+msgid "plugins.generic.loa.displayName"
+msgstr "Letter of Authorization (LoA)"
+
+msgid "plugins.generic.loa.description"
+msgstr "This plugin generates a unique Letter of Authorization (LoA) code for each published article, with a public verification system."
+
+msgid "plugins.generic.loa.management"
+msgstr "LoA Management"
+
+msgid "plugins.generic.loa.uniqueCode"
+msgstr "Unique Code"
+
+msgid "plugins.generic.loa.dateGenerated"
+msgstr "Date Generated"
+
+msgid "plugins.generic.loa.lastDownloaded"
+msgstr "Last Downloaded"
+
+msgid "plugins.generic.loa.status"
+msgstr "Status"
+
+msgid "plugins.generic.loa.statusActive"
+msgstr "Active"
+
+msgid "plugins.generic.loa.statusRevoked"
+msgstr "Revoked"
+
+msgid "plugins.generic.loa.generate"
+msgstr "Generate LoA Code"
+
+msgid "plugins.generic.loa.regenerate"
+msgstr "Regenerate"
+
+msgid "plugins.generic.loa.revoke"
+msgstr "Revoke"
+
+msgid "plugins.generic.loa.download"
+msgstr "Download LoA"
+
+msgid "plugins.generic.loa.downloadLoA"
+msgstr "Download Letter of Authorization (LoA)"
+
+msgid "plugins.generic.loa.noLoA"
+msgstr "No Letter of Authorization has been generated for this submission yet."
+
+msgid "plugins.generic.loa.confirmRegenerate"
+msgstr "Are you sure you want to regenerate the LoA code? The current code will be revoked."
+
+msgid "plugins.generic.loa.confirmRevoke"
+msgstr "Are you sure you want to revoke this LoA? It will no longer be valid."
+
+msgid "plugins.generic.loa.documentTitle"
+msgstr "Letter of Authorization"
+
+msgid "plugins.generic.loa.intro"
+msgstr "This Letter of Authorization (LoA) certifies that the following article has been officially authorized for publication by the journal. The unique verification code below confirms the authenticity of this document."
+
+msgid "plugins.generic.loa.articleTitle"
+msgstr "Article Title"
+
+msgid "plugins.generic.loa.authors"
+msgstr "Authors"
+
+msgid "plugins.generic.loa.journal"
+msgstr "Journal"
+
+msgid "plugins.generic.loa.verificationCode"
+msgstr "Verification Code"
+
+msgid "plugins.generic.loa.disclaimer"
+msgstr "This document is electronically generated and can be verified through the journal's official verification system using the unique code above."
+
+msgid "plugins.generic.loa.footer"
+msgstr "This is an official document. Please verify its authenticity through the journal's LoA verification page."
+
+msgid "plugins.generic.loa.print"
+msgstr "Print"
+
+msgid "plugins.generic.loa.verificationPageTitle"
+msgstr "LoA Verification"
+
+msgid "plugins.generic.loa.verificationDesc"
+msgstr "Enter the unique LoA code to verify the authenticity of a Letter of Authorization."
+
+msgid "plugins.generic.loa.enterCode"
+msgstr "Enter LoA code here..."
+
+msgid "plugins.generic.loa.verify"
+msgstr "Verify"
+
+msgid "plugins.generic.loa.verificationValid"
+msgstr "Valid LoA Code"
+
+msgid "plugins.generic.loa.verificationInvalid"
+msgstr "Invalid LoA Code"
+
+msgid "plugins.generic.loa.verificationEmpty"
+msgstr "Code Required"
+
+msgid "plugins.generic.loa.verificationCodeValid"
+msgstr "The LoA code is valid:"
+
+msgid "plugins.generic.loa.verificationCodeInvalid"
+msgstr "The code you entered is invalid, revoked, or does not belong to this journal. Please check and try again."
+
+msgid "plugins.generic.loa.verificationCodeEmpty"
+msgstr "Please enter a LoA code to verify."
+
+msgid "plugins.generic.loa.backToHome"
+msgstr "Back to Home"

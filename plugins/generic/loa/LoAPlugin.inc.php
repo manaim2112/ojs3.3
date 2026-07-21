@@ -1,0 +1,144 @@
+<?php
+
+import('lib.pkp.classes.plugins.GenericPlugin');
+import('plugins.generic.loa.classes.LoADAO');
+
+use Illuminate\Database\Capsule\Manager as Capsule;
+
+class LoAPlugin extends GenericPlugin {
+
+	public function register($category, $path, $mainContextId = null) {
+		$success = parent::register($category, $path, $mainContextId);
+
+		if (!Config::getVar('general', 'installed') || defined('RUNNING_UPGRADE')) {
+			return true;
+		}
+
+		if ($success && $this->getEnabled($mainContextId)) {
+			$this->runMigration();
+			$loaDao = new LoADAO();
+			DAORegistry::registerDAO('LoADAO', $loaDao);
+
+			HookRegistry::register('LoadHandler', [$this, 'callbackHandleContent']);
+			HookRegistry::register('Template::Workflow::Publication', [$this, 'addToWorkflow']);
+			HookRegistry::register('Templates::Article::Details', [$this, 'addToArticleDetails']);
+		}
+
+		return $success;
+	}
+
+	public function setEnabled($enabled) {
+		parent::setEnabled($enabled);
+		if ($enabled) {
+			$this->runMigration();
+		}
+	}
+
+	private function runMigration() {
+		if (!Capsule::schema()->hasTable('article_loa_codes')) {
+			$migration = $this->getInstallMigration();
+			$migration->up();
+		}
+	}
+
+	public function getDisplayName() {
+		return __('plugins.generic.loa.displayName');
+	}
+
+	public function getDescription() {
+		return __('plugins.generic.loa.description');
+	}
+
+	public function getInstallMigration() {
+		$this->import('LoASchemaMigration');
+		return new LoASchemaMigration();
+	}
+
+	public function callbackHandleContent($hookName, $args) {
+		$page =& $args[0];
+		$op =& $args[1];
+
+		if ($page === 'loa') {
+			define('HANDLER_CLASS', 'LoAHandler');
+			$this->import('pages.LoAHandler');
+			LoAHandler::setPlugin($this);
+			return true;
+		}
+		return false;
+	}
+
+	public function addToWorkflow($hookName, $params) {
+		if (!Capsule::schema()->hasTable('article_loa_codes')) {
+			return false;
+		}
+
+		$smarty = &$params[1];
+		$output = &$params[2];
+		$submission = $smarty->get_template_vars('submission');
+
+		if (!$submission) {
+			return false;
+		}
+
+		$request = Application::get()->getRequest();
+		$context = $request->getContext();
+		$dispatcher = $request->getDispatcher();
+
+		$loaDao = DAORegistry::getDAO('LoADAO');
+		$loa = $loaDao->getBySubmissionId($submission->getId());
+
+		$smarty->assign([
+			'loa' => $loa,
+			'submissionId' => $submission->getId(),
+			'loaGenerateUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'generate'),
+			'loaRegenerateUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'regenerate'),
+			'loaRevokeUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'revoke'),
+			'loaViewUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'view'),
+		]);
+
+		$output .= sprintf(
+			'<tab id="loa" label="%s">%s</tab>',
+			__('plugins.generic.loa.displayName'),
+			$smarty->fetch($this->getTemplateResource('loaTab.tpl'))
+		);
+
+		return false;
+	}
+
+	public function addToArticleDetails($hookName, $params) {
+		if (!Capsule::schema()->hasTable('article_loa_codes')) {
+			return false;
+		}
+
+		$smarty = &$params[1];
+		$output = &$params[2];
+
+		$submission = $smarty->get_template_vars('article');
+		if (!$submission) {
+			$submission = $smarty->get_template_vars('submission');
+		}
+		if (!$submission) {
+			return false;
+		}
+
+		$loaDao = DAORegistry::getDAO('LoADAO');
+		$loa = $loaDao->getBySubmissionId($submission->getId());
+
+		if (!$loa) {
+			return false;
+		}
+
+		$request = Application::get()->getRequest();
+		$context = $request->getContext();
+		$dispatcher = $request->getDispatcher();
+
+		$smarty->assign([
+			'loaDownloadUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'view', [$loa->getUniqueCode()]),
+			'loaUniqueCode' => $loa->getUniqueCode(),
+		]);
+
+		$output .= $smarty->fetch($this->getTemplateResource('loaDownloadLink.tpl'));
+
+		return false;
+	}
+}
