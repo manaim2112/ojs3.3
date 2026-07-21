@@ -12,10 +12,10 @@ msgstr ""
 "Language: \n"
 
 msgid "plugins.generic.loa.displayName"
-msgstr "Surat Otorisasi (LoA)"
+msgstr "Letter of Acceptance (LoA)"
 
 msgid "plugins.generic.loa.description"
-msgstr "Plugin ini menghasilkan kode Surat Otorisasi (LoA) unik untuk setiap artikel yang diterbitkan, dilengkapi dengan sistem verifikasi publik."
+msgstr "Plugin ini menghasilkan Letter of Acceptance (LoA) unik untuk setiap artikel yang diterbitkan, dilengkapi dengan sistem verifikasi publik, template kustom, dan tanda tangan Pemimpin Redaksi."
 
 msgid "plugins.generic.loa.management"
 msgstr "Manajemen LoA"
@@ -63,10 +63,10 @@ msgid "plugins.generic.loa.confirmRevoke"
 msgstr "Apakah Anda yakin ingin mencabut LoA ini? LoA tidak akan berlaku lagi."
 
 msgid "plugins.generic.loa.documentTitle"
-msgstr "Surat Otorisasi"
+msgstr "Letter of Acceptance"
 
 msgid "plugins.generic.loa.intro"
-msgstr "Surat Otorisasi ini menyatakan bahwa artikel berikut telah resmi diotorisasi untuk diterbitkan oleh jurnal. Kode verifikasi unik di bawah ini mengonfirmasi keaslian dokumen ini."
+msgstr "Letter of Acceptance (LoA) ini menyatakan bahwa artikel berikut telah resmi diterima untuk diterbitkan oleh jurnal. Kode verifikasi unik di bawah ini mengonfirmasi keaslian dokumen ini."
 
 msgid "plugins.generic.loa.articleTitle"
 msgstr "Judul Artikel"

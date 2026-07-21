@@ -12,10 +12,10 @@ msgstr ""
 "Language: \n"
 
 msgid "plugins.generic.loa.displayName"
-msgstr "Letter of Authorization (LoA)"
+msgstr "Letter of Acceptance (LoA)"
 
 msgid "plugins.generic.loa.description"
-msgstr "This plugin generates a unique Letter of Authorization (LoA) code for each published article, with a public verification system."
+msgstr "This plugin generates a unique Letter of Acceptance (LoA) for each published article, with a public verification system, customizable template, and Editor-in-Chief signature."
 
 msgid "plugins.generic.loa.management"
 msgstr "LoA Management"
@@ -63,10 +63,10 @@ msgid "plugins.generic.loa.confirmRevoke"
 msgstr "Are you sure you want to revoke this LoA? It will no longer be valid."
 
 msgid "plugins.generic.loa.documentTitle"
-msgstr "Letter of Authorization"
+msgstr "Letter of Acceptance"
 
 msgid "plugins.generic.loa.intro"
-msgstr "This Letter of Authorization (LoA) certifies that the following article has been officially authorized for publication by the journal. The unique verification code below confirms the authenticity of this document."
+msgstr "This Letter of Acceptance (LoA) certifies that the following article has been officially accepted for publication by the journal. The unique verification code below confirms the authenticity of this document."
 
 msgid "plugins.generic.loa.articleTitle"
 msgstr "Article Title"

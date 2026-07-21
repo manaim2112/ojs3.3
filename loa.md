@@ -1,4 +1,4 @@
-# Plugin LoA (Letter of Authorization) — OJS 3.3
+# Plugin LoA (Letter of Acceptance) — OJS 3.3
 
 ## Struktur File
 
