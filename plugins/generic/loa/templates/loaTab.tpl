@@ -15,6 +15,9 @@
 			{if $loa->getDateDownloaded()}
 				<p><strong>{translate key="plugins.generic.loa.lastDownloaded"}:</strong> {$loa->getDateDownloaded()|escape}</p>
 			{/if}
+			{if $generatedByUser}
+				<p><strong>{translate key="plugins.generic.loa.generatedBy"}:</strong> {$generatedByUser->getFullName()|escape}</p>
+			{/if}
 		</div>
 
 		<div class="pkp_form_area">

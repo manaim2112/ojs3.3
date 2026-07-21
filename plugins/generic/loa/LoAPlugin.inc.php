@@ -126,9 +126,16 @@ class LoAPlugin extends GenericPlugin {
 		$loaDao = DAORegistry::getDAO('LoADAO');
 		$loa = $loaDao->getBySubmissionId($submission->getId());
 
+		$generatedByUser = null;
+		if ($loa && $loa->getGeneratedBy()) {
+			$userDao = DAORegistry::getDAO('UserDAO');
+			$generatedByUser = $userDao->getById($loa->getGeneratedBy());
+		}
+
 		$smarty->assign([
 			'loa' => $loa,
 			'submissionId' => $submission->getId(),
+			'generatedByUser' => $generatedByUser,
 			'loaGenerateUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'generate'),
 			'loaRegenerateUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'regenerate'),
 			'loaRevokeUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'revoke'),

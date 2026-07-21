@@ -48,8 +48,6 @@ class LoAHandler extends Handler {
 			'context' => $context,
 			'editorInChiefName' => $plugin->getSetting($context->getId(), 'editorInChiefName'),
 			'editorInChiefTitle' => $plugin->getSetting($context->getId(), 'editorInChiefTitle'),
-			'signatureImage' => $plugin->getSetting($context->getId(), 'signatureImage'),
-			'stampImage' => $plugin->getSetting($context->getId(), 'stampImage'),
 			'baseUrl' => $baseUrl,
 		]);
 
@@ -78,7 +76,7 @@ class LoAHandler extends Handler {
 		}
 
 		$loaDao = DAORegistry::getDAO('LoADAO');
-		$loaDao->generateCode($submissionId, $context->getId());
+		$loaDao->generateCode($submissionId, $context->getId(), $user->getId());
 
 		$request->redirect(null, 'workflow', 'access', $submissionId);
 	}
@@ -100,7 +98,7 @@ class LoAHandler extends Handler {
 		}
 
 		$loaDao = DAORegistry::getDAO('LoADAO');
-		$loaDao->regenerateCode($submissionId, $context->getId());
+		$loaDao->regenerateCode($submissionId, $context->getId(), $user->getId());
 
 		$request->redirect(null, 'workflow', 'access', $submissionId);
 	}

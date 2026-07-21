@@ -22,15 +22,6 @@
 		.meta td:first-child { font-weight: bold; width: 150px; color: #555; }
 		.status-active { color: green; font-weight: bold; }
 		.status-revoked { color: red; font-weight: bold; }
-		.signature-area { margin-top: 50px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; }
-		.signature-box { text-align: center; min-width: 200px; }
-		.signature-box .signature-line { margin-bottom: 5px; }
-		.signature-box .signature-line img { max-height: 70px; }
-		.signature-box .title { font-size: 12px; color: #555; margin-bottom: 2px; }
-		.signature-box .name { font-weight: bold; font-size: 14px; }
-		.stamp-box { text-align: center; }
-		.stamp-box img { max-height: 100px; }
-		.stamp-box .stamp-label { font-size: 11px; color: #777; margin-top: 5px; }
 		.footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc; font-size: 12px; color: #777; }
 		.clearfix { clear: both; }
 		@media print {
@@ -92,33 +83,6 @@
 			<div class="label">{translate key="plugins.generic.loa.verificationCode"}</div>
 			<div class="code">{$loa->getUniqueCode()|escape}</div>
 		</div>
-
-		<div class="signature-area">
-			{if $signatureImage || $editorInChiefName}
-			<div class="signature-box">
-				<div class="signature-line">
-					{if $signatureImage}
-						<img src="{$baseUrl}/{$signatureImage|escape}" alt="{translate key="plugins.generic.loa.signatureImage"}">
-					{else}
-						<br><br>
-					{/if}
-				</div>
-				<div class="title">{translate key="plugins.generic.loa.signatureCaption"}</div>
-				{if $editorInChiefTitle}
-					<div class="title">{$editorInChiefTitle|escape}</div>
-				{/if}
-				<div class="name">{$editorInChiefName|escape}</div>
-			</div>
-			{/if}
-
-			{if $stampImage}
-			<div class="stamp-box">
-				<img src="{$baseUrl}/{$stampImage|escape}" alt="{translate key="plugins.generic.loa.stampImage"}">
-				<div class="stamp-label">{translate key="plugins.generic.loa.stampCaption"}</div>
-			</div>
-			{/if}
-		</div>
-		<div class="clearfix"></div>
 
 		<div class="content">
 			<p>{translate key="plugins.generic.loa.disclaimer"}</p>

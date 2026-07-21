@@ -57,4 +57,12 @@ class LoA extends DataObject {
 	public function setStatus($status) {
 		$this->setData('status', $status);
 	}
+
+	public function getGeneratedBy() {
+		return $this->getData('generatedBy');
+	}
+
+	public function setGeneratedBy($generatedBy) {
+		$this->setData('generatedBy', $generatedBy);
+	}
 }

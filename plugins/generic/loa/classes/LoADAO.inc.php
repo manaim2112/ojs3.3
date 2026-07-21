@@ -51,8 +51,8 @@ class LoADAO extends DAO {
 
 	public function insertObject($loa) {
 		$this->update(
-			'INSERT INTO article_loa_codes (journal_id, submission_id, unique_code, date_generated, date_downloaded, status)
-			 VALUES (?, ?, ?, ?, ?, ?)',
+			'INSERT INTO article_loa_codes (journal_id, submission_id, unique_code, date_generated, date_downloaded, status, generated_by)
+			 VALUES (?, ?, ?, ?, ?, ?, ?)',
 			[
 				(int) $loa->getJournalId(),
 				(int) $loa->getSubmissionId(),
@@ -60,6 +60,7 @@ class LoADAO extends DAO {
 				$loa->getDateGenerated(),
 				$loa->getDateDownloaded(),
 				$loa->getStatus(),
+				$loa->getGeneratedBy() ? (int) $loa->getGeneratedBy() : null,
 			]
 		);
 		$loa->setLoaId($this->getInsertId());
@@ -70,7 +71,7 @@ class LoADAO extends DAO {
 		$this->update(
 			'UPDATE article_loa_codes
 			 SET journal_id = ?, submission_id = ?, unique_code = ?,
-			     date_generated = ?, date_downloaded = ?, status = ?
+			     date_generated = ?, date_downloaded = ?, status = ?, generated_by = ?
 			 WHERE loa_id = ?',
 			[
 				(int) $loa->getJournalId(),
@@ -79,6 +80,7 @@ class LoADAO extends DAO {
 				$loa->getDateGenerated(),
 				$loa->getDateDownloaded(),
 				$loa->getStatus(),
+				$loa->getGeneratedBy() ? (int) $loa->getGeneratedBy() : null,
 				(int) $loa->getLoaId(),
 			]
 		);
@@ -98,7 +100,7 @@ class LoADAO extends DAO {
 		);
 	}
 
-	public function generateCode($submissionId, $journalId) {
+	public function generateCode($submissionId, $journalId, $userId = null) {
 		$loa = $this->getBySubmissionId($submissionId);
 		if ($loa) {
 			return $loa;
@@ -114,13 +116,14 @@ class LoADAO extends DAO {
 		$loa->setDateGenerated(date('Y-m-d H:i:s'));
 		$loa->setDateDownloaded(null);
 		$loa->setStatus('active');
+		$loa->setGeneratedBy($userId);
 
 		return $this->insertObject($loa);
 	}
 
-	public function regenerateCode($submissionId, $journalId) {
+	public function regenerateCode($submissionId, $journalId, $userId = null) {
 		$this->revokeBySubmissionId($submissionId);
-		return $this->generateCode($submissionId, $journalId);
+		return $this->generateCode($submissionId, $journalId, $userId);
 	}
 
 	public function newDataObject() {
@@ -140,6 +143,7 @@ class LoADAO extends DAO {
 		$loa->setDateGenerated($row['date_generated']);
 		$loa->setDateDownloaded($row['date_downloaded']);
 		$loa->setStatus($row['status']);
+		$loa->setGeneratedBy($row['generated_by'] ?? null);
 		return $loa;
 	}
 }
