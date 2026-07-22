@@ -4,6 +4,7 @@ import('lib.pkp.classes.plugins.GenericPlugin');
 import('plugins.generic.loa.classes.LoADAO');
 
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Database\Schema\Blueprint;
 
 class LoAPlugin extends GenericPlugin {
 
@@ -30,7 +31,7 @@ class LoAPlugin extends GenericPlugin {
 	public function setEnabled($enabled) {
 		parent::setEnabled($enabled);
 		if ($enabled) {
-			$this->runMigration();
+			$this->runUpgradeMigration();
 		}
 	}
 
@@ -38,6 +39,23 @@ class LoAPlugin extends GenericPlugin {
 		if (!Capsule::schema()->hasTable('article_loa_codes')) {
 			$migration = $this->getInstallMigration();
 			$migration->up();
+		}
+	}
+
+	private function runUpgradeMigration() {
+		if (!Capsule::schema()->hasTable('article_loa_codes')) {
+			return;
+		}
+		if (!Capsule::schema()->hasColumn('article_loa_codes', 'generated_by')) {
+			Capsule::schema()->table('article_loa_codes', function (Blueprint $table) {
+				$table->bigInteger('generated_by')->nullable();
+			});
+		}
+		try {
+			Capsule::schema()->table('article_loa_codes', function (Blueprint $table) {
+				$table->dropUnique('article_loa_codes_submission_status');
+			});
+		} catch (\Exception $e) {
 		}
 	}
 

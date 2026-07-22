@@ -3,7 +3,7 @@
 <version>
 	<application>loa</application>
 	<type>plugins.generic</type>
-	<release>1.0.0.0</release>
+	<release>1.0.0.1</release>
 	<date>2026-07-21</date>
 	<lazy-load>1</lazy-load>
 	<class>LoAPlugin</class>

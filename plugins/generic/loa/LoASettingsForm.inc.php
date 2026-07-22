@@ -15,6 +15,8 @@ class LoASettingsForm extends Form {
 
 		$this->addCheck(new FormValidatorPost($this));
 		$this->addCheck(new FormValidatorCSRF($this));
+
+		$this->setData('pluginName', $plugin->getName());
 	}
 
 	function initData() {

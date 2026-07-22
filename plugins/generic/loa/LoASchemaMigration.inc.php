@@ -18,7 +18,6 @@ class LoASchemaMigration extends Migration {
 				$table->datetime('date_downloaded')->nullable();
 				$table->string('status', 20)->default('active');
 				$table->bigInteger('generated_by')->nullable();
-				$table->unique(['submission_id', 'status'], 'article_loa_codes_submission_status');
 				$table->index(['journal_id'], 'article_loa_codes_journal_id');
 				$table->index(['unique_code'], 'article_loa_codes_unique_code');
 			});
