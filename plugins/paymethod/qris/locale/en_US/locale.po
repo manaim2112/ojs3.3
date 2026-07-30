@@ -1,0 +1,48 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01T00:00:00+00:00\n"
+"PO-Revision-Date: 2024-01-01T00:00:00+00:00\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "plugins.paymethod.qris.displayName"
+msgstr "QRIS Fee Payment"
+
+msgid "plugins.paymethod.qris.description"
+msgstr "Payments will be processed using QRIS static QR code."
+
+msgid "plugins.paymethod.qris"
+msgstr "QRIS Fee Payment"
+
+msgid "plugins.paymethod.qris.settings.qrisImageUrl"
+msgstr "QRIS Image URL"
+
+msgid "plugins.paymethod.qris.settings.qrisImageUrl.description"
+msgstr "Enter the URL of the static QRIS QR code image."
+
+msgid "plugins.paymethod.qris.settings.instructions"
+msgstr "QRIS Payment Instructions"
+
+msgid "plugins.paymethod.qris.scanInstructions"
+msgstr "Scan the QR code below with your mobile banking or e-wallet app to pay."
+
+msgid "plugins.paymethod.qris.sendNotificationOfPayment"
+msgstr "Send notification of payment"
+
+msgid "plugins.paymethod.qris.paymentNotification"
+msgstr "Payment Notification"
+
+msgid "plugins.paymethod.qris.notificationSent"
+msgstr "Payment notification sent"
+
+msgid "plugins.paymethod.qris.purchase.title"
+msgstr "Title"
+
+msgid "plugins.paymethod.qris.purchase.fee"
+msgstr "Fee"

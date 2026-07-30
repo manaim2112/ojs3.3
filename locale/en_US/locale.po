@@ -1871,6 +1871,12 @@ msgstr ""
 "A payment has been requested, but the request has expired. Contact the "
 "Journal Manager for details."
 
+msgid "payment.notConfigured"
+msgstr "The payment system is not configured. Contact the Journal Manager for details."
+
+msgid "payment.selectMethod"
+msgstr "Please select a payment method:"
+
 msgid "payment.donation.makeDonation"
 msgstr "Make a donation"
 

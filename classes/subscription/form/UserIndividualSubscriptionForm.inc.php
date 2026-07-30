@@ -154,13 +154,8 @@ class UserIndividualSubscriptionForm extends Form {
 		}
 
 		$paymentManager = Application::getPaymentManager($journal);
-		$paymentPlugin = $paymentManager->getPaymentPlugin();
 
-		if ($paymentPlugin->getName() == 'ManualPayment') {
-			$subscription->setStatus(SUBSCRIPTION_STATUS_AWAITING_MANUAL_PAYMENT);
-		} else {
-			$subscription->setStatus(SUBSCRIPTION_STATUS_AWAITING_ONLINE_PAYMENT);
-		}
+		$subscription->setStatus(SUBSCRIPTION_STATUS_AWAITING_ONLINE_PAYMENT);
 
 		$subscription->setTypeId($typeId);
 		$subscription->setMembership($this->getData('membership') ? $this->getData('membership') : null);
@@ -176,7 +171,6 @@ class UserIndividualSubscriptionForm extends Form {
 		$queuedPayment = $paymentManager->createQueuedPayment($this->request, PAYMENT_TYPE_PURCHASE_SUBSCRIPTION, $this->userId, $subscription->getId(), $subscriptionType->getCost(), $subscriptionType->getCurrencyCodeAlpha());
 		$paymentManager->queuePayment($queuedPayment);
 
-		$paymentForm = $paymentManager->getPaymentForm($queuedPayment);
-		$paymentForm->display($this->request);
+		$this->request->redirect(null, 'payment', 'pay', $queuedPayment->getId());
 	}
 }

@@ -1868,6 +1868,12 @@ msgstr ""
 "Pembayaran telah diajukan namun telah kedaluwarsa. Hubungi Manajer Jurnal "
 "untuk selengkapnya."
 
+msgid "payment.notConfigured"
+msgstr "Sistem pembayaran belum dikonfigurasi. Hubungi Manajer Jurnal untuk informasi lebih lanjut."
+
+msgid "payment.selectMethod"
+msgstr "Silakan pilih metode pembayaran:"
+
 msgid "payment.donation.makeDonation"
 msgstr "Berikan donasi"
 

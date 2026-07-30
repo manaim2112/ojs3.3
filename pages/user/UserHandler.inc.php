@@ -312,8 +312,7 @@ class UserHandler extends PKPUserHandler {
 		$queuedPayment = $paymentManager->createQueuedPayment($request, PAYMENT_TYPE_PURCHASE_SUBSCRIPTION, $user->getId(), $subscriptionId, $subscriptionType->getCost(), $subscriptionType->getCurrencyCodeAlpha());
 		$paymentManager->queuePayment($queuedPayment);
 
-		$paymentForm = $paymentManager->getPaymentForm($queuedPayment);
-		$paymentForm->display($request);
+		$request->redirect(null, 'payment', 'pay', $queuedPayment->getId());
 	}
 
 	/**
@@ -365,8 +364,7 @@ class UserHandler extends PKPUserHandler {
 		$queuedPayment = $paymentManager->createQueuedPayment($request, PAYMENT_TYPE_RENEW_SUBSCRIPTION, $user->getId(), $subscriptionId, $subscriptionType->getCost(), $subscriptionType->getCurrencyCodeAlpha());
 		$paymentManager->queuePayment($queuedPayment);
 
-		$paymentForm = $paymentManager->getPaymentForm($queuedPayment);
-		$paymentForm->display($request);
+		$request->redirect(null, 'payment', 'pay', $queuedPayment->getId());
 	}
 
 	/**
@@ -385,8 +383,7 @@ class UserHandler extends PKPUserHandler {
 		$queuedPayment = $paymentManager->createQueuedPayment($request, PAYMENT_TYPE_MEMBERSHIP, $user->getId(), null,  $journal->getData('membershipFee'));
 		$paymentManager->queuePayment($queuedPayment);
 
-		$paymentForm = $paymentManager->getPaymentForm($queuedPayment);
-		$paymentForm->display($request);
+		$request->redirect(null, 'payment', 'pay', $queuedPayment->getId());
 	}
 }
 

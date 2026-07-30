@@ -524,9 +524,7 @@ class ArticleHandler extends Handler {
 							$queuedPayment = $paymentManager->createQueuedPayment($request, PAYMENT_TYPE_PURCHASE_ARTICLE, $user->getId(), $submission->getId(), $context->getData('purchaseArticleFee'));
 							$paymentManager->queuePayment($queuedPayment);
 
-							$paymentForm = $paymentManager->getPaymentForm($queuedPayment);
-							$paymentForm->display($request);
-							exit;
+							$request->redirect(null, 'payment', 'pay', $queuedPayment->getId());
 						}
 					}
 

@@ -160,13 +160,30 @@ class OJSPaymentManager extends PaymentManager {
 	 * @return PaymethodPlugin
 	 */
 	function getPaymentPlugin() {
+		$plugins = $this->getEnabledPaymentPlugins();
+		return !empty($plugins) ? reset($plugins) : null;
+	}
+
+	/**
+	 * Get all enabled payment plugins.
+	 * @return array Associative array of plugin name => PaymethodPlugin
+	 */
+	function getEnabledPaymentPlugins() {
 		$paymentMethodPluginName = $this->_context->getData('paymentPluginName');
-		$paymentMethodPlugin = null;
+		$enabledPlugins = [];
 		if (!empty($paymentMethodPluginName)) {
+			$pluginNames = is_array($paymentMethodPluginName)
+				? $paymentMethodPluginName
+				: explode(',', $paymentMethodPluginName);
+			$pluginNames = array_map('trim', $pluginNames);
 			$plugins = PluginRegistry::loadCategory('paymethod');
-			if (isset($plugins[$paymentMethodPluginName])) $paymentMethodPlugin = $plugins[$paymentMethodPluginName];
+			foreach ($pluginNames as $name) {
+				if (!empty($name) && isset($plugins[$name]) && $plugins[$name]->isConfigured($this->_context)) {
+					$enabledPlugins[$name] = $plugins[$name];
+				}
+			}
 		}
-		return $paymentMethodPlugin;
+		return $enabledPlugins;
 	}
 
 	/**

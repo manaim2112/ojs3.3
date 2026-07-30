@@ -60,8 +60,42 @@ class PaymentHandler extends Handler {
 			return;
 		}
 
-		$paymentForm = $paymentManager->getPaymentForm($queuedPayment);
-		$paymentForm->display($request);
+		$context = $request->getContext();
+		$enabledPlugins = $paymentManager->getEnabledPaymentPlugins();
+
+		if (empty($enabledPlugins)) {
+			$templateMgr->assign(array(
+				'pageTitle' => 'common.payment',
+				'message' => 'payment.notConfigured',
+			));
+			$templateMgr->display('frontend/pages/message.tpl');
+			return;
+		}
+
+		$selectedPluginName = $request->getUserVar('paymentPlugin');
+
+		if (!empty($selectedPluginName) && isset($enabledPlugins[$selectedPluginName])) {
+			$paymentForm = $enabledPlugins[$selectedPluginName]->getPaymentForm($context, $queuedPayment);
+			if ($paymentForm) {
+				$paymentForm->display($request);
+				return;
+			}
+		}
+
+		if (count($enabledPlugins) === 1) {
+			$plugin = reset($enabledPlugins);
+			$paymentForm = $plugin->getPaymentForm($context, $queuedPayment);
+			if ($paymentForm) {
+				$paymentForm->display($request);
+				return;
+			}
+		}
+
+		$templateMgr->assign(array(
+			'paymentPlugins' => $enabledPlugins,
+			'queuedPaymentId' => $queuedPaymentId,
+		));
+		$templateMgr->display('frontend/pages/paymentSelect.tpl');
 	}
 }
 

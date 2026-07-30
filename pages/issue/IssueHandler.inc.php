@@ -248,9 +248,7 @@ class IssueHandler extends Handler {
 							$queuedPayment = $paymentManager->createQueuedPayment($request, PAYMENT_TYPE_PURCHASE_ISSUE, $userId, $issue->getId(), $journal->getData('purchaseIssueFee'));
 							$paymentManager->queuePayment($queuedPayment);
 
-							$paymentForm = $paymentManager->getPaymentForm($queuedPayment);
-							$paymentForm->display($request);
-							exit;
+							$request->redirect(null, 'payment', 'pay', $queuedPayment->getId());
 						}
 					}
 
