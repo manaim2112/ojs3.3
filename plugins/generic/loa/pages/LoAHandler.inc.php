@@ -4,6 +4,8 @@ import('classes.handler.Handler');
 
 class LoAHandler extends Handler {
 
+	var $_isBackendPage = true;
+
 	static $plugin;
 
 	static function setPlugin($plugin) {
@@ -167,5 +169,74 @@ class LoAHandler extends Handler {
 		]);
 
 		$templateMgr->display(self::$plugin->getTemplateResource('loaVerification.tpl'));
+	}
+
+	function management($args, $request) {
+		$context = $request->getContext();
+		$user = $request->getUser();
+		if (!$user || !$user->hasRole([ROLE_ID_MANAGER, ROLE_ID_SITE_ADMIN, ROLE_ID_SUB_EDITOR], $context->getId())) {
+			$request->redirect(null, 'index');
+		}
+
+		$templateMgr = TemplateManager::getManager($request);
+		$this->setupTemplate($request);
+
+		$dispatcher = $request->getDispatcher();
+		$loaDao = DAORegistry::getDAO('LoADAO');
+
+		$articles = $loaDao->getPublishedArticlesByJournalId($context->getId());
+
+		$templateMgr->assign([
+			'articles' => $articles,
+			'loaGenerateUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'generateFromManagement'),
+			'loaRevokeUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'revokeFromManagement'),
+			'loaViewUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'view'),
+		]);
+
+		$templateMgr->display(self::$plugin->getTemplateResource('loaManagement.tpl'));
+	}
+
+	function generateFromManagement($args, $request) {
+		if (!$request->isPost()) {
+			$request->redirect(null, 'loa', 'management');
+		}
+
+		$context = $request->getContext();
+		$user = $request->getUser();
+		if (!$user || !$user->hasRole([ROLE_ID_MANAGER, ROLE_ID_SITE_ADMIN, ROLE_ID_SUB_EDITOR], $context->getId())) {
+			$request->redirect(null, 'index');
+		}
+
+		$submissionId = (int) $request->getUserVar('submissionId');
+		if (!$submissionId) {
+			$request->redirect(null, 'loa', 'management');
+		}
+
+		$loaDao = DAORegistry::getDAO('LoADAO');
+		$loaDao->generateCode($submissionId, $context->getId(), $user->getId());
+
+		$request->redirect(null, 'loa', 'management');
+	}
+
+	function revokeFromManagement($args, $request) {
+		if (!$request->isPost()) {
+			$request->redirect(null, 'loa', 'management');
+		}
+
+		$context = $request->getContext();
+		$user = $request->getUser();
+		if (!$user || !$user->hasRole([ROLE_ID_MANAGER, ROLE_ID_SITE_ADMIN, ROLE_ID_SUB_EDITOR], $context->getId())) {
+			$request->redirect(null, 'index');
+		}
+
+		$submissionId = (int) $request->getUserVar('submissionId');
+		if (!$submissionId) {
+			$request->redirect(null, 'loa', 'management');
+		}
+
+		$loaDao = DAORegistry::getDAO('LoADAO');
+		$loaDao->revokeBySubmissionId($submissionId);
+
+		$request->redirect(null, 'loa', 'management');
 	}
 }

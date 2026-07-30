@@ -49,6 +49,70 @@ class LoADAO extends DAO {
 		return new DAOResultFactory($result, $this, '_fromRow');
 	}
 
+	public function getPublishedArticlesByJournalId($journalId, $rangeInfo = null) {
+		$result = $this->retrieveRange(
+			'SELECT
+				s.submission_id,
+				p.publication_id,
+				p.date_published,
+				ps_title.setting_value as title,
+				ps_issue.setting_value as issue_id,
+				alc.loa_id,
+				alc.unique_code,
+				alc.status as loa_status,
+				alc.date_generated,
+				alc.date_downloaded,
+				alc.generated_by
+			FROM submissions s
+				JOIN publications p ON s.current_publication_id = p.publication_id AND p.status = ?
+				LEFT JOIN publication_settings ps_title ON p.publication_id = ps_title.publication_id
+					AND ps_title.setting_name = \'title\'
+					AND ps_title.locale = s.locale
+				LEFT JOIN publication_settings ps_issue ON p.publication_id = ps_issue.publication_id
+					AND ps_issue.setting_name = \'issue_id\'
+				LEFT JOIN article_loa_codes alc ON s.submission_id = alc.submission_id AND alc.status = \'active\'
+			WHERE s.context_id = ? AND s.status = ?
+			ORDER BY p.date_published DESC',
+			[(int) STATUS_PUBLISHED, (int) $journalId, (int) STATUS_PUBLISHED],
+			$rangeInfo
+		);
+		return new DAOResultFactory($result, $this, '_fromArticleRow');
+	}
+
+	public function getIssueData($issueId) {
+		$issueDao = DAORegistry::getDAO('IssueDAO');
+		$issue = $issueDao->getById((int) $issueId);
+		if (!$issue) return null;
+		return [
+			'id' => $issue->getId(),
+			'title' => $issue->getLocalizedTitle(),
+			'volume' => $issue->getVolume(),
+			'number' => $issue->getNumber(),
+			'year' => $issue->getYear(),
+		];
+	}
+
+	public function getAuthorsByPublicationId($publicationId) {
+		$authorDao = DAORegistry::getDAO('AuthorDAO');
+		$authors = $authorDao->getByPublicationId($publicationId);
+		$names = [];
+		while ($author = $authors->next()) {
+			$names[] = $author->getFullName();
+		}
+		return implode('; ', $names);
+	}
+
+	public function _fromArticleRow($row) {
+		$row = (array) $row;
+		$row['authors'] = $this->getAuthorsByPublicationId($row['publication_id']);
+		if (!empty($row['issue_id'])) {
+			$row['issue'] = $this->getIssueData($row['issue_id']);
+		} else {
+			$row['issue'] = null;
+		}
+		return $row;
+	}
+
 	public function insertObject($loa) {
 		$this->update(
 			'INSERT INTO article_loa_codes (journal_id, submission_id, unique_code, date_generated, date_downloaded, status, generated_by)

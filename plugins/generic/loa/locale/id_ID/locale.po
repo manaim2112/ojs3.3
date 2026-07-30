@@ -145,3 +145,18 @@ msgid "plugins.generic.loa.cancel"
 msgstr "Batal"
 msgid "plugins.generic.loa.generatedBy"
 msgstr "Dibuat oleh"
+
+msgid "plugins.generic.loa.managementDescription"
+msgstr "Kelola Letter of Acceptance untuk semua artikel yang telah terbit. Buat, cabut, atau unduh dokumen LoA."
+
+msgid "plugins.generic.loa.issue"
+msgstr "Edisi"
+
+msgid "plugins.generic.loa.notGenerated"
+msgstr "Belum Dibuat"
+
+msgid "plugins.generic.loa.noPublishedArticles"
+msgstr "Tidak ada artikel yang telah terbit."
+
+msgid "plugins.generic.loa.action"
+msgstr "Aksi"

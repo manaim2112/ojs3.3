@@ -23,6 +23,7 @@ class LoAPlugin extends GenericPlugin {
 			HookRegistry::register('LoadHandler', [$this, 'callbackHandleContent']);
 			HookRegistry::register('Template::Workflow::Publication', [$this, 'addToWorkflow']);
 			HookRegistry::register('Templates::Article::Details', [$this, 'addToArticleDetails']);
+			HookRegistry::register('TemplateManager::setupBackendPage', [$this, 'addToBackendMenu']);
 		}
 
 		return $success;
@@ -165,6 +166,49 @@ class LoAPlugin extends GenericPlugin {
 			__('plugins.generic.loa.displayName'),
 			$smarty->fetch($this->getTemplateResource('loaTab.tpl'))
 		);
+
+		return false;
+	}
+
+	public function addToBackendMenu($hookName, $args) {
+		$templateMgr =& $args[0];
+		$request = Application::get()->getRequest();
+		$context = $request->getContext();
+		$user = $request->getUser();
+
+		if (!$context || !$user) {
+			return false;
+		}
+
+		$router = $request->getRouter();
+		$handler = $router->getHandler();
+		$userRoles = (array) $handler->getAuthorizedContextObject(ASSOC_TYPE_USER_ROLES);
+
+		if (!in_array(ROLE_ID_MANAGER, $userRoles) && !in_array(ROLE_ID_SITE_ADMIN, $userRoles)) {
+			return false;
+		}
+
+		$menu = (array) $templateMgr->getState('menu');
+
+		$loaLink = [
+			'name' => __('plugins.generic.loa.management'),
+			'url' => $router->url($request, $context->getPath(), 'loa', 'management'),
+			'isCurrent' => $request->getRequestedPage() === 'loa' && $request->getRequestedOp() === 'management',
+		];
+
+		$index = array_search('issues', array_keys($menu));
+		if ($index === false) {
+			$index = array_search('submissions', array_keys($menu));
+		}
+		if ($index === false || count($menu) <= ($index + 1)) {
+			$menu['loa'] = $loaLink;
+		} else {
+			$menu = array_slice($menu, 0, $index + 1, true) +
+					['loa' => $loaLink] +
+					array_slice($menu, $index + 1, null, true);
+		}
+
+		$templateMgr->setState(['menu' => $menu]);
 
 		return false;
 	}
