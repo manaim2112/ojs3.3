@@ -184,7 +184,9 @@ class LoAHandler extends Handler {
 		$dispatcher = $request->getDispatcher();
 		$loaDao = DAORegistry::getDAO('LoADAO');
 
-		$articles = $loaDao->getPublishedArticlesByJournalId($context->getId())->toArray();
+		$rangeInfo = $this->getRangeInfo($request, 'loa_management');
+
+		$articles = $loaDao->getPublishedArticlesByJournalId($context->getId(), $rangeInfo);
 
 		$templateMgr->assign([
 			'articles' => $articles,

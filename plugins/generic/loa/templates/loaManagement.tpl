@@ -88,6 +88,10 @@
 				{/foreach}
 			</tbody>
 		</table>
+		<div class="gridPaging">
+			{page_info iterator=$articles}
+			{page_links name="loa_management" iterator=$articles}
+		</div>
 	{else}
 		<div class="pkp_help">
 			<p>{translate key="plugins.generic.loa.noPublishedArticles"}</p>
