@@ -69,7 +69,7 @@ class LoADAO extends DAO {
 					AND ps_title.setting_name = \'title\'
 					AND ps_title.locale = s.locale
 				LEFT JOIN publication_settings ps_issue ON p.publication_id = ps_issue.publication_id
-					AND ps_issue.setting_name = \'issue_id\'
+					AND ps_issue.setting_name = \'issueId\'
 				LEFT JOIN article_loa_codes alc ON s.submission_id = alc.submission_id AND alc.status = \'active\'
 			WHERE s.context_id = ? AND s.status = ?
 			ORDER BY p.date_published DESC',

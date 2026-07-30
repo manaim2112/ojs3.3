@@ -49,7 +49,7 @@
 							{if $article.loa_id}
 								<code>{$article.unique_code|escape}</code>
 								<br>
-								<small>{$article.date_generated|escape}</small>
+								<small>{translate key="plugins.generic.loa.dateGenerated"}: {$article.date_generated|escape}</small>
 							{else}
 								<span class="pkp_text-muted">-</span>
 							{/if}
