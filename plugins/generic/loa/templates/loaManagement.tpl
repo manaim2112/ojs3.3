@@ -16,10 +16,9 @@
 				<tr>
 					<th scope="col">{translate key="common.id"}</th>
 					<th scope="col">{translate key="plugins.generic.loa.articleTitle"}</th>
-					<th scope="col">{translate key="plugins.generic.loa.authors"}</th>
 					<th scope="col">{translate key="plugins.generic.loa.issue"}</th>
-					<th scope="col">{translate key="plugins.generic.loa.uniqueCode"}</th>
 					<th scope="col">{translate key="plugins.generic.loa.status"}</th>
+					<th scope="col">{translate key="plugins.generic.loa.uniqueCode"}</th>
 					<th scope="col">{translate key="common.action"}</th>
 				</tr>
 			</thead>
@@ -27,24 +26,14 @@
 				{foreach from=$articles item=article}
 					<tr>
 						<td>{$article.submission_id|escape}</td>
-						<td>{$article.title|escape|default:"-"}</td>
-						<td>{$article.authors|escape|default:"-"}</td>
+						<td>{$article.title|escape|default:"-"}<br><small>{$article.authors|escape|default:"-"}</small></td>
 						<td>
-							{if $article.issue}
+							{if $article.issue && $article.issue.title}
 								{$article.issue.title|escape}
 								<br>
 								<small>{$article.issue.volume|escape} {$article.issue.number|escape} ({$article.issue.year|escape})</small>
 							{else}
 								<span class="pkp_text-muted">-</span>
-							{/if}
-						</td>
-						<td>
-							{if $article.loa_id}
-								<code>{$article.unique_code|escape}</code>
-								<br>
-								<small>{$article.date_generated|escape}</small>
-							{else}
-								<span class="pkp_text-muted">{translate key="plugins.generic.loa.notGenerated"}</span>
 							{/if}
 						</td>
 						<td>
@@ -57,11 +46,20 @@
 							{/if}
 						</td>
 						<td>
+							{if $article.loa_id}
+								<code>{$article.unique_code|escape}</code>
+								<br>
+								<small>{$article.date_generated|escape}</small>
+							{else}
+								<span class="pkp_text-muted">-</span>
+							{/if}
+						</td>
+						<td>
 							{if $article.loa_id && $article.loa_status == 'active'}
 								<a href="{$loaViewUrl|escape}/{$article.unique_code|escape}" class="pkp_button pkp_button--primary" target="_blank">
 									{translate key="plugins.generic.loa.download"}
 								</a>
-								<form method="post" action="{$loaRevokeUrl|escape}" class="pkp_button--danger loa-confirm-form" data-msg="{translate key="plugins.generic.loa.confirmRevoke"}">
+								<form method="post" action="{$loaRevokeUrl|escape}" class="loa-confirm-form" data-msg="{translate key="plugins.generic.loa.confirmRevoke"}">
 									<input type="hidden" name="submissionId" value="{$article.submission_id|escape}">
 									<input type="hidden" name="csrfToken" value="{$csrfToken|escape}">
 									<button type="submit" class="pkp_button pkp_button--danger">
