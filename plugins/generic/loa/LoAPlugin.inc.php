@@ -175,8 +175,8 @@ class LoAPlugin extends GenericPlugin {
 	}
 
 	public function addToBackendMenu($hookName, $args) {
-		$templateMgr =& $args[0];
 		$request = Application::get()->getRequest();
+		$templateMgr = TemplateManager::getManager($request);
 		$context = $request->getContext();
 		$user = $request->getUser();
 
