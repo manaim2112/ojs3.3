@@ -50,8 +50,7 @@ class LoADAO extends DAO {
 	}
 
 	public function getPublishedArticlesByJournalId($journalId, $rangeInfo = null) {
-		$result = $this->retrieveRange(
-			'SELECT
+		$sql = 'SELECT
 				s.submission_id,
 				p.publication_id,
 				p.date_published,
@@ -72,11 +71,11 @@ class LoADAO extends DAO {
 					AND ps_issue.setting_name = \'issueId\'
 				LEFT JOIN article_loa_codes alc ON s.submission_id = alc.submission_id AND alc.status = \'active\'
 			WHERE s.context_id = ? AND s.status = ?
-			ORDER BY p.date_published DESC',
-			[(int) STATUS_PUBLISHED, (int) $journalId, (int) STATUS_PUBLISHED],
-			$rangeInfo
-		);
-		return new DAOResultFactory($result, $this, '_fromArticleRow');
+			ORDER BY p.date_published DESC';
+		$params = [(int) STATUS_PUBLISHED, (int) $journalId, (int) STATUS_PUBLISHED];
+		$countSql = $sql;
+		$result = $this->retrieveRange($sql, $params, $rangeInfo);
+		return new DAOResultFactory($result, $this, '_fromArticleRow', [], $countSql, $params, $rangeInfo);
 	}
 
 	public function getIssueData($issueId) {
