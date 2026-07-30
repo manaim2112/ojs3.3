@@ -131,6 +131,21 @@ class QrisPaymentPlugin extends PaymethodPlugin {
 	}
 
 	/**
+	 * Check whether the given user can act on a queued payment:
+	 * the payment's owner, or a Journal Manager / Subscription Manager.
+	 * @param $user User
+	 * @param $queuedPayment QueuedPayment
+	 * @param $context Context
+	 * @return boolean
+	 */
+	protected function _canUserActOnPayment($user, $queuedPayment, $context) {
+		if (!$user) return false;
+		if ($queuedPayment->getUserId() == $user->getId()) return true;
+		$roleDao = DAORegistry::getDAO('RoleDAO'); /* @var $roleDao RoleDAO */
+		return $roleDao->userHasRole($context->getId(), $user->getId(), array(ROLE_ID_MANAGER, ROLE_ID_SUBSCRIPTION_MANAGER));
+	}
+
+	/**
 	 * Handle incoming requests/notifications
 	 * @param $args array
 	 * @param $request PKPRequest
@@ -150,6 +165,26 @@ class QrisPaymentPlugin extends PaymethodPlugin {
 
 		switch ($op) {
 			case 'notify':
+				// Require login: must be payment owner or manager/sub. manager
+				if (!$user || !$this->_canUserActOnPayment($user, $queuedPayment, $context)) {
+					$request->redirect(null, 'index');
+				}
+
+				// Idempotency: if already completed, don't fulfill again
+				$completedPaymentDao = DAORegistry::getDAO('OJSCompletedPaymentDAO'); /* @var $completedPaymentDao OJSCompletedPaymentDAO */
+				$existingCompleted = $completedPaymentDao->getByAssoc($queuedPayment->getUserId(), $queuedPayment->getType(), $queuedPayment->getAssocId());
+				if ($existingCompleted) {
+					$templateMgr->assign(array(
+						'currentUrl' => $request->url(null, null, 'payment', 'plugin', array('notify', $queuedPaymentId)),
+						'pageTitle' => 'plugins.paymethod.qris.paymentNotification',
+						'message' => 'plugins.paymethod.qris.notificationSent',
+						'backLink' => $queuedPayment->getRequestUrl(),
+						'backLinkLabel' => 'common.continue'
+					));
+					$templateMgr->display('frontend/pages/message.tpl');
+					exit();
+				}
+
 				import('lib.pkp.classes.mail.MailTemplate');
 				AppLocale::requireComponents(LOCALE_COMPONENT_APP_COMMON);
 				$contactName = $context->getData('contactName');
@@ -158,17 +193,23 @@ class QrisPaymentPlugin extends PaymethodPlugin {
 				$mail->setReplyTo(null);
 				$mail->addRecipient($contactEmail, $contactName);
 
-				// Handle proof-of-payment file upload (optional)
+				// Handle proof-of-payment file upload with server-side validation
 				$proofInfo = '';
-				if ($user && isset($_FILES['qrisProofOfPayment']) && $_FILES['qrisProofOfPayment']['error'] == UPLOAD_ERR_OK) {
-					import('lib.pkp.classes.file.TemporaryFileManager');
-					$temporaryFileManager = new TemporaryFileManager();
-					$temporaryFile = $temporaryFileManager->handleUpload('qrisProofOfPayment', $user->getId());
-					if ($temporaryFile) {
-						$proofFilePath = $temporaryFileManager->getBasePath() . $temporaryFile->getServerFileName();
-						$mail->addAttachment($proofFilePath, $temporaryFile->getOriginalFileName(), $temporaryFile->getFileType());
-						$proofDownloadUrl = $request->url(null, 'payment', 'plugin', array('QrisPayment', 'downloadProof', $queuedPaymentId, $temporaryFile->getId()));
-						$proofInfo = __('plugins.paymethod.qris.proofUploaded', array('proofUrl' => $proofDownloadUrl));
+				if (isset($_FILES['qrisProofOfPayment']) && $_FILES['qrisProofOfPayment']['error'] == UPLOAD_ERR_OK) {
+					$allowedMimeTypes = array('image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf');
+					$uploadedFile = $_FILES['qrisProofOfPayment'];
+					$detectedType = PKPString::mime_content_type($uploadedFile['tmp_name']);
+
+					if (in_array($detectedType, $allowedMimeTypes)) {
+						import('lib.pkp.classes.file.TemporaryFileManager');
+						$temporaryFileManager = new TemporaryFileManager();
+						$temporaryFile = $temporaryFileManager->handleUpload('qrisProofOfPayment', $user->getId());
+						if ($temporaryFile) {
+							$proofFilePath = $temporaryFileManager->getBasePath() . $temporaryFile->getServerFileName();
+							$mail->addAttachment($proofFilePath, $temporaryFile->getOriginalFileName(), $temporaryFile->getFileType());
+							$proofDownloadUrl = $request->url(null, 'payment', 'plugin', array('QrisPayment', 'downloadProof', $queuedPaymentId, $temporaryFile->getId()));
+							$proofInfo = __('plugins.paymethod.qris.proofUploaded', array('proofUrl' => $proofDownloadUrl));
+						}
 					}
 				}
 
@@ -198,10 +239,28 @@ class QrisPaymentPlugin extends PaymethodPlugin {
 				$templateMgr->display('frontend/pages/message.tpl');
 				exit();
 			case 'downloadProof':
-				if ($user) {
-					import('lib.pkp.classes.file.TemporaryFileManager');
-					$temporaryFileManager = new TemporaryFileManager();
-					$temporaryFileId = isset($args[2]) ? (int) $args[2] : 0;
+				if (!$user) $request->redirect(null, 'index');
+				import('lib.pkp.classes.file.TemporaryFileManager');
+				$temporaryFileManager = new TemporaryFileManager();
+				$temporaryFileId = isset($args[2]) ? (int) $args[2] : 0;
+				// Owner can download their own upload; managers/sub. managers can download any
+				$roleDao = DAORegistry::getDAO('RoleDAO'); /* @var $roleDao RoleDAO */
+				$isManager = $roleDao->userHasRole($context->getId(), $user->getId(), array(ROLE_ID_MANAGER, ROLE_ID_SUBSCRIPTION_MANAGER));
+				if ($isManager) {
+					$temporaryFileDao = DAORegistry::getDAO('TemporaryFileDAO'); /* @var $temporaryFileDao TemporaryFileDAO */
+					$temporaryFile = $temporaryFileDao->getTemporaryFile($temporaryFileId, $user->getId());
+					if (!$temporaryFile) {
+						// Manager: fetch without ownership restriction
+						$result = $temporaryFileDao->retrieve('SELECT * FROM temporary_files WHERE file_id = ?', array((int) $temporaryFileId));
+						$row = (array) $result->current();
+						$temporaryFile = $row ? $temporaryFileDao->_returnTemporaryFileFromRow($row) : null;
+					}
+					if ($temporaryFile) {
+						$filePath = $temporaryFileManager->getBasePath() . $temporaryFile->getServerFileName();
+						$temporaryFileManager->downloadByPath($filePath, $temporaryFile->getFileType(), false);
+					}
+				} else {
+					// Regular user: only own file
 					$temporaryFileManager->downloadById($temporaryFileId, $user->getId());
 				}
 				exit();
