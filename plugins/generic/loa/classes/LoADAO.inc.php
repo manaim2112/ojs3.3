@@ -1,6 +1,7 @@
 <?php
 
 import('lib.pkp.classes.db.DAO');
+import('lib.pkp.classes.submission.PKPSubmission');
 import('plugins.generic.loa.classes.LoA');
 
 class LoADAO extends DAO {
