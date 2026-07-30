@@ -23,6 +23,7 @@ msgstr ""
 "Item yang akan dibayar adalah &quot;{$itemName}&quot;.<br />\n"
 "Biayanya {$itemCost} ({$itemCurrencyCode}).<br />\n"
 "<br />\n"
+"{$proofInfo}<br />\n"
 "Surat elektronik ini dibuat oleh plugin QRIS OJS."
 
 msgid "emails.qrisPaymentNotification.description"

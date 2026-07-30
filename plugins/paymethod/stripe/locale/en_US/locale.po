@@ -35,6 +35,11 @@ msgstr "Secret Key"
 msgid "plugins.paymethod.stripe.settings.webhookSecret"
 msgstr "Webhook Signing Secret"
 
+msgid "plugins.paymethod.stripe.settings.webhookUrl"
+msgstr ""
+"Stripe webhook endpoint URL. Register this in your Stripe Dashboard under "
+"Developers > Webhooks. Set it to receive 'checkout.session.completed' events."
+
 msgid "plugins.paymethod.stripe.error"
 msgstr ""
 "A transaction error occurred. Please contact the journal manager for details."

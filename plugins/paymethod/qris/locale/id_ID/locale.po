@@ -47,3 +47,12 @@ msgstr "Judul"
 
 msgid "plugins.paymethod.qris.purchase.fee"
 msgstr "Biaya"
+
+msgid "plugins.paymethod.qris.uploadProof"
+msgstr "Unggah Bukti Pembayaran"
+
+msgid "plugins.paymethod.qris.uploadProof.description"
+msgstr "Opsional: Unggah tangkapan layar atau foto bukti pembayaran Anda (misalnya konfirmasi transfer, struk e-wallet). Bukti ini akan dilampirkan ke email notifikasi yang dikirim kepada manajer jurnal."
+
+msgid "plugins.paymethod.qris.proofUploaded"
+msgstr "Bukti pembayaran telah diunggah dan dilampirkan ke email ini. Bukti juga dapat diunduh di: <a href=\"{$proofUrl}\">{$proofUrl}</a>"

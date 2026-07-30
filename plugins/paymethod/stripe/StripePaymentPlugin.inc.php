@@ -95,6 +95,11 @@ class StripePaymentPlugin extends PaymethodPlugin {
 				'label' => __('plugins.paymethod.stripe.settings.webhookSecret'),
 				'value' => $this->getSetting($context->getId(), 'webhookSecret'),
 				'groupId' => 'stripepayment',
+			]))
+			->addField(new \PKP\components\forms\FieldText('webhookUrl', [
+				'label' => __('plugins.paymethod.stripe.settings.webhookUrl'),
+				'value' => Application::get()->getRequest()->url($context->getPath(), 'payment', 'plugin', array($this->getName(), 'webhook')),
+				'groupId' => 'stripepayment',
 			]));
 
 		return;
@@ -147,25 +152,44 @@ class StripePaymentPlugin extends PaymethodPlugin {
 	 * @param $contextId int
 	 */
 	private function _initStripe($contextId) {
-		\Stripe\Stripe::setApiKey($this->getSetting($contextId, 'secretKey'));
-		if ($this->getSetting($contextId, 'testMode')) {
-			\Stripe\Stripe::setApiKey($this->getSetting($contextId, 'secretKey'));
+		$secretKey = $this->getSetting($contextId, 'secretKey');
+		\Stripe\Stripe::setApiKey($secretKey);
+	}
+
+	/**
+	 * Handle requests from Stripe (return redirect and webhook).
+	 * @param $args array First element is the action: 'return' (default) or 'webhook'.
+	 * @param $request PKPRequest
+	 */
+	function handle($args, $request) {
+		$op = isset($args[0]) ? $args[0] : null;
+		switch ($op) {
+			case 'webhook':
+				$this->_handleWebhook($request);
+				break;
+			default:
+				$this->_handleReturn($request);
+				break;
 		}
 	}
 
 	/**
-	 * Handle the return from Stripe Checkout and verify the session
-	 * @param $args array
+	 * Handle the return redirect from Stripe Checkout and verify the session.
+	 * Idempotent: if the payment was already fulfilled (e.g. via webhook),
+	 * getById returns null and we simply redirect to the request URL.
 	 * @param $request PKPRequest
 	 */
-	function handle($args, $request) {
+	private function _handleReturn($request) {
 		$journal = $request->getJournal();
 		$queuedPaymentDao = DAORegistry::getDAO('QueuedPaymentDAO'); /* @var $queuedPaymentDao QueuedPaymentDAO */
 		import('classes.payment.ojs.OJSPaymentManager'); // Class definition required for unserializing
 
 		try {
 			$queuedPayment = $queuedPaymentDao->getById($queuedPaymentId = $request->getUserVar('queuedPaymentId'));
-			if (!$queuedPayment) throw new \Exception("Invalid queued payment ID $queuedPaymentId!");
+			if (!$queuedPayment) {
+				// Already fulfilled (likely by webhook) — nothing to do.
+				$request->redirect(null, null, 'index');
+			}
 
 			$this->_initStripe($journal->getId());
 
@@ -196,6 +220,88 @@ class StripePaymentPlugin extends PaymethodPlugin {
 			$templateMgr = TemplateManager::getManager($request);
 			$templateMgr->assign('message', 'plugins.paymethod.stripe.error');
 			$templateMgr->display('frontend/pages/message.tpl');
+		}
+	}
+
+	/**
+	 * Handle incoming Stripe webhook events.
+	 * Verifies the signature using the configured webhook secret,
+	 * then fulfills the payment if it hasn't been already.
+	 * @param $request PKPRequest
+	 */
+	private function _handleWebhook($request) {
+		$journal = $request->getJournal();
+		$contextId = $journal->getId();
+		$webhookSecret = $this->getSetting($contextId, 'webhookSecret');
+
+		// Read the raw POST body (Stripe sends JSON)
+		$payload = @file_get_contents('php://input');
+		$sigHeader = isset($_SERVER['HTTP_STRIPE_SIGNATURE']) ? $_SERVER['HTTP_STRIPE_SIGNATURE'] : '';
+
+		try {
+			$this->_initStripe($contextId);
+
+			// Verify webhook signature if a secret is configured
+			if ($webhookSecret) {
+				$event = \Stripe\Webhook::constructEvent($payload, $sigHeader, $webhookSecret);
+			} else {
+				$event = json_decode($payload);
+			}
+
+			// Only process checkout.session.completed events
+			if ($event->type !== 'checkout.session.completed') {
+				http_response_code(200);
+				echo 'ok';
+				return;
+			}
+
+			$session = $event->data->object;
+
+			// client_reference_id holds the queued payment ID
+			$queuedPaymentId = (int) $session->client_reference_id;
+			if (!$queuedPaymentId) {
+				throw new \Exception('No client_reference_id in webhook session!');
+			}
+
+			$queuedPaymentDao = DAORegistry::getDAO('QueuedPaymentDAO'); /* @var $queuedPaymentDao QueuedPaymentDAO */
+			import('classes.payment.ojs.OJSPaymentManager'); // Class definition required for unserializing
+
+			$queuedPayment = $queuedPaymentDao->getById($queuedPaymentId);
+			if (!$queuedPayment) {
+				// Already fulfilled (idempotent) — return success
+				http_response_code(200);
+				echo 'ok';
+				return;
+			}
+
+			// Verify amount and currency match
+			$expectedAmount = (int) round($queuedPayment->getAmount() * 100);
+			if ((int) $session->amount_total !== $expectedAmount) {
+				throw new \Exception('Webhook amounts (' . ($session->amount_total / 100) . ' vs ' . $queuedPayment->getAmount() . ') don\'t match!');
+			}
+
+			// Inject the payment's user into the request context so that
+			// fulfillQueuedPayment can call $request->getUser()->getId()
+			// (webhooks have no session user).
+			$userDao = DAORegistry::getDAO('UserDAO'); /* @var $userDao UserDAO */
+			$user = $userDao->getById($queuedPayment->getUserId());
+			if ($user) {
+				\Registry::set('user', $user);
+			}
+
+			$paymentManager = Application::getPaymentManager($journal);
+			$paymentManager->fulfillQueuedPayment($request, $queuedPayment, $this->getName());
+
+			http_response_code(200);
+			echo 'ok';
+		} catch (\Stripe\Error\SignatureVerification $e) {
+			error_log('Stripe webhook signature verification failed: ' . $e->getMessage());
+			http_response_code(400);
+			echo 'Invalid signature';
+		} catch (\Exception $e) {
+			error_log('Stripe webhook exception: ' . $e->getMessage());
+			http_response_code(400);
+			echo 'Error';
 		}
 	}
 

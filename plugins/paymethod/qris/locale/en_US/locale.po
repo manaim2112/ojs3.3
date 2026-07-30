@@ -46,3 +46,12 @@ msgstr "Title"
 
 msgid "plugins.paymethod.qris.purchase.fee"
 msgstr "Fee"
+
+msgid "plugins.paymethod.qris.uploadProof"
+msgstr "Upload Proof of Payment"
+
+msgid "plugins.paymethod.qris.uploadProof.description"
+msgstr "Optional: Upload a screenshot or photo of your payment receipt (e.g., transfer confirmation, e-wallet receipt). This will be attached to the notification email sent to the journal manager."
+
+msgid "plugins.paymethod.qris.proofUploaded"
+msgstr "Proof of payment has been uploaded and is attached to this email. It can also be downloaded at: <a href=\"{$proofUrl}\">{$proofUrl}</a>"

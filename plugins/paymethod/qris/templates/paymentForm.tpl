@@ -39,11 +39,23 @@
 		{/if}
 	</div>
 
-	<p>
-		<a class="cmp_button" href="{url page="payment" op="plugin" path="QrisPayment"|to_array:"notify":$queuedPaymentId}" class="action">
-			{translate key="plugins.paymethod.qris.sendNotificationOfPayment"}
-		</a>
-	</p>
+	<form id="qrisPaymentForm" method="post" enctype="multipart/form-data" action="{url page="payment" op="plugin" path="QrisPayment"|to_array:"notify":$queuedPaymentId}">
+		<div class="qris_proof_upload" style="margin:20px 0;">
+			<label for="qrisProofOfPayment" style="font-weight:bold; display:block; margin-bottom:8px;">
+				{translate key="plugins.paymethod.qris.uploadProof"}
+			</label>
+			<p class="description" style="font-size:0.9em; color:#666; margin-bottom:8px;">
+				{translate key="plugins.paymethod.qris.uploadProof.description"}
+			</p>
+			<input type="file" name="qrisProofOfPayment" id="qrisProofOfPayment" accept="image/*,.pdf" style="max-width:100%;" />
+		</div>
+
+		<p>
+			<button type="submit" class="cmp_button">
+				{translate key="plugins.paymethod.qris.sendNotificationOfPayment"}
+			</button>
+		</p>
+	</form>
 </div>
 
 {include file="frontend/components/footer.tpl"}

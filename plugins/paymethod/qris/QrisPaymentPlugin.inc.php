@@ -157,17 +157,36 @@ class QrisPaymentPlugin extends PaymethodPlugin {
 				$mail = new MailTemplate('QRIS_PAYMENT_NOTIFICATION');
 				$mail->setReplyTo(null);
 				$mail->addRecipient($contactEmail, $contactName);
+
+				// Handle proof-of-payment file upload (optional)
+				$proofInfo = '';
+				if ($user && isset($_FILES['qrisProofOfPayment']) && $_FILES['qrisProofOfPayment']['error'] == UPLOAD_ERR_OK) {
+					import('lib.pkp.classes.file.TemporaryFileManager');
+					$temporaryFileManager = new TemporaryFileManager();
+					$temporaryFile = $temporaryFileManager->handleUpload('qrisProofOfPayment', $user->getId());
+					if ($temporaryFile) {
+						$proofFilePath = $temporaryFileManager->getBasePath() . $temporaryFile->getServerFileName();
+						$mail->addAttachment($proofFilePath, $temporaryFile->getOriginalFileName(), $temporaryFile->getFileType());
+						$proofDownloadUrl = $request->url(null, 'payment', 'plugin', array('QrisPayment', 'downloadProof', $queuedPaymentId, $temporaryFile->getId()));
+						$proofInfo = __('plugins.paymethod.qris.proofUploaded', array('proofUrl' => $proofDownloadUrl));
+					}
+				}
+
 				$mail->assignParams(array(
 					'contextName' => htmlspecialchars($context->getLocalizedName()),
 					'userFullName' => htmlspecialchars($user?$user->getFullName():('(' . __('common.none') . ')')),
 					'userName' => htmlspecialchars($user?$user->getUsername():('(' . __('common.none') . ')')),
 					'itemName' => htmlspecialchars($paymentManager->getPaymentName($queuedPayment)),
 					'itemCost' => htmlspecialchars($queuedPayment->getAmount()),
-					'itemCurrencyCode' => $queuedPayment->getCurrencyCode()
+					'itemCurrencyCode' => $queuedPayment->getCurrencyCode(),
+					'proofInfo' => $proofInfo
 				));
 				if ($mail->isEnabled()) {
 					$mail->send();
 				}
+
+				// Fulfill the queued payment so it appears in completed payments / payments tab
+				$paymentManager->fulfillQueuedPayment($request, $queuedPayment, $this->getName());
 
 				$templateMgr->assign(array(
 					'currentUrl' => $request->url(null, null, 'payment', 'plugin', array('notify', $queuedPaymentId)),
@@ -177,6 +196,14 @@ class QrisPaymentPlugin extends PaymethodPlugin {
 					'backLinkLabel' => 'common.continue'
 				));
 				$templateMgr->display('frontend/pages/message.tpl');
+				exit();
+			case 'downloadProof':
+				if ($user) {
+					import('lib.pkp.classes.file.TemporaryFileManager');
+					$temporaryFileManager = new TemporaryFileManager();
+					$temporaryFileId = isset($args[2]) ? (int) $args[2] : 0;
+					$temporaryFileManager->downloadById($temporaryFileId, $user->getId());
+				}
 				exit();
 		}
 		parent::handle($args, $request); // Don't know what to do with it
