@@ -151,10 +151,14 @@ class LoAPlugin extends GenericPlugin {
 			$generatedByUser = $userDao->getById($loa->getGeneratedBy());
 		}
 
+		$user = $request->getUser();
+		$canManage = $user && $user->hasRole([ROLE_ID_MANAGER, ROLE_ID_SITE_ADMIN, ROLE_ID_SUB_EDITOR], $context->getId());
+
 		$smarty->assign([
 			'loa' => $loa,
 			'submissionId' => $submission->getId(),
 			'generatedByUser' => $generatedByUser,
+			'canManage' => $canManage,
 			'loaGenerateUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'generate'),
 			'loaRegenerateUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'regenerate'),
 			'loaRevokeUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'revoke'),

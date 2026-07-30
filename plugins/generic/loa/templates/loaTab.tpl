@@ -25,20 +25,22 @@
 				{translate key="plugins.generic.loa.download"}
 			</a>
 
-			<form method="post" action="{$loaRegenerateUrl|escape}" style="display:inline;" class="loa-confirm-form" data-msg="{translate key="plugins.generic.loa.confirmRegenerate"}">
-				<input type="hidden" name="submissionId" value="{$submissionId|escape}">
-				<button type="submit" class="pkp_button" style="margin-left: 5px;">
-					{translate key="plugins.generic.loa.regenerate"}
-				</button>
-			</form>
-
-			{if $loa->getStatus() == 'active'}
-				<form method="post" action="{$loaRevokeUrl|escape}" style="display:inline;" class="loa-confirm-form" data-msg="{translate key="plugins.generic.loa.confirmRevoke"}">
+			{if $canManage}
+				<form method="post" action="{$loaRegenerateUrl|escape}" style="display:inline;" class="loa-confirm-form" data-msg="{translate key="plugins.generic.loa.confirmRegenerate"}">
 					<input type="hidden" name="submissionId" value="{$submissionId|escape}">
-					<button type="submit" class="pkp_button" style="margin-left: 5px; background-color: #dc3545;">
-						{translate key="plugins.generic.loa.revoke"}
+					<button type="submit" class="pkp_button" style="margin-left: 5px;">
+						{translate key="plugins.generic.loa.regenerate"}
 					</button>
 				</form>
+
+				{if $loa->getStatus() == 'active'}
+					<form method="post" action="{$loaRevokeUrl|escape}" style="display:inline;" class="loa-confirm-form" data-msg="{translate key="plugins.generic.loa.confirmRevoke"}">
+						<input type="hidden" name="submissionId" value="{$submissionId|escape}">
+						<button type="submit" class="pkp_button" style="margin-left: 5px; background-color: #dc3545;">
+							{translate key="plugins.generic.loa.revoke"}
+						</button>
+					</form>
+				{/if}
 			{/if}
 		</div>
 
@@ -61,11 +63,13 @@
 			<p>{translate key="plugins.generic.loa.noLoA"}</p>
 		</div>
 
-		<form method="post" action="{$loaGenerateUrl|escape}">
-			<input type="hidden" name="submissionId" value="{$submissionId|escape}">
-			<button type="submit" class="pkp_button">
-				{translate key="plugins.generic.loa.generate"}
-			</button>
-		</form>
+		{if $canManage}
+			<form method="post" action="{$loaGenerateUrl|escape}">
+				<input type="hidden" name="submissionId" value="{$submissionId|escape}">
+				<button type="submit" class="pkp_button">
+					{translate key="plugins.generic.loa.generate"}
+				</button>
+			</form>
+		{/if}
 	{/if}
 </div>
