@@ -96,7 +96,7 @@ class LoADAO extends DAO {
 		$authorDao = DAORegistry::getDAO('AuthorDAO');
 		$authors = $authorDao->getByPublicationId($publicationId);
 		$names = [];
-		while ($author = $authors->next()) {
+		foreach ($authors as $author) {
 			$names[] = $author->getFullName();
 		}
 		return implode('; ', $names);

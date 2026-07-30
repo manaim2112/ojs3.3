@@ -184,13 +184,14 @@ class LoAHandler extends Handler {
 		$dispatcher = $request->getDispatcher();
 		$loaDao = DAORegistry::getDAO('LoADAO');
 
-		$articles = $loaDao->getPublishedArticlesByJournalId($context->getId());
+		$articles = $loaDao->getPublishedArticlesByJournalId($context->getId())->toArray();
 
 		$templateMgr->assign([
 			'articles' => $articles,
 			'loaGenerateUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'generateFromManagement'),
 			'loaRevokeUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'revokeFromManagement'),
 			'loaViewUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'view'),
+			'csrfToken' => $request->getSession()->getCsrfToken(),
 		]);
 
 		$templateMgr->display(self::$plugin->getTemplateResource('loaManagement.tpl'));
@@ -207,8 +208,18 @@ class LoAHandler extends Handler {
 			$request->redirect(null, 'index');
 		}
 
+		if (!$request->checkCSRF()) {
+			$request->redirect(null, 'loa', 'management');
+		}
+
 		$submissionId = (int) $request->getUserVar('submissionId');
 		if (!$submissionId) {
+			$request->redirect(null, 'loa', 'management');
+		}
+
+		$submissionDao = DAORegistry::getDAO('SubmissionDAO');
+		$submission = $submissionDao->getById($submissionId);
+		if (!$submission || $submission->getData('contextId') != $context->getId()) {
 			$request->redirect(null, 'loa', 'management');
 		}
 
@@ -229,8 +240,18 @@ class LoAHandler extends Handler {
 			$request->redirect(null, 'index');
 		}
 
+		if (!$request->checkCSRF()) {
+			$request->redirect(null, 'loa', 'management');
+		}
+
 		$submissionId = (int) $request->getUserVar('submissionId');
 		if (!$submissionId) {
+			$request->redirect(null, 'loa', 'management');
+		}
+
+		$submissionDao = DAORegistry::getDAO('SubmissionDAO');
+		$submission = $submissionDao->getById($submissionId);
+		if (!$submission || $submission->getData('contextId') != $context->getId()) {
 			$request->redirect(null, 'loa', 'management');
 		}
 

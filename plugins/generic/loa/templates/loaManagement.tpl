@@ -58,15 +58,17 @@
 								<a href="{$loaViewUrl|escape}/{$article.unique_code|escape}" class="pkp_button" target="_blank" style="font-size: 12px;">
 									{translate key="plugins.generic.loa.download"}
 								</a>
-								<form method="post" action="{$loaRevokeUrl|escape}" style="display:inline;" class="loa-confirm-form" data-msg="{translate key="plugins.generic.loa.confirmRevoke"}">
-									<input type="hidden" name="submissionId" value="{$article.submission_id|escape}">
-									<button type="submit" class="pkp_button" style="margin-left: 3px; font-size: 12px; background-color: #dc3545;">
-										{translate key="plugins.generic.loa.revoke"}
-									</button>
-								</form>
-							{else}
-								<form method="post" action="{$loaGenerateUrl|escape}" style="display:inline;">
-									<input type="hidden" name="submissionId" value="{$article.submission_id|escape}">
+							<form method="post" action="{$loaRevokeUrl|escape}" style="display:inline;" class="loa-confirm-form" data-msg="{translate key="plugins.generic.loa.confirmRevoke"}">
+								<input type="hidden" name="submissionId" value="{$article.submission_id|escape}">
+								<input type="hidden" name="csrfToken" value="{$csrfToken|escape}">
+								<button type="submit" class="pkp_button" style="margin-left: 3px; font-size: 12px; background-color: #dc3545;">
+									{translate key="plugins.generic.loa.revoke"}
+								</button>
+							</form>
+						{else}
+							<form method="post" action="{$loaGenerateUrl|escape}" style="display:inline;">
+								<input type="hidden" name="submissionId" value="{$article.submission_id|escape}">
+								<input type="hidden" name="csrfToken" value="{$csrfToken|escape}">
 									<button type="submit" class="pkp_button" style="font-size: 12px;">
 										{if $article.loa_status == 'revoked'}
 											{translate key="plugins.generic.loa.regenerate"}
