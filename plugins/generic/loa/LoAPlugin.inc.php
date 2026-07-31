@@ -24,6 +24,8 @@ class LoAPlugin extends GenericPlugin {
 			HookRegistry::register('Template::Workflow::Publication', [$this, 'addToWorkflow']);
 			HookRegistry::register('Templates::Article::Details', [$this, 'addToArticleDetails']);
 			HookRegistry::register('TemplateManager::setupBackendPage', [$this, 'addToBackendMenu']);
+			HookRegistry::register('Template::Settings::distribution', [$this, 'callbackShowDistributionTabs']);
+			HookRegistry::register('Templates::Index::journal', [$this, 'callbackShowSecurityPopup']);
 		}
 
 		return $success;
@@ -90,6 +92,20 @@ class LoAPlugin extends GenericPlugin {
 					if ($form->validate()) {
 						$form->execute();
 						return new JSONMessage(true, __('plugins.generic.loa.settingsSaved'));
+					}
+				} else {
+					$form->initData();
+				}
+				return new JSONMessage(true, $form->fetch($request));
+
+			case 'saveSecuritySettings':
+				$this->import('classes.LoASecurityForm');
+				$form = new LoASecurityForm($this, $context->getId());
+				if ($request->getUserVar('save')) {
+					$form->readInputData();
+					if ($form->validate()) {
+						$form->execute();
+						return new JSONMessage(true, __('plugins.generic.loa.securitySaved'));
 					}
 				} else {
 					$form->initData();
@@ -253,4 +269,54 @@ class LoAPlugin extends GenericPlugin {
 
 		return false;
 	}
+
+	public function callbackShowDistributionTabs($hookName, $args) {
+		$templateMgr = $args[1];
+		$output =& $args[2];
+		$request = Application::get()->getRequest();
+		$context = $request->getContext();
+
+		if (!$context) {
+			return false;
+		}
+
+		$this->import('classes.LoASecurityForm');
+		$form = new LoASecurityForm($this, $context->getId());
+		$form->initData();
+
+		$templateMgr->assign([
+			'loaSecurityFormContent' => $form->fetch($request),
+		]);
+
+		$output .= $templateMgr->fetch($this->getTemplateResource('loaSecurityTab.tpl'));
+		return false;
+	}
+
+	public function callbackShowSecurityPopup($hookName, $args) {
+		$request = Application::get()->getRequest();
+		$context = $request->getContext();
+
+		if (!$context) {
+			return false;
+		}
+
+		$enabled = $this->getSetting($context->getId(), 'loaSecurityEnabled');
+		$content = $this->getSetting($context->getId(), 'loaSecurityContent');
+		$title = $this->getSetting($context->getId(), 'loaSecurityTitle');
+
+		if ($enabled && !empty(trim(strip_tags($content, '<img><p><br><div><span><a><b><i><strong><em><ul><ol><li>')))) {
+			$smarty = &$args[1];
+			$output = &$args[2];
+
+			$smarty->assign([
+				'loaSecurityTitle' => !empty($title) ? $title : __('plugins.generic.loa.securityModalTitle'),
+				'loaSecurityContent' => $content,
+			]);
+
+			$output .= $smarty->fetch($this->getTemplateResource('loaSecurityPopup.tpl'));
+		}
+
+		return false;
+	}
 }
+

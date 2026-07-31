@@ -160,3 +160,22 @@ msgstr "No published articles found."
 
 msgid "plugins.generic.loa.action"
 msgstr "Action"
+
+msgid "plugins.generic.loa.securityTab"
+msgstr "LoA Security"
+
+msgid "plugins.generic.loa.securityEnableLabel"
+msgstr "Enable LoA Security Information Popup on Journal Homepage"
+
+msgid "plugins.generic.loa.securityTitleLabel"
+msgstr "Information Popup Title"
+
+msgid "plugins.generic.loa.securityContentLabel"
+msgstr "Information Content (HTML / Rich Text Editor)"
+
+msgid "plugins.generic.loa.securitySaved"
+msgstr "LoA Security settings saved successfully."
+
+msgid "plugins.generic.loa.securityModalTitle"
+msgstr "LoA Security Information"
+

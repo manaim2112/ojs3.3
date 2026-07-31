@@ -160,3 +160,22 @@ msgstr "Tidak ada artikel yang telah terbit."
 
 msgid "plugins.generic.loa.action"
 msgstr "Aksi"
+
+msgid "plugins.generic.loa.securityTab"
+msgstr "LoA Security"
+
+msgid "plugins.generic.loa.securityEnableLabel"
+msgstr "Aktifkan Popup Informasi LoA Security di Beranda Jurnal"
+
+msgid "plugins.generic.loa.securityTitleLabel"
+msgstr "Judul Popup Informasi"
+
+msgid "plugins.generic.loa.securityContentLabel"
+msgstr "Konten Informasi (HTML / Rich Text Editor)"
+
+msgid "plugins.generic.loa.securitySaved"
+msgstr "Pengaturan LoA Security berhasil disimpan."
+
+msgid "plugins.generic.loa.securityModalTitle"
+msgstr "Informasi LoA Security"
+
