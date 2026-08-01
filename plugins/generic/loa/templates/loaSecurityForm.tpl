@@ -4,7 +4,7 @@
 	});
 </script>
 
-<form class="pkp_form" id="loaSecurityForm" method="post" action="{url router=$smarty.const.ROUTE_COMPONENT op="manage" category="generic" plugin=$pluginName verb="saveSecuritySettings" save=true}">
+<form class="pkp_form" id="loaSecurityForm" method="post" action="{url router=$smarty.const.ROUTE_COMPONENT component="grid.settings.plugins.SettingsPluginGridHandler" op="manage" category="generic" plugin=$pluginName verb="saveSecuritySettings" save=true}">
 	{csrf}
 	{include file="controllers/notification/inPlaceNotification.tpl" notificationId="loaSecurityFormNotification"}
 
