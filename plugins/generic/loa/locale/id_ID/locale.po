@@ -133,6 +133,7 @@ msgstr "Jabatan Pemimpin Redaksi"
 
 msgid "plugins.generic.loa.signatureCaption"
 msgstr "Mengetahui,"
+
 msgid "plugins.generic.loa.stampCaption"
 msgstr "Stempel Resmi"
 
@@ -141,8 +142,10 @@ msgstr "Pengaturan LoA berhasil disimpan."
 
 msgid "plugins.generic.loa.save"
 msgstr "Simpan Pengaturan"
+
 msgid "plugins.generic.loa.cancel"
 msgstr "Batal"
+
 msgid "plugins.generic.loa.generatedBy"
 msgstr "Dibuat oleh"
 
