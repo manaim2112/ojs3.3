@@ -24,13 +24,16 @@
 {include file="frontend/components/header.tpl" pageTitleTranslated=$pageTitle}
 {include file="frontend/components/breadcrumbs.tpl" currentTitle=$pageTitle}
 
-<div class="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-8 xl:grid-cols-12 gap-8 container mx-auto">
+<div class="dimension-page-shell grid grid-cols-1 md:grid-cols-5 lg:grid-cols-8 xl:grid-cols-12 gap-8 container mx-auto">
 	{include file="frontend/components/sideLeft.tpl"}
 
-	<div class="page page_issue_archive order-1 md:order-2 md:col-span-3 lg:col-span-6 xl:col-span-8 shadow-lg bg-white dark:bg-gray-800 rounded-lg p-6 md:p-8">
-		<div class="text-3xl md:text-5xl text-center font-bold mb-6">
+	<div class="page page_issue_archive dimension-archive order-1 md:order-2 md:col-span-3 lg:col-span-6 xl:col-span-8">
+		<header class="dimension-archive-header">
+			<p class="dimension-eyebrow">{translate key="archive.archives"}</p>
+			<div class="text-3xl md:text-5xl font-bold">
 			{$pageTitle|escape}
-		</div>
+			</div>
+		</header>
 	
 		{* No issues have been published *}
 		{if empty($issues)}
@@ -38,7 +41,7 @@
 	
 		{* List issues *}
 		{else}
-			<ul class="issues_archive p-3">
+			<ul class="issues_archive">
 				{foreach from=$issues item="issue"}
 					<li>
 						{include file="frontend/objects/issue_summary.tpl"}

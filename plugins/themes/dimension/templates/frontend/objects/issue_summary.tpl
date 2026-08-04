@@ -15,7 +15,7 @@
 {assign var=issueSeries value=$issue->getIssueSeries()}
 {assign var=issueCover value=$issue->getLocalizedCoverImageUrl()}
 
-<div class="obj_issue_summary my-4 relative overflow-hidden border-y-3 p-4 border-blue-500 bg-linear-to-tr from-blue-300/20 dark:to-gray-800 dark:text-gray-200 to-white rounded-l-lg after:content-[''] after:block after:clear-both">
+<div class="obj_issue_summary dimension-issue-card">
 
 	{if $issueCover}
 		<a class="cover float-left mr-4 mb-4" href="{url op="view" path=$issue->getBestIssueId()}">
