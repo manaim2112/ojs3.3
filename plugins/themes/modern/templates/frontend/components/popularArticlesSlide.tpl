@@ -1,11 +1,11 @@
 <style>
 .popular_articles_slide {
-    background: #f8f9fc;
+    background: #102a43;
     border-bottom: 1px solid #e9ecef;
-    padding: 24px 0;
+    padding: 32px 0;
 }
 .popular_articles_inner {
-    max-width: 1200px;
+    max-width: 1160px;
     margin: 0 auto;
     padding: 0 16px;
 }
@@ -13,142 +13,73 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 .popular_articles_title {
     font-size: 15px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: #1e293b;
+    color: #f8fafc;
     display: flex;
     align-items: center;
     gap: 8px;
 }
-.popular_articles_title svg {
-    color: #f59e0b;
-}
-.popular_articles_nav {
-    display: flex;
-    gap: 6px;
-}
+.popular_articles_title svg { color: #f5b544; }
+.popular_articles_nav { display: flex; gap: 6px; }
 .pa-nav {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     border-radius: 999px;
-    border: 1px solid #d1d5db;
-    background: #fff;
-    color: #64748b;
+    border: 1px solid rgba(255,255,255,.28);
+    background: rgba(255,255,255,.08);
+    color: #fff;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all .2s;
 }
-.pa-nav:hover {
-    background: #1e293b;
-    color: #fff;
-    border-color: #1e293b;
-}
-.popular_articles_track_wrapper {
-    overflow: hidden;
-    position: relative;
-}
-.popular_articles_track {
-    display: flex;
-    gap: 14px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-bottom: 4px;
-}
-.popular_articles_track::-webkit-scrollbar { display: none; }
+.pa-nav:hover, .pa-nav:focus-visible { background: #f5b544; color: #102a43; border-color: #f5b544; }
+.popular_articles_track_wrapper { overflow: hidden; position: relative; }
+.popular_articles_track { display: flex; transition: transform .55s cubic-bezier(.22,.61,.36,1); }
 .popular_article_card {
-    flex: 0 0 220px;
-    scroll-snap-align: start;
-    background: #fff;
-    border-radius: 12px;
-    border: 1px solid #e9ecef;
+    position: relative;
+    flex: 0 0 100%;
+    min-height: 280px;
+    background: #173f5f;
+    border-radius: 4px;
     overflow: hidden;
     text-decoration: none;
-    transition: all .25s;
     display: flex;
-    flex-direction: column;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    align-items: flex-end;
 }
-.popular_article_card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.08);
-    border-color: #cbd5e1;
-}
-.pac_visual {
-    position: relative;
-    width: 100%;
-    height: 120px;
-    overflow: hidden;
-    background: #e2e8f0;
-}
-.pac_visual img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+.pac_visual { position: absolute; inset: 0; background: #173f5f; }
+.pac_visual img { width: 100%; height: 100%; object-fit: cover; opacity: .72; }
 .pac_visual_fallback {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+    width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: clamp(30px, 7vw, 72px); font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
 }
 .pac_views_badge {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: rgba(0,0,0,0.55);
-    backdrop-filter: blur(4px);
-    color: #fff;
-    font-size: 10px;
-    font-weight: 700;
-    padding: 3px 8px;
-    border-radius: 999px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
+    position: absolute; top: 18px; right: 20px; background: rgba(0,0,0,.55); backdrop-filter: blur(4px);
+    color: #fff; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 999px; display: flex; align-items: center; gap: 4px;
 }
 .pac_body {
-    padding: 12px 14px 14px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+    position: relative; z-index: 1; width: min(720px, 82%); padding: 42px 32px 34px;
+    display: flex; flex-direction: column; gap: 10px; background: linear-gradient(90deg, rgba(16,42,67,.96), rgba(16,42,67,.68), transparent);
 }
-.pac_title {
-    font-size: 13px;
-    font-weight: 700;
-    color: #0f172a;
-    line-height: 1.4;
-    margin: 0 0 4px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+.pac_title { font-size: clamp(22px, 3.5vw, 38px); font-weight: 800; color: #fff; line-height: 1.15; margin: 0; }
+.pac_authors { font-size: 13px; color: rgba(255,255,255,.78); margin: 0; line-height: 1.3; }
+.popular_articles_progress { display: flex; gap: 6px; margin-top: 14px; }
+.popular_articles_dot { width: 28px; height: 3px; padding: 0; border: 0; background: rgba(255,255,255,.3); cursor: pointer; }
+.popular_articles_dot.is-active { background: #f5b544; }
+@media (max-width: 600px) {
+    .popular_articles_slide { padding: 24px 0; }
+    .popular_article_card { min-height: 320px; }
+    .pac_body { width: 100%; padding: 34px 22px 26px; background: linear-gradient(0deg, rgba(16,42,67,.97), rgba(16,42,67,.25), transparent); }
+    .pac_views_badge { top: 14px; right: 14px; }
 }
-.pac_authors {
-    font-size: 11px;
-    color: #64748b;
-    margin: 0;
-    line-height: 1.3;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    margin-top: auto;
-}
+@media (prefers-reduced-motion: reduce) { .popular_articles_track { transition: none; } }
 </style>
 <section class="popular_articles_slide">
     <div class="popular_articles_inner">
@@ -158,16 +89,16 @@
                 Popular Articles
             </h2>
             <div class="popular_articles_nav">
-                <button class="pa-nav pa-nav-prev" aria-label="Previous">
+                <button class="pa-nav pa-nav-prev" aria-label="Previous popular article" type="button">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
                 </button>
-                <button class="pa-nav pa-nav-next" aria-label="Next">
+                <button class="pa-nav pa-nav-next" aria-label="Next popular article" type="button">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                 </button>
             </div>
         </div>
         <div class="popular_articles_track_wrapper">
-            <div class="popular_articles_track">
+            <div class="popular_articles_track" role="region" aria-label="Popular articles" aria-live="polite">
                 {foreach from=$popularArticles item=article}
                 <a href="{$article.url}" class="popular_article_card">
                     <div class="pac_visual">
@@ -194,17 +125,43 @@
                 {/foreach}
             </div>
         </div>
+        <div class="popular_articles_progress" aria-label="Choose a popular article">
+            {foreach from=$popularArticles item=article name=popularArticles}
+                <button class="popular_articles_dot{if $smarty.foreach.popularArticles.first} is-active{/if}" type="button" aria-label="Show popular article {$smarty.foreach.popularArticles.iteration}" aria-current="{if $smarty.foreach.popularArticles.first}true{else}false{/if}"></button>
+            {/foreach}
+        </div>
     </div>
 </section>
 {literal}
 <script>
 (function(){
-    var track = document.querySelector('.popular_articles_track');
+    var root = document.querySelector('.popular_articles_slide');
+    var track = root && root.querySelector('.popular_articles_track');
     if (!track) return;
-    var prev = document.querySelector('.pa-nav-prev');
-    var next = document.querySelector('.pa-nav-next');
-    if (prev) prev.addEventListener('click', function(){ track.scrollBy({left: -240, behavior:'smooth'}); });
-    if (next) next.addEventListener('click', function(){ track.scrollBy({left: 240, behavior:'smooth'}); });
+    var cards = track.querySelectorAll('.popular_article_card');
+    var dots = root.querySelectorAll('.popular_articles_dot');
+    var index = 0;
+    var timer;
+    function show(next) {
+        index = (next + cards.length) % cards.length;
+        track.style.transform = 'translateX(-' + (index * 100) + '%)';
+        dots.forEach(function(dot, i) {
+            dot.classList.toggle('is-active', i === index);
+            dot.setAttribute('aria-current', i === index ? 'true' : 'false');
+        });
+    }
+    function restart() {
+        clearInterval(timer);
+        timer = setInterval(function(){ show(index + 1); }, 6000);
+    }
+    root.querySelector('.pa-nav-prev').addEventListener('click', function(){ show(index - 1); restart(); });
+    root.querySelector('.pa-nav-next').addEventListener('click', function(){ show(index + 1); restart(); });
+    dots.forEach(function(dot, i) { dot.addEventListener('click', function(){ show(i); restart(); }); });
+    root.addEventListener('mouseenter', function(){ clearInterval(timer); });
+    root.addEventListener('mouseleave', restart);
+    root.addEventListener('focusin', function(){ clearInterval(timer); });
+    root.addEventListener('focusout', restart);
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) restart();
 })();
 </script>
 {/literal}
