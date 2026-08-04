@@ -18,7 +18,7 @@
 			<div class="pkp_head_wrapper">
 
 				<div class="pkp_site_name_wrapper">
-					<button class="pkp_site_nav_toggle">
+					<button class="pkp_site_nav_toggle" type="button" aria-expanded="false" aria-controls="siteNavigation" aria-label="{translate key="common.navigation"}">
 						<span></span>
 						<span></span>
 						<span></span>
@@ -38,7 +38,7 @@
 					{/capture}
 					{if $displayPageHeaderLogo}
 						<a href="{$homeUrl}" class="is_img">
-							<img src="{$publicFilesDir}/{$displayPageHeaderLogo.uploadName|escape:"url"}" width="{$displayPageHeaderLogo.width|escape}" height="{$displayPageHeaderLogo.height|escape}" {if $displayPageHeaderLogo.altText != ''}alt="{$displayPageHeaderLogo.altText|escape}"{/if} />
+							<img src="{$publicFilesDir}/{$displayPageHeaderLogo.uploadName|escape:"url"}" width="{$displayPageHeaderLogo.width|escape}" height="{$displayPageHeaderLogo.height|escape}" {if $displayPageHeaderLogo.altText != ''}alt="{$displayPageHeaderLogo.altText|escape}"{else}alt="{$applicationName|escape}"{/if} onerror="this.onerror=null;this.src='{$baseUrl}/templates/images/structure/logo.png';this.classList.add('is-fallback');" />
 						</a>
 					{elseif $displayPageHeaderTitle}
 						<a href="{$homeUrl}" class="is_text">{$displayPageHeaderTitle|escape}</a>
@@ -50,7 +50,7 @@
 					</div>
 				</div>
 
-				<nav class="pkp_site_nav_menu" aria-label="{translate|escape key="common.navigation.site"}">
+				<nav class="pkp_site_nav_menu" id="siteNavigation" aria-label="{translate|escape key="common.navigation.site"}">
 					<a id="siteNav"></a>
 					<div class="pkp_navigation_primary_row">
 						<div class="pkp_navigation_primary_wrapper">

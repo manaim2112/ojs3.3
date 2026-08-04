@@ -6,7 +6,7 @@
 
 	{if !$activeTheme->getOption('useHomepageImageAsHeader') && $homepageImage}
 		<div class="homepage_image">
-			<img src="{$publicFilesDir}/{$homepageImage.uploadName|escape:"url"}"{if $homepageImage.altText} alt="{$homepageImage.altText|escape}"{/if}>
+			<img src="{$publicFilesDir}/{$homepageImage.uploadName|escape:"url"}" width="{$homepageImage.width|default:1200|escape}" height="{$homepageImage.height|default:500|escape}"{if $homepageImage.altText} alt="{$homepageImage.altText|escape}"{else} alt="{$currentContext->getLocalizedName()|escape}"{/if} loading="lazy" onerror="this.onerror=null;this.src='{$baseUrl}/templates/images/structure/logo.png';this.classList.add('is-fallback');">
 		</div>
 	{/if}
 

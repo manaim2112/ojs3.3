@@ -121,11 +121,11 @@
 			{/foreach}
 	{/if}
 	</div>
-	<div class="row grid grid-cols-1 lg:grid-cols-8 gap-4">
+	<div class="row grid grid-cols-1 lg:grid-cols-8 gap-4 lg:gap-8">
 		<div class="main_entry lg:col-span-5">
 
 			{if $publication->getData('authors')}
-				<section class="item authors text-sm py-1 border-y-1">
+				<section class="item authors text-sm py-3 border-y-1">
 					<h2 class="pkp_screen_reader">{translate key="article.authors"}</h2>
 					<ul class="authors">
 					{foreach from=$publication->getData('authors') item=author}
@@ -172,8 +172,8 @@
 			{/if}
 			
 				{if $publication->getData('pub-id::doi')}
-			<div class="text-right mt-2">
-				<a href="https://doi.org/{$publication->getData('pub-id::doi')}" target="_blank" class="inline-flex items-center gap-1">
+			<div class="text-right mt-2 mb-4">
+				<a href="https://doi.org/{$publication->getData('pub-id::doi')}" target="_blank" class="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 transition-colors">
 				<img src="/plugins/generic/badges/images/DOI_logo.svg" class="w-4 h-4" alt="Doi Url"/>
 				https://doi.org/{$publication->getData('pub-id::doi')}
 				</a>
@@ -184,8 +184,8 @@
 
 			{* Keywords *}
 			{if !empty($publication->getLocalizedData('keywords'))}
-			<section class="item keywords">
-				<h2 class="label text-xl my-4">
+			<section class="item keywords py-2">
+				<h2 class="label text-lg my-3">
 					
 				</h2>
 				<span class="value">
@@ -200,8 +200,8 @@
 
 			{* Abstract *}
 			{if $publication->getLocalizedData('abstract')}
-				<section class="item abstract">
-					<h2 class="label text-xl my-4">{translate key="article.abstract"}</h2>
+				<section class="item abstract py-2">
+					<h2 class="label text-lg my-3">{translate key="article.abstract"}</h2>
 					<div class="text-justify">
 					{$publication->getLocalizedData('abstract')|strip_unsafe_html}
 
@@ -273,7 +273,7 @@
 
 		</div><!-- .main_entry -->
 
-		<div class="entry_details lg:col-span-3">
+		<div class="entry_details lg:col-span-3 lg:pl-4">
 
 			{* Article/Issue cover image *}
 			{if $publication->getLocalizedData('coverImage') || ($issue && $issue->getLocalizedCoverImage())}
@@ -327,7 +327,7 @@
 			{/if}
 
 			{if $publication->getData('datePublished')}
-			<div class="item published my-2 border-y-1">
+			<div class="item published my-4 border-y-1">
 				<section class="sub_item">
 					<h2 class="label">
 						{translate key="submissions.published"}
@@ -368,7 +368,7 @@
 
 			{* How to cite *}
 			{if $citation}
-				<div class="item citation my-2 border-y-2">
+				<div class="item citation my-4 border-y-2">
 					<section class="sub_item citation_display">
 						<h2 class="label text-xl font-bold">
 							{translate key="submission.howToCite"}

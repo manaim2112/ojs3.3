@@ -1,0 +1,56 @@
+// Responsive image and hero refinements.
+.page_index_journal .homepage_image {
+	margin: 0 auto;
+	max-width: 1200px;
+	background: @bg-shade;
+}
+
+.page_index_journal .homepage_image img {
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 12 / 5;
+	object-fit: cover;
+}
+
+.page_index_journal .homepage_image img.is-fallback {
+	object-fit: contain;
+	padding: 3rem;
+	opacity: .72;
+}
+
+@media (max-width: @screen-phone) {
+	.page_index_journal .hero-section {
+		padding: 2.5rem @base 2.25rem;
+		text-align: left;
+	}
+
+	.page_index_journal .hero-journal-name {
+		font-size: clamp(1.75rem, 9vw, 2.25rem);
+	}
+
+	.page_index_journal .hero-search form {
+		flex-direction: column;
+		box-shadow: none;
+		gap: .6rem;
+	}
+
+	.page_index_journal .hero-search input[type="text"],
+	.page_index_journal .hero-search button {
+		border-radius: @radius;
+		min-height: 3rem;
+	}
+
+	.page_index_journal .homepage_image img.is-fallback {
+		padding: 2rem;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.page_index_journal .hero-section *,
+	.page_index_journal .hero-section::before,
+	.page_index_journal .hero-section::after {
+		transition: none !important;
+		animation: none !important;
+	}
+}
