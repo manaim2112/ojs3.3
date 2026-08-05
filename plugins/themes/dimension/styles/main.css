@@ -1744,3 +1744,29 @@
 .dark .dis_quality_desc {
   color: #94a3b8;
 }
+
+/* Dimension archive */
+.dimension-archive { min-width: 0; }
+.dimension-archive-header { margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px solid #dbe4ee; }
+.dimension-eyebrow, .dimension-issue-card-label { margin: 0 0 .5rem; color: #0f766e; font-size: .72rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.dimension-archive-list { display: grid; gap: 1.25rem; list-style: none; margin: 0; padding: 0; }
+.dimension-archive-item { min-width: 0; }
+.dimension-issue-card { display: grid; grid-template-columns: minmax(120px, 180px) minmax(0, 1fr); gap: 1.5rem; padding: 1.25rem; border: 1px solid #dbe4ee; border-radius: 1rem; background: #fff; box-shadow: 0 8px 24px rgba(15,23,42,.06); transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
+.dimension-issue-card:hover { border-color: #99f6e4; box-shadow: 0 12px 30px rgba(15,118,110,.12); transform: translateY(-2px); }
+.dimension-issue-card-cover { display: block; aspect-ratio: 3 / 4; overflow: hidden; border-radius: .7rem; background: #e2e8f0; }
+.dimension-issue-card-cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.dimension-issue-card-content { min-width: 0; align-self: center; }
+.dimension-issue-card h2 { margin: 0; font-size: clamp(1.35rem, 2vw, 2rem); line-height: 1.15; }
+.dimension-issue-card .title { color: #12304a; text-decoration: none; }
+.dimension-issue-card .title:hover, .dimension-issue-card .title:focus { color: #0f766e; text-decoration: underline; text-underline-offset: .2em; }
+.dimension-issue-card .series { margin-top: .45rem; color: #64748b; font-size: .9rem; }
+.dimension-issue-card .description { margin-top: 1rem; color: #475569; font-size: .95rem; line-height: 1.65; }
+.dimension-issue-card .description p:last-child { margin-bottom: 0; }
+.dimension-author-orcid { display: inline-flex; align-items: center; gap: .35rem; margin-right: .3rem; vertical-align: middle; }
+.dimension-author-orcid img { width: 1rem; height: 1rem; }
+@media (max-width: 639px) { .dimension-issue-card { grid-template-columns: 88px minmax(0, 1fr); gap: 1rem; padding: 1rem; } .dimension-issue-card h2 { font-size: 1.2rem; } }
+@media (prefers-reduced-motion: reduce) { .dimension-issue-card { transition: none; } }
+.dark .dimension-archive-header, .dark .dimension-issue-card { border-color: #334155; }
+.dark .dimension-issue-card { background: #172033; }
+.dark .dimension-issue-card .title { color: #dbeafe; }
+.dark .dimension-issue-card .description, .dark .dimension-issue-card .series { color: #cbd5e1; }

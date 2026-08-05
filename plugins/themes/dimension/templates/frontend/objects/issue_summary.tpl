@@ -16,35 +16,26 @@
 {assign var=issueCover value=$issue->getLocalizedCoverImageUrl()}
 
 <div class="obj_issue_summary dimension-issue-card">
-
 	{if $issueCover}
-		<a class="cover float-left mr-4 mb-4" href="{url op="view" path=$issue->getBestIssueId()}">
-			<img class="rounded-lg hover:shadow-sm" src="{$issueCover|escape}" alt="{$issue->getLocalizedCoverImageAltText()|escape|default:''}" onerror="this.onerror=null;this.src='https://placehold.co/200x260/f8f9fc/94a3b8?text=No+Cover'">
+		<a class="dimension-issue-card-cover" href="{url op="view" path=$issue->getBestIssueId()}">
+			<img loading="lazy" src="{$issueCover|escape}" alt="{$issue->getLocalizedCoverImageAltText()|escape|default:''}">
 		</a>
-
-		<img class="absolute w-72 blur-lg rotate-45 h-auto right-0 bottom-0 -z-5" loading="lazy"
-			src="{$issueCover|escape}"
-			alt="{$issue->getLocalizedCoverImageAltText()|escape|default:''}"
-			onerror="this.onerror=null;this.style.display='none'"
-		>
 	{/if}
 
-	<h2>
-		<a class="title text-2xl font-bold text-blue-800 dark:text-blue-200" href="{url op="view" path=$issue->getBestIssueId()}">
-			{if $issueTitle}
-				{$issueTitle|escape}
-			{else}
-				{$issueSeries|escape}
-			{/if}
-		</a>
+	<div class="dimension-issue-card-content">
+		<p class="dimension-issue-card-label">{translate key="issue.issue"}</p>
+		<h2>
+			<a class="title" href="{url op="view" path=$issue->getBestIssueId()}">
+				{if $issueTitle}{$issueTitle|escape}{else}{$issueSeries|escape}{/if}
+			</a>
+		</h2>
 		{if $issueTitle && $issueSeries}
-			<div class="series">
-				{$issueSeries|escape}
+			<div class="series">{$issueSeries|escape}</div>
+		{/if}
+		{if $issue->getLocalizedDescription()}
+			<div class="description prose dark:prose-invert">
+				{$issue->getLocalizedDescription()|strip_unsafe_html}
 			</div>
 		{/if}
-	</h2>
-
-	<div class="description prose dark:prose-invert prose-p:my-[2px] w-full text-justify">
-		{$issue->getLocalizedDescription()|strip_unsafe_html}
 	</div>
 </div><!-- .obj_issue_summary -->

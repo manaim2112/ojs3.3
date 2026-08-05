@@ -100,28 +100,7 @@
 			</div>
 		{/if}
 		
-	<div class="my-4 text-center">
-	{if $publication->getData('authors')}
-		{assign var="authorSections" value=$publication->getData('authors')}
-			{foreach from=$authorSections item=author key=idx}
-					<span class="name">
-						{$author->getFullName()|escape}
-						{if $idx+1 < count($authorSections)}, {/if}
-					</span>
-					{if $author->getData('orcid')}
-						<span class="orcid">
-							{if $author->getData('orcidAccessToken')}
-								{$orcidIcon}
-							{/if}
-							<a href="{$author->getData('orcid')|escape}" target="_blank">
-								{$author->getData('orcid')|escape}
-							</a>
-						</span>
-					{/if}
-			{/foreach}
-	{/if}
-	</div>
-	<div class="row grid grid-cols-1 lg:grid-cols-8 gap-4 lg:gap-8">
+	<div class="row grid grid-cols-1 lg:grid-cols-8 gap-8 xl:gap-12">
 		<div class="main_entry lg:col-span-5">
 
 			{if $publication->getData('authors')}
@@ -131,19 +110,12 @@
 					{foreach from=$publication->getData('authors') item=author}
 						<li>
 							<span class="name text-blue-900 dark:text-blue-200">
-							{if $author->getData('orcid')}
-								<span class="orcid">
-									{if $author->getData('orcidAccessToken')}
-										{$orcidIcon}
-									{/if}
-									<a href="{$author->getData('orcid')|escape}" target="_blank">
-										<img loading="lazy" src="https://orcid.org/assets/icons/favicon.ico" style="width:15px; height:15px; display:inline-block; margin-right:10px;"/>
-										{$author->getFullName()|escape}
+								{if $author->getData('orcid')}
+									<a class="dimension-author-orcid" href="{$author->getData('orcid')|escape}" target="_blank" rel="noopener noreferrer" aria-label="ORCID {$author->getFullName()|escape}">
+										<img loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/0/06/ORCID_iD.svg" alt="ORCID">
 									</a>
-								</span>
-							{else}
+								{/if}
 								{$author->getFullName()|escape}
-							{/if}
 							</span>
 							{if $author->getLocalizedData('affiliation')}
 								<span class="affiliation">
@@ -278,18 +250,18 @@
 			{* Article/Issue cover image *}
 			{if $publication->getLocalizedData('coverImage') || ($issue && $issue->getLocalizedCoverImage())}
 				<div class="item cover_image">
-					<div class="sub_item">
+					<div class="sub_item dimension-cover-fallback">
 						{if $publication->getLocalizedData('coverImage')}
 							{assign var="coverImage" value=$publication->getLocalizedData('coverImage')}
 							<img
 								src="{$publication->getLocalizedCoverImageUrl($article->getData('contextId'))|escape}"
 								alt="{$coverImage.altText|escape|default:''}"
-								onerror="this.onerror=null;this.src='https://placehold.co/400x560/f8f9fc/94a3b8?text=No+Cover'"
+								onerror="this.onerror=null;this.style.display='none'"
 							>
 						{else}
 							<a href="{url page="issue" op="view" path=$issue->getBestIssueId()}">
 								<img src="{$issue->getLocalizedCoverImageUrl()|escape}" alt="{$issue->getLocalizedCoverImageAltText()|escape|default:''}"
-									onerror="this.onerror=null;this.src='https://placehold.co/400x560/f8f9fc/94a3b8?text=No+Cover'">
+									onerror="this.onerror=null;this.style.display='none'">
 							</a>
 						{/if}
 					</div>

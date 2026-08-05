@@ -30,9 +30,9 @@
 	<div class="page page_issue_archive dimension-archive order-1 md:order-2 md:col-span-3 lg:col-span-6 xl:col-span-8">
 		<header class="dimension-archive-header">
 			<p class="dimension-eyebrow">{translate key="archive.archives"}</p>
-			<div class="text-3xl md:text-5xl font-bold">
+			<h1 class="text-3xl md:text-5xl font-bold">
 			{$pageTitle|escape}
-			</div>
+			</h1>
 		</header>
 	
 		{* No issues have been published *}
@@ -41,9 +41,9 @@
 	
 		{* List issues *}
 		{else}
-			<ul class="issues_archive">
+			<ul class="issues_archive dimension-archive-list">
 				{foreach from=$issues item="issue"}
-					<li>
+					<li class="dimension-archive-item">
 						{include file="frontend/objects/issue_summary.tpl"}
 					</li>
 				{/foreach}
