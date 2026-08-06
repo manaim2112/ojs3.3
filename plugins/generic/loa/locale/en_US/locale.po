@@ -231,7 +231,7 @@ msgid "plugins.generic.loa.templateForm"
 msgstr "LoA Template"
 
 msgid "plugins.generic.loa.templateFormDescription"
-msgstr "Use the placeholder tokens [[article_title]], [[authors]], [[journal_name]], [[unique_code]], [[date_generated]], [[status]], [[editor_in_chief_name]], [[editor_in_chief_title]], [[base_url]] and [[current_locale]] inside the content."
+msgstr "Use placeholder tokens inside the content. Available tokens (see list below): [[article_title]], [[authors]], [[journal_name]], [[e_issn]], [[p_issn]], [[unique_code]], [[date_generated]], [[status]], [[editor_in_chief_name]], [[editor_in_chief_title]], [[base_url]], [[current_locale]], [[validation_url]] and [[qr_code]]."
 
 msgid "plugins.generic.loa.templateName"
 msgstr "Template Name"
@@ -243,7 +243,61 @@ msgid "plugins.generic.loa.templateContent"
 msgstr "Template Content"
 
 msgid "plugins.generic.loa.templateContentHelp"
-msgstr "HTML content of the template. Available placeholder tokens are listed in the description."
+msgstr "HTML content of the template. Available placeholder tokens are listed below."
+
+msgid "plugins.generic.loa.tokensTitle"
+msgstr "Available Tokens"
+
+msgid "plugins.generic.loa.tokensHelp"
+msgstr "Place these tokens inside the template content. On generation they will be replaced with real values."
+
+msgid "plugins.generic.loa.tokenColumn"
+msgstr "Token"
+
+msgid "plugins.generic.loa.tokenDescriptionColumn"
+msgstr "Description"
+
+msgid "plugins.generic.loa.tokenArticleTitle"
+msgstr "Article title"
+
+msgid "plugins.generic.loa.tokenAuthors"
+msgstr "List of author names"
+
+msgid "plugins.generic.loa.tokenJournalName"
+msgstr "Journal name"
+
+msgid "plugins.generic.loa.tokenEIssn"
+msgstr "Electronic ISSN (e-ISSN) of the journal"
+
+msgid "plugins.generic.loa.tokenPIssn"
+msgstr "Print ISSN (p-ISSN) of the journal"
+
+msgid "plugins.generic.loa.tokenUniqueCode"
+msgstr "Unique LoA code"
+
+msgid "plugins.generic.loa.tokenDateGenerated"
+msgstr "Date the LoA was generated"
+
+msgid "plugins.generic.loa.tokenStatus"
+msgstr "LoA status (active / revoked)"
+
+msgid "plugins.generic.loa.tokenEditorInChiefName"
+msgstr "Editor in Chief name (plugin setting)"
+
+msgid "plugins.generic.loa.tokenEditorInChiefTitle"
+msgstr "Editor in Chief title (plugin setting)"
+
+msgid "plugins.generic.loa.tokenBaseUrl"
+msgstr "Site base URL"
+
+msgid "plugins.generic.loa.tokenCurrentLocale"
+msgstr "Current frontend language code"
+
+msgid "plugins.generic.loa.tokenValidationUrl"
+msgstr "Public URL to verify this LoA"
+
+msgid "plugins.generic.loa.tokenQrCode"
+msgstr "QR code image linking to the LoA validation URL"
 
 msgid "plugins.generic.loa.backToManagement"
 msgstr "Back to LoA Management"

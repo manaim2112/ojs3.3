@@ -231,7 +231,7 @@ msgid "plugins.generic.loa.templateForm"
 msgstr "Template LoA"
 
 msgid "plugins.generic.loa.templateFormDescription"
-msgstr "Gunakan token placeholder [[article_title]], [[authors]], [[journal_name]], [[unique_code]], [[date_generated]], [[status]], [[editor_in_chief_name]], [[editor_in_chief_title]], [[base_url]], dan [[current_locale]] di dalam konten."
+msgstr "Gunakan token placeholder di dalam konten. Token yang tersedia (lihat daftar di bawah): [[article_title]], [[authors]], [[journal_name]], [[e_issn]], [[p_issn]], [[unique_code]], [[date_generated]], [[status]], [[editor_in_chief_name]], [[editor_in_chief_title]], [[base_url]], [[current_locale]], [[validation_url]], dan [[qr_code]]."
 
 msgid "plugins.generic.loa.templateName"
 msgstr "Nama Template"
@@ -243,7 +243,61 @@ msgid "plugins.generic.loa.templateContent"
 msgstr "Konten Template"
 
 msgid "plugins.generic.loa.templateContentHelp"
-msgstr "Konten HTML dari template. Token placeholder yang tersedia tercantum di bagian deskripsi."
+msgstr "Konten HTML dari template. Token placeholder yang tersedia tercantum di bawah ini."
+
+msgid "plugins.generic.loa.tokensTitle"
+msgstr "Token yang Tersedia"
+
+msgid "plugins.generic.loa.tokensHelp"
+msgstr "Letakkan token ini di dalam konten template. Saat generate, token akan diganti dengan nilai sesungguhnya."
+
+msgid "plugins.generic.loa.tokenColumn"
+msgstr "Token"
+
+msgid "plugins.generic.loa.tokenDescriptionColumn"
+msgstr "Keterangan"
+
+msgid "plugins.generic.loa.tokenArticleTitle"
+msgstr "Judul artikel"
+
+msgid "plugins.generic.loa.tokenAuthors"
+msgstr "Daftar nama penulis"
+
+msgid "plugins.generic.loa.tokenJournalName"
+msgstr "Nama jurnal"
+
+msgid "plugins.generic.loa.tokenEIssn"
+msgstr "ISSN elektronik (e-ISSN) jurnal"
+
+msgid "plugins.generic.loa.tokenPIssn"
+msgstr "ISSN cetak (p-ISSN) jurnal"
+
+msgid "plugins.generic.loa.tokenUniqueCode"
+msgstr "Kode unik LoA"
+
+msgid "plugins.generic.loa.tokenDateGenerated"
+msgstr "Tanggal LoA dibuat"
+
+msgid "plugins.generic.loa.tokenStatus"
+msgstr "Status LoA (aktif / dicabut)"
+
+msgid "plugins.generic.loa.tokenEditorInChiefName"
+msgstr "Nama Editor in Chief (pengaturan plugin)"
+
+msgid "plugins.generic.loa.tokenEditorInChiefTitle"
+msgstr "Jabatan Editor in Chief (pengaturan plugin)"
+
+msgid "plugins.generic.loa.tokenBaseUrl"
+msgstr "URL dasar situs"
+
+msgid "plugins.generic.loa.tokenCurrentLocale"
+msgstr "Kode bahasa frontend saat ini"
+
+msgid "plugins.generic.loa.tokenValidationUrl"
+msgstr "URL publik untuk memverifikasi LoA ini"
+
+msgid "plugins.generic.loa.tokenQrCode"
+msgstr "Gambar QR code yang menautkan ke URL validasi LoA"
 
 msgid "plugins.generic.loa.backToManagement"
 msgstr "Kembali ke Manajemen LoA"

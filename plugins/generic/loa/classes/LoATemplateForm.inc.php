@@ -26,6 +26,22 @@ class LoATemplateForm extends Form {
 
 		$this->setData('templateId', $templateId);
 		$this->setData('saveUrl', $saveUrl);
+		$this->setData('availableTokens', [
+			'[[article_title]]' => 'plugins.generic.loa.tokenArticleTitle',
+			'[[authors]]' => 'plugins.generic.loa.tokenAuthors',
+			'[[journal_name]]' => 'plugins.generic.loa.tokenJournalName',
+			'[[e_issn]]' => 'plugins.generic.loa.tokenEIssn',
+			'[[p_issn]]' => 'plugins.generic.loa.tokenPIssn',
+			'[[unique_code]]' => 'plugins.generic.loa.tokenUniqueCode',
+			'[[date_generated]]' => 'plugins.generic.loa.tokenDateGenerated',
+			'[[status]]' => 'plugins.generic.loa.tokenStatus',
+			'[[editor_in_chief_name]]' => 'plugins.generic.loa.tokenEditorInChiefName',
+			'[[editor_in_chief_title]]' => 'plugins.generic.loa.tokenEditorInChiefTitle',
+			'[[base_url]]' => 'plugins.generic.loa.tokenBaseUrl',
+			'[[current_locale]]' => 'plugins.generic.loa.tokenCurrentLocale',
+			'[[validation_url]]' => 'plugins.generic.loa.tokenValidationUrl',
+			'[[qr_code]]' => 'plugins.generic.loa.tokenQrCode',
+		]);
 	}
 
 	function initData() {

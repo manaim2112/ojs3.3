@@ -341,10 +341,18 @@ class LoAPlugin extends GenericPlugin {
 			}
 		}
 
+		$validationUrl = '';
+		if ($context && $request && $loa) {
+			$dispatcher = $request->getDispatcher();
+			$validationUrl = $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'view', [$loa->getUniqueCode()]);
+		}
+
 		return [
 			'[[article_title]]' => $publication ? $publication->getLocalizedTitle() : '',
 			'[[authors]]' => $authorNames,
 			'[[journal_name]]' => $context ? $context->getLocalizedData('name') : '',
+			'[[e_issn]]' => $context ? (string) $context->getData('onlineIssn') : '',
+			'[[p_issn]]' => $context ? (string) $context->getData('printIssn') : '',
 			'[[unique_code]]' => $loa ? $loa->getUniqueCode() : '',
 			'[[date_generated]]' => $loa ? $loa->getDateGenerated() : '',
 			'[[status]]' => $loa ? $loa->getStatus() : '',
@@ -352,6 +360,8 @@ class LoAPlugin extends GenericPlugin {
 			'[[editor_in_chief_title]]' => $context ? (string) $this->getSetting($context->getId(), 'editorInChiefTitle') : '',
 			'[[base_url]]' => $request ? $request->getBaseUrl() : '',
 			'[[current_locale]]' => AppLocale::getLocale(),
+			'[[validation_url]]' => $validationUrl,
+			'[[qr_code]]' => $validationUrl !== '' ? '<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode($validationUrl) . '" alt="QR Code" />' : '',
 		];
 	}
 
