@@ -1,7 +1,9 @@
 <?php
 
 import('lib.pkp.classes.plugins.GenericPlugin');
+import('classes.i18n.AppLocale');
 import('plugins.generic.loa.classes.LoADAO');
+import('plugins.generic.loa.classes.LoATemplateDAO');
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Database\Schema\Blueprint;
@@ -19,6 +21,8 @@ class LoAPlugin extends GenericPlugin {
 			$this->runMigration();
 			$loaDao = new LoADAO();
 			DAORegistry::registerDAO('LoADAO', $loaDao);
+			$loaTemplateDao = new LoATemplateDAO();
+			DAORegistry::registerDAO('LoATemplateDAO', $loaTemplateDao);
 
 			HookRegistry::register('LoadHandler', [$this, 'callbackHandleContent']);
 			HookRegistry::register('Template::Workflow::Publication', [$this, 'addToWorkflow']);
@@ -39,20 +43,18 @@ class LoAPlugin extends GenericPlugin {
 	}
 
 	private function runMigration() {
-		if (!Capsule::schema()->hasTable('article_loa_codes')) {
+		try {
 			$migration = $this->getInstallMigration();
 			$migration->up();
+		} catch (\Throwable $e) {
+			error_log('LoA runMigration() FAILED: ' . get_class($e) . ': ' . $e->getMessage());
 		}
 	}
 
 	private function runUpgradeMigration() {
+		$this->runMigration();
 		if (!Capsule::schema()->hasTable('article_loa_codes')) {
 			return;
-		}
-		if (!Capsule::schema()->hasColumn('article_loa_codes', 'generated_by')) {
-			Capsule::schema()->table('article_loa_codes', function (Blueprint $table) {
-				$table->bigInteger('generated_by')->nullable();
-			});
 		}
 		try {
 			Capsule::schema()->table('article_loa_codes', function (Blueprint $table) {
@@ -216,15 +218,22 @@ class LoAPlugin extends GenericPlugin {
 			'isCurrent' => $request->getRequestedPage() === 'loa' && $request->getRequestedOp() === 'management',
 		];
 
+		$loaTemplatesLink = [
+			'name' => __('plugins.generic.loa.templates'),
+			'url' => $router->url($request, $context->getPath(), 'loa', 'templates'),
+			'isCurrent' => $request->getRequestedPage() === 'loa' && $request->getRequestedOp() === 'templates',
+		];
+
 		$index = array_search('issues', array_keys($menu));
 		if ($index === false) {
 			$index = array_search('submissions', array_keys($menu));
 		}
 		if ($index === false || count($menu) <= ($index + 1)) {
 			$menu['loa'] = $loaLink;
+			$menu['loaTemplates'] = $loaTemplatesLink;
 		} else {
 			$menu = array_slice($menu, 0, $index + 1, true) +
-					['loa' => $loaLink] +
+					['loa' => $loaLink, 'loaTemplates' => $loaTemplatesLink] +
 					array_slice($menu, $index + 1, null, true);
 		}
 
@@ -317,6 +326,135 @@ class LoAPlugin extends GenericPlugin {
 		}
 
 		return false;
+	}
+
+	public function getLoATemplateTokens($loa, $submission, $publication, $context, $request) {
+		$authorNames = '';
+		if ($publication) {
+			$authors = $publication->getData('authors');
+			if ($authors) {
+				$names = [];
+				foreach ($authors as $author) {
+					$names[] = $author->getFullName();
+				}
+				$authorNames = implode(', ', $names);
+			}
+		}
+
+		return [
+			'[[article_title]]' => $publication ? $publication->getLocalizedTitle() : '',
+			'[[authors]]' => $authorNames,
+			'[[journal_name]]' => $context ? $context->getLocalizedData('name') : '',
+			'[[unique_code]]' => $loa ? $loa->getUniqueCode() : '',
+			'[[date_generated]]' => $loa ? $loa->getDateGenerated() : '',
+			'[[status]]' => $loa ? $loa->getStatus() : '',
+			'[[editor_in_chief_name]]' => $context ? (string) $this->getSetting($context->getId(), 'editorInChiefName') : '',
+			'[[editor_in_chief_title]]' => $context ? (string) $this->getSetting($context->getId(), 'editorInChiefTitle') : '',
+			'[[base_url]]' => $request ? $request->getBaseUrl() : '',
+			'[[current_locale]]' => AppLocale::getLocale(),
+		];
+	}
+
+	public function substituteLoATemplateTokens($templateContent, array $tokens) {
+		foreach ($tokens as $token => $value) {
+			$templateContent = str_replace($token, $value, $templateContent);
+		}
+		return $templateContent;
+	}
+
+	/**
+	 * Extract a renderable fragment from a (possibly full) HTML document.
+	 * Returns ['style' => combined <style> blocks, 'html' => <body> content
+	 * (or the whole input minus document scaffolding when no <body>)].
+	 */
+	public function extractTemplateFragment($html) {
+		if ($html === null || trim($html) === '') {
+			return ['style' => '', 'html' => ''];
+		}
+
+		$styleBlocks = [];
+
+		if (preg_match('/<body[^>]*>(.*)<\/body>/is', $html, $matches)) {
+			$body = $matches[1];
+			if (preg_match_all('/<style[^>]*>(.*?)<\/style>/is', $html, $matches)) {
+				foreach ($matches[1] as $block) {
+					if (trim($block) !== '') {
+						$styleBlocks[] = trim($block);
+					}
+				}
+			}
+		} else {
+			$body = $html;
+			$body = preg_replace('/<!DOCTYPE[^>]*>/i', '', $body);
+			$body = preg_replace('/<\/?(html|head)[^>]*>/i', '', $body);
+
+			$body = preg_replace_callback('/<style[^>]*>(.*?)<\/style>/is', function ($matches) use (&$styleBlocks) {
+				if (trim($matches[1]) !== '') {
+					$styleBlocks[] = trim($matches[1]);
+				}
+				return '';
+			}, $body);
+
+			if (preg_match('/<([a-z][a-z0-9]*)[^>]*>/is', $body, $m, PREG_OFFSET_CAPTURE)) {
+				$pos = $m[0][1];
+				$headRaw = trim(substr($body, 0, $pos));
+				$body = substr($body, $pos);
+				if ($headRaw !== '') {
+					$styleBlocks[] = $headRaw;
+				}
+			}
+		}
+
+		$style = $styleBlocks ? '<style>' . implode("\n", $styleBlocks) . '</style>' : '';
+
+		return ['style' => trim($style), 'html' => trim($body)];
+	}
+
+	public function generateLoAWithSnapshot($submissionId, $context, $userId, $request) {
+		$loaDao = DAORegistry::getDAO('LoADAO');
+		$loa = $loaDao->generateCode($submissionId, $context->getId(), $userId);
+
+		if ($loa && $loa->getContentSnapshot() === null) {
+			$loaTemplateDao = DAORegistry::getDAO('LoATemplateDAO');
+			$activeTemplate = $loaTemplateDao->getActiveByJournalId($context->getId());
+			if ($activeTemplate) {
+				$submissionDao = DAORegistry::getDAO('SubmissionDAO');
+				$submission = $submissionDao->getById($submissionId);
+				$publication = $submission ? $submission->getCurrentPublication() : null;
+				$tokens = $this->getLoATemplateTokens($loa, $submission, $publication, $context, $request);
+				$html = $this->substituteLoATemplateTokens($activeTemplate->getTemplateContent(), $tokens);
+				$frag = $this->extractTemplateFragment($html);
+				$loa->setTemplateId($activeTemplate->getTemplateId());
+				$loa->setContentSnapshot($loaDao->compressSnapshot($frag['style'] . "\n" . $frag['html']));
+				$loaDao->updateObject($loa);
+			}
+		}
+
+		return $loa;
+	}
+
+	public function regenerateLoAWithSnapshot($submissionId, $context, $userId, $request) {
+		$loaDao = DAORegistry::getDAO('LoADAO');
+		$loaDao->revokeBySubmissionId($submissionId);
+		return $this->generateLoAWithSnapshot($submissionId, $context, $userId, $request);
+	}
+
+	public function sanitizeHtml($html) {
+		if ($html === null || trim($html) === '') {
+			return '';
+		}
+
+		$html = preg_replace('/\son[a-z]+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $html);
+		$html = preg_replace_callback('/\bstyle\s*=\s*(["\'])(.*?)\1/i', function ($m) {
+			$value = $m[2];
+			$value = preg_replace('/expression\s*\(/i', '', $value);
+			$value = preg_replace('/\bjavascript\s*:/i', '', $value);
+			$value = preg_replace('/\bbase64\s*:/i', '', $value);
+			return 'style="' . $value . '"';
+		}, $html);
+		$html = preg_replace('/<(a|img)[^>]*\b(href|src)\s*=\s*(["\'])\s*(javascript|data):[^"\']*\3[^>]*>/i', '<$1>', $html);
+
+		return $html;
 	}
 }
 

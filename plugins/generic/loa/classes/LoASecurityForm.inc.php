@@ -55,7 +55,7 @@ class LoASecurityForm extends Form {
 
 		$plugin->updateSetting($contextId, 'loaSecurityEnabled', (bool)$this->getData('loaSecurityEnabled'), 'bool');
 		$plugin->updateSetting($contextId, 'loaSecurityTitle', $this->getData('loaSecurityTitle'), 'string');
-		$plugin->updateSetting($contextId, 'loaSecurityContent', $this->getData('loaSecurityContent'), 'string');
+		$plugin->updateSetting($contextId, 'loaSecurityContent', $plugin->sanitizeHtml($this->getData('loaSecurityContent')), 'string');
 
 		parent::execute(...$functionArgs);
 	}

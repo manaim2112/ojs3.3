@@ -6,6 +6,9 @@ import('plugins.generic.loa.classes.LoA');
 
 class LoADAO extends DAO {
 
+	private $_issueCache = [];
+	private $_authorsCache = [];
+
 	public function getById($loaId) {
 		$result = $this->retrieve(
 			'SELECT * FROM article_loa_codes WHERE loa_id = ?',
@@ -74,16 +77,25 @@ class LoADAO extends DAO {
 			WHERE s.context_id = ? AND s.status = ?
 			ORDER BY p.date_published DESC';
 		$params = [(int) STATUS_PUBLISHED, (int) $journalId, (int) STATUS_PUBLISHED];
-		$countSql = $sql;
+		$countSql = 'SELECT s.submission_id
+			FROM submissions s
+				JOIN publications p ON s.current_publication_id = p.publication_id AND p.status = ?
+			WHERE s.context_id = ? AND s.status = ?';
 		$result = $this->retrieveRange($sql, $params, $rangeInfo);
 		return new DAOResultFactory($result, $this, '_fromArticleRow', [], $countSql, $params, $rangeInfo);
 	}
 
 	public function getIssueData($issueId) {
+		$issueId = (int) $issueId;
+		if (isset($this->_issueCache[$issueId])) {
+			return $this->_issueCache[$issueId];
+		}
 		$issueDao = DAORegistry::getDAO('IssueDAO');
-		$issue = $issueDao->getById((int) $issueId);
-		if (!$issue) return null;
-		return [
+		$issue = $issueDao->getById($issueId);
+		if (!$issue) {
+			return $this->_issueCache[$issueId] = null;
+		}
+		return $this->_issueCache[$issueId] = [
 			'id' => $issue->getId(),
 			'title' => $issue->getLocalizedTitle(),
 			'volume' => $issue->getVolume(),
@@ -93,13 +105,17 @@ class LoADAO extends DAO {
 	}
 
 	public function getAuthorsByPublicationId($publicationId) {
+		$publicationId = (int) $publicationId;
+		if (isset($this->_authorsCache[$publicationId])) {
+			return $this->_authorsCache[$publicationId];
+		}
 		$authorDao = DAORegistry::getDAO('AuthorDAO');
 		$authors = $authorDao->getByPublicationId($publicationId);
 		$names = [];
 		foreach ($authors as $author) {
 			$names[] = $author->getFullName();
 		}
-		return implode('; ', $names);
+		return $this->_authorsCache[$publicationId] = implode('; ', $names);
 	}
 
 	public function _fromArticleRow($row) {
@@ -115,8 +131,8 @@ class LoADAO extends DAO {
 
 	public function insertObject($loa) {
 		$this->update(
-			'INSERT INTO article_loa_codes (journal_id, submission_id, unique_code, date_generated, date_downloaded, status, generated_by)
-			 VALUES (?, ?, ?, ?, ?, ?, ?)',
+			'INSERT INTO article_loa_codes (journal_id, submission_id, unique_code, date_generated, date_downloaded, status, generated_by, template_id, content_snapshot)
+			 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
 			[
 				(int) $loa->getJournalId(),
 				(int) $loa->getSubmissionId(),
@@ -125,6 +141,8 @@ class LoADAO extends DAO {
 				$loa->getDateDownloaded(),
 				$loa->getStatus(),
 				$loa->getGeneratedBy() ? (int) $loa->getGeneratedBy() : null,
+				$loa->getTemplateId() ? (int) $loa->getTemplateId() : null,
+				$loa->getContentSnapshot(),
 			]
 		);
 		$loa->setLoaId($this->getInsertId());
@@ -135,7 +153,8 @@ class LoADAO extends DAO {
 		$this->update(
 			'UPDATE article_loa_codes
 			 SET journal_id = ?, submission_id = ?, unique_code = ?,
-			     date_generated = ?, date_downloaded = ?, status = ?, generated_by = ?
+			     date_generated = ?, date_downloaded = ?, status = ?, generated_by = ?,
+			     template_id = ?, content_snapshot = ?
 			 WHERE loa_id = ?',
 			[
 				(int) $loa->getJournalId(),
@@ -145,6 +164,8 @@ class LoADAO extends DAO {
 				$loa->getDateDownloaded(),
 				$loa->getStatus(),
 				$loa->getGeneratedBy() ? (int) $loa->getGeneratedBy() : null,
+				$loa->getTemplateId() ? (int) $loa->getTemplateId() : null,
+				$loa->getContentSnapshot(),
 				(int) $loa->getLoaId(),
 			]
 		);
@@ -164,7 +185,7 @@ class LoADAO extends DAO {
 		);
 	}
 
-	public function generateCode($submissionId, $journalId, $userId = null) {
+	public function generateCode($submissionId, $journalId, $userId = null, $templateId = null, $contentSnapshot = null) {
 		$loa = $this->getBySubmissionId($submissionId);
 		if ($loa) {
 			return $loa;
@@ -181,13 +202,33 @@ class LoADAO extends DAO {
 		$loa->setDateDownloaded(null);
 		$loa->setStatus('active');
 		$loa->setGeneratedBy($userId);
+		$loa->setTemplateId($templateId);
+		$loa->setContentSnapshot($contentSnapshot);
 
 		return $this->insertObject($loa);
 	}
 
-	public function regenerateCode($submissionId, $journalId, $userId = null) {
+	public function regenerateCode($submissionId, $journalId, $userId = null, $templateId = null, $contentSnapshot = null) {
 		$this->revokeBySubmissionId($submissionId);
-		return $this->generateCode($submissionId, $journalId, $userId);
+		return $this->generateCode($submissionId, $journalId, $userId, $templateId, $contentSnapshot);
+	}
+
+	public function compressSnapshot($html) {
+		if ($html === null || trim($html) === '') {
+			return null;
+		}
+		return base64_encode(gzcompress($html, 9));
+	}
+
+	public function decompressSnapshot($compressed) {
+		if ($compressed === null || trim($compressed) === '') {
+			return null;
+		}
+		$decoded = base64_decode($compressed);
+		if ($decoded === false) {
+			return null;
+		}
+		return gzuncompress($decoded) ?: null;
 	}
 
 	public function newDataObject() {
@@ -208,6 +249,8 @@ class LoADAO extends DAO {
 		$loa->setDateDownloaded($row['date_downloaded']);
 		$loa->setStatus($row['status']);
 		$loa->setGeneratedBy($row['generated_by'] ?? null);
+		$loa->setTemplateId($row['template_id'] ?? null);
+		$loa->setContentSnapshot($row['content_snapshot'] ?? null);
 		return $loa;
 	}
 }

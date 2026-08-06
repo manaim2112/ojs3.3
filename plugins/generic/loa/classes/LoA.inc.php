@@ -65,4 +65,20 @@ class LoA extends DataObject {
 	public function setGeneratedBy($generatedBy) {
 		$this->setData('generatedBy', $generatedBy);
 	}
+
+	public function getTemplateId() {
+		return $this->getData('templateId');
+	}
+
+	public function setTemplateId($templateId) {
+		$this->setData('templateId', $templateId);
+	}
+
+	public function getContentSnapshot() {
+		return $this->getData('contentSnapshot');
+	}
+
+	public function setContentSnapshot($contentSnapshot) {
+		$this->setData('contentSnapshot', $contentSnapshot);
+	}
 }

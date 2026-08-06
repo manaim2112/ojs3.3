@@ -131,6 +131,18 @@ msgstr "Nama Pemimpin Redaksi / Editor-in-Chief"
 msgid "plugins.generic.loa.editorInChiefTitle"
 msgstr "Jabatan Pemimpin Redaksi"
 
+msgid "plugins.generic.loa.loaHeaderImageUrl"
+msgstr "URL Gambar Header (fallback file-template)"
+
+msgid "plugins.generic.loa.loaIndexingImageUrl"
+msgstr "URL Gambar Logo Pengindeksan (fallback file-template)"
+
+msgid "plugins.generic.loa.loaIssn"
+msgstr "ISSN (fallback file-template)"
+
+msgid "plugins.generic.loa.loaUniversityName"
+msgstr "Nama Universitas / Afiliasi (fallback file-template)"
+
 msgid "plugins.generic.loa.signatureCaption"
 msgstr "Mengetahui,"
 
@@ -181,4 +193,61 @@ msgstr "Pengaturan LoA Security berhasil disimpan."
 
 msgid "plugins.generic.loa.securityModalTitle"
 msgstr "Informasi LoA Security"
+
+msgid "plugins.generic.loa.templates"
+msgstr "Template LoA"
+
+msgid "plugins.generic.loa.templatesDescription"
+msgstr "Kelola template Letter of Acceptance untuk jurnal ini. Template yang aktif akan dipakai saat membuat dokumen LoA baru."
+
+msgid "plugins.generic.loa.addTemplate"
+msgstr "Tambah Template"
+
+msgid "plugins.generic.loa.editTemplate"
+msgstr "Ubah"
+
+msgid "plugins.generic.loa.deleteTemplate"
+msgstr "Hapus"
+
+msgid "plugins.generic.loa.activateTemplate"
+msgstr "Aktifkan"
+
+msgid "plugins.generic.loa.activateTemplateLabel"
+msgstr "Aktivasi"
+
+msgid "plugins.generic.loa.confirmDeleteTemplate"
+msgstr "Apakah Anda yakin ingin menghapus template ini? Dokumen LoA yang sudah terbit tidak terpengaruh."
+
+msgid "plugins.generic.loa.statusInactive"
+msgstr "Tidak Aktif"
+
+msgid "plugins.generic.loa.noTemplates"
+msgstr "Belum ada template. Tambahkan satu untuk memulai."
+
+msgid "plugins.generic.loa.dateModified"
+msgstr "Terakhir dimodifikasi"
+
+msgid "plugins.generic.loa.templateForm"
+msgstr "Template LoA"
+
+msgid "plugins.generic.loa.templateFormDescription"
+msgstr "Gunakan token placeholder [[article_title]], [[authors]], [[journal_name]], [[unique_code]], [[date_generated]], [[status]], [[editor_in_chief_name]], [[editor_in_chief_title]], [[base_url]], dan [[current_locale]] di dalam konten."
+
+msgid "plugins.generic.loa.templateName"
+msgstr "Nama Template"
+
+msgid "plugins.generic.loa.templateNameRequired"
+msgstr "Nama template wajib diisi."
+
+msgid "plugins.generic.loa.templateContent"
+msgstr "Konten Template"
+
+msgid "plugins.generic.loa.templateContentHelp"
+msgstr "Konten HTML dari template. Token placeholder yang tersedia tercantum di bagian deskripsi."
+
+msgid "plugins.generic.loa.backToManagement"
+msgstr "Kembali ke Manajemen LoA"
+
+msgid "plugins.generic.loa.backToTemplates"
+msgstr "Kembali ke Template"
 

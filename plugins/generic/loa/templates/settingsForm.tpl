@@ -18,6 +18,22 @@
 		{fbvFormSection title="plugins.generic.loa.editorInChiefTitle"}
 			{fbvElement type="text" id="editorInChiefTitle" value=$editorInChiefTitle maxlength="255"}
 		{/fbvFormSection}
+
+		{fbvFormSection title="plugins.generic.loa.loaHeaderImageUrl"}
+			{fbvElement type="text" id="loaHeaderImageUrl" value=$loaHeaderImageUrl maxlength="500"}
+		{/fbvFormSection}
+
+		{fbvFormSection title="plugins.generic.loa.loaIndexingImageUrl"}
+			{fbvElement type="text" id="loaIndexingImageUrl" value=$loaIndexingImageUrl maxlength="500"}
+		{/fbvFormSection}
+
+		{fbvFormSection title="plugins.generic.loa.loaIssn"}
+			{fbvElement type="text" id="loaIssn" value=$loaIssn maxlength="20"}
+		{/fbvFormSection}
+
+		{fbvFormSection title="plugins.generic.loa.loaUniversityName"}
+			{fbvElement type="text" id="loaUniversityName" value=$loaUniversityName maxlength="255"}
+		{/fbvFormSection}
 	{/fbvFormArea}
 
 	{fbvFormButtons submitText="plugins.generic.loa.save"}

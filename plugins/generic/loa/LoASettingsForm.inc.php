@@ -26,6 +26,10 @@ class LoASettingsForm extends Form {
 		$this->_data = [
 			'editorInChiefName' => $plugin->getSetting($contextId, 'editorInChiefName'),
 			'editorInChiefTitle' => $plugin->getSetting($contextId, 'editorInChiefTitle'),
+			'loaHeaderImageUrl' => $plugin->getSetting($contextId, 'loaHeaderImageUrl'),
+			'loaIndexingImageUrl' => $plugin->getSetting($contextId, 'loaIndexingImageUrl'),
+			'loaIssn' => $plugin->getSetting($contextId, 'loaIssn'),
+			'loaUniversityName' => $plugin->getSetting($contextId, 'loaUniversityName'),
 		];
 	}
 
@@ -33,6 +37,10 @@ class LoASettingsForm extends Form {
 		$this->readUserVars([
 			'editorInChiefName',
 			'editorInChiefTitle',
+			'loaHeaderImageUrl',
+			'loaIndexingImageUrl',
+			'loaIssn',
+			'loaUniversityName',
 		]);
 	}
 
@@ -42,6 +50,10 @@ class LoASettingsForm extends Form {
 
 		$plugin->updateSetting($contextId, 'editorInChiefName', $this->getData('editorInChiefName'), 'string');
 		$plugin->updateSetting($contextId, 'editorInChiefTitle', $this->getData('editorInChiefTitle'), 'string');
+		$plugin->updateSetting($contextId, 'loaHeaderImageUrl', $this->getData('loaHeaderImageUrl'), 'string');
+		$plugin->updateSetting($contextId, 'loaIndexingImageUrl', $this->getData('loaIndexingImageUrl'), 'string');
+		$plugin->updateSetting($contextId, 'loaIssn', $this->getData('loaIssn'), 'string');
+		$plugin->updateSetting($contextId, 'loaUniversityName', $this->getData('loaUniversityName'), 'string');
 
 		parent::execute(...$functionArgs);
 	}

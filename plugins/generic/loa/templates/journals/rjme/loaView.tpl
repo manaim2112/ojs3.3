@@ -163,11 +163,13 @@
     <!-- HALAMAN 1 -->
     <div class="ojs-loa-page">
         <div class="ojs-loa-header">
-            <img src="https://assyfa.com/storage/uploads/2026/07/DIf1MThgKwuRpGEBpUiKx6GIx61H148xFL7PURnk.png" alt="Header Revenue Journal">
+            {if $loaHeaderImageUrl}
+                <img src="{$loaHeaderImageUrl|escape}" alt="Header Revenue Journal">
+            {/if}
         </div>
 
         <div class="ojs-loa-date">
-            <strong>Dated:</strong> {$loa->getDateGenerated()|date_format:"%d/%m/%Y"}
+            <strong>Dated:</strong> {$loaDateGeneratedFormatted|escape}
         </div>
 
         <div class="ojs-loa-title">
@@ -208,7 +210,9 @@
             Best Regards,<br><br>
             <div>{$editorInChiefTitle|escape}</div>
             <strong>{$editorInChiefName|escape}</strong><br>
-            <span>Universitas Nahdlatul Ulama Pasuruan, Indonesia</span>
+            {if $loaUniversityName}
+                <span>{$loaUniversityName|escape}</span>
+            {/if}
         </div>
 
         <div class="ojs-loa-footer">
@@ -219,7 +223,9 @@
     <!-- HALAMAN 2 -->
     <div class="ojs-loa-page">
         <div class="ojs-loa-header">
-            <img src="https://assyfa.com/storage/uploads/2026/07/DIf1MThgKwuRpGEBpUiKx6GIx61H148xFL7PURnk.png" alt="Header Revenue Journal">
+            {if $loaHeaderImageUrl}
+                <img src="{$loaHeaderImageUrl|escape}" alt="Header Revenue Journal">
+            {/if}
         </div>
 
         <div class="ojs-loa-section-title">
@@ -228,9 +234,11 @@
 
         <div class="ojs-loa-info-box">
             <div><strong>Your manuscript ID is</strong> <strong>{$loa->getUniqueCode()|escape}</strong></div>
-            <div><strong>Status Date:</strong> {$loa->getDateGenerated()|date_format:"%d/%m/%Y"}</div>
+            <div><strong>Status Date:</strong> {$loaDateGeneratedFormatted|escape}</div>
             <div><strong>Status in Editorial Manager:</strong> Accepted for Publication</div>
-            <div><u><strong>ISSN:</strong> 3026-1058</u></div>
+            {if $loaIssn}
+                <div><u><strong>ISSN:</strong> {$loaIssn|escape}</u></div>
+            {/if}
         </div>
 
         <div class="ojs-loa-text" style="font-size: 13px;">
@@ -242,7 +250,9 @@
         </div>
 
         <div class="ojs-loa-index-img">
-            <img src="https://assyfa.com/storage/uploads/2026/07/B9qWS9uLoged5Jul7e0Hv7ZySeNpCyZ3X0AWfoU6.png" alt="Indexing Logos">
+            {if $loaIndexingImageUrl}
+                <img src="{$loaIndexingImageUrl|escape}" alt="Indexing Logos">
+            {/if}
         </div>
 
         <div class="ojs-loa-footer">

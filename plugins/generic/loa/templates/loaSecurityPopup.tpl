@@ -165,7 +165,7 @@
 			{$loaSecurityContent}
 		</div>
 		<div id="loa-security-modal-footer">
-			<button type="button" class="loa-modal-btn-primary" id="loa-modal-close-btn">{translate key="plugins.generic.loa.cancel"|default:"Tutup"}</button>
+			<button type="button" class="loa-modal-btn-primary" id="loa-modal-close-btn">{translate key="plugins.generic.loa.cancel"}</button>
 		</div>
 	</div>
 </div>

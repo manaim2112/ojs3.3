@@ -35,13 +35,46 @@ class LoAHandler extends Handler {
 
 		$publication = $submission->getCurrentPublication();
 
-		$loaDao->markDownloaded($loa->getLoaId());
+		if ($loa->getStatus() === 'active') {
+			$loaDao->markDownloaded($loa->getLoaId());
+		}
 
 		$templateMgr = TemplateManager::getManager($request);
 		$this->setupTemplate($request);
 
 		$plugin = self::$plugin;
-		$baseUrl = $request->getBaseUrl();
+		$isRevoked = $loa->getStatus() === 'revoked';
+
+		$snapshot = $loaDao->decompressSnapshot($loa->getContentSnapshot());
+		if ($snapshot !== null) {
+			$frag = $plugin->extractTemplateFragment($snapshot);
+			$templateMgr->assign([
+				'loa' => $loa,
+				'context' => $context,
+				'isRevoked' => $isRevoked,
+				'templateStyle' => $frag['style'],
+				'templateHtml' => $frag['html'],
+			]);
+			$templateMgr->display($plugin->getTemplateResource('loaDbView.tpl'));
+			return;
+		}
+
+		$loaTemplateDao = DAORegistry::getDAO('LoATemplateDAO');
+		$activeTemplate = $loaTemplateDao->getActiveByJournalId($context->getId());
+		if ($activeTemplate) {
+			$tokens = $plugin->getLoATemplateTokens($loa, $submission, $publication, $context, $request);
+			$html = $plugin->substituteLoATemplateTokens($activeTemplate->getTemplateContent(), $tokens);
+			$frag = $plugin->extractTemplateFragment($html);
+			$templateMgr->assign([
+				'loa' => $loa,
+				'context' => $context,
+				'isRevoked' => $isRevoked,
+				'templateStyle' => $frag['style'],
+				'templateHtml' => $frag['html'],
+			]);
+			$templateMgr->display($plugin->getTemplateResource('loaDbView.tpl'));
+			return;
+		}
 
 		$templateMgr->assign([
 			'loa' => $loa,
@@ -50,7 +83,12 @@ class LoAHandler extends Handler {
 			'context' => $context,
 			'editorInChiefName' => $plugin->getSetting($context->getId(), 'editorInChiefName'),
 			'editorInChiefTitle' => $plugin->getSetting($context->getId(), 'editorInChiefTitle'),
-			'baseUrl' => $baseUrl,
+			'baseUrl' => $request->getBaseUrl(),
+			'loaDateGeneratedFormatted' => date('d/m/Y', strtotime($loa->getDateGenerated())),
+			'loaHeaderImageUrl' => $plugin->getSetting($context->getId(), 'loaHeaderImageUrl'),
+			'loaIndexingImageUrl' => $plugin->getSetting($context->getId(), 'loaIndexingImageUrl'),
+			'loaIssn' => $plugin->getSetting($context->getId(), 'loaIssn'),
+			'loaUniversityName' => $plugin->getSetting($context->getId(), 'loaUniversityName'),
 		]);
 
 		$pluginPath = dirname(__FILE__) . '/..';
@@ -61,8 +99,18 @@ class LoAHandler extends Handler {
 		$templateMgr->display('file:' . $templatePath);
 	}
 
+	function _verifySubmissionInContext($request, $submissionId) {
+		$context = $request->getContext();
+		$submissionDao = DAORegistry::getDAO('SubmissionDAO');
+		$submission = $submissionDao->getById($submissionId);
+		if (!$submission || $submission->getData('contextId') != $context->getId()) {
+			return false;
+		}
+		return $submission;
+	}
+
 	function generate($args, $request) {
-		if (!$request->isPost()) {
+		if (!$request->isPost() || !$request->checkCSRF()) {
 			$request->redirect(null, 'index');
 		}
 
@@ -73,18 +121,17 @@ class LoAHandler extends Handler {
 		}
 
 		$submissionId = (int) $request->getUserVar('submissionId');
-		if (!$submissionId) {
+		if (!$submissionId || !$this->_verifySubmissionInContext($request, $submissionId)) {
 			$request->redirect(null, 'index');
 		}
 
-		$loaDao = DAORegistry::getDAO('LoADAO');
-		$loaDao->generateCode($submissionId, $context->getId(), $user->getId());
+		self::$plugin->generateLoAWithSnapshot($submissionId, $context, $user->getId(), $request);
 
 		$request->redirect(null, 'workflow', 'access', $submissionId);
 	}
 
 	function regenerate($args, $request) {
-		if (!$request->isPost()) {
+		if (!$request->isPost() || !$request->checkCSRF()) {
 			$request->redirect(null, 'index');
 		}
 
@@ -95,18 +142,17 @@ class LoAHandler extends Handler {
 		}
 
 		$submissionId = (int) $request->getUserVar('submissionId');
-		if (!$submissionId) {
+		if (!$submissionId || !$this->_verifySubmissionInContext($request, $submissionId)) {
 			$request->redirect(null, 'index');
 		}
 
-		$loaDao = DAORegistry::getDAO('LoADAO');
-		$loaDao->regenerateCode($submissionId, $context->getId(), $user->getId());
+		self::$plugin->regenerateLoAWithSnapshot($submissionId, $context, $user->getId(), $request);
 
 		$request->redirect(null, 'workflow', 'access', $submissionId);
 	}
 
 	function revoke($args, $request) {
-		if (!$request->isPost()) {
+		if (!$request->isPost() || !$request->checkCSRF()) {
 			$request->redirect(null, 'index');
 		}
 
@@ -117,7 +163,7 @@ class LoAHandler extends Handler {
 		}
 
 		$submissionId = (int) $request->getUserVar('submissionId');
-		if (!$submissionId) {
+		if (!$submissionId || !$this->_verifySubmissionInContext($request, $submissionId)) {
 			$request->redirect(null, 'index');
 		}
 
@@ -225,8 +271,7 @@ class LoAHandler extends Handler {
 			$request->redirect(null, 'loa', 'management');
 		}
 
-		$loaDao = DAORegistry::getDAO('LoADAO');
-		$loaDao->generateCode($submissionId, $context->getId(), $user->getId());
+		self::$plugin->generateLoAWithSnapshot($submissionId, $context, $user->getId(), $request);
 
 		$request->redirect(null, 'loa', 'management');
 	}
@@ -261,5 +306,110 @@ class LoAHandler extends Handler {
 		$loaDao->revokeBySubmissionId($submissionId);
 
 		$request->redirect(null, 'loa', 'management');
+	}
+
+	function templates($args, $request) {
+		$context = $request->getContext();
+		$user = $request->getUser();
+		if (!$user || !$user->hasRole([ROLE_ID_MANAGER, ROLE_ID_SITE_ADMIN, ROLE_ID_SUB_EDITOR], $context->getId())) {
+			$request->redirect(null, 'index');
+		}
+
+		$templateMgr = TemplateManager::getManager($request);
+		$this->setupTemplate($request);
+		$dispatcher = $request->getDispatcher();
+
+		$templateDao = DAORegistry::getDAO('LoATemplateDAO');
+		$rangeInfo = $this->getRangeInfo($request, 'loa_templates');
+		$templates = $templateDao->getByJournalId($context->getId(), $rangeInfo);
+
+		$templateMgr->assign([
+			'templates' => $templates,
+			'addTemplateUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'templateForm'),
+			'editTemplateUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'templateForm'),
+			'activateTemplateUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'activateTemplate'),
+			'deleteTemplateUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'deleteTemplate'),
+			'loaManagementUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'management'),
+			'csrfToken' => $request->getSession()->getCsrfToken(),
+		]);
+
+		$templateMgr->display(self::$plugin->getTemplateResource('loaTemplates.tpl'));
+	}
+
+	function templateForm($args, $request) {
+		$context = $request->getContext();
+		$user = $request->getUser();
+		if (!$user || !$user->hasRole([ROLE_ID_MANAGER, ROLE_ID_SITE_ADMIN, ROLE_ID_SUB_EDITOR], $context->getId())) {
+			$request->redirect(null, 'index');
+		}
+
+		$templateId = (int) array_shift($args);
+
+		$plugin = self::$plugin;
+		$plugin->import('classes.LoATemplateForm');
+		$form = new LoATemplateForm($plugin, $context->getId(), $templateId ?: null);
+
+		if ($request->isPost()) {
+			$form->readInputData();
+			if ($form->validate()) {
+				$form->execute();
+				$request->redirect(null, 'loa', 'templates');
+			}
+		} else {
+			$form->initData();
+		}
+
+		$templateMgr = TemplateManager::getManager($request);
+		$this->setupTemplate($request);
+		$templateMgr->assign([
+			'formContent' => $form->fetch($request),
+			'backToListUrl' => $request->getDispatcher()->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'templates'),
+		]);
+
+		$templateMgr->display($plugin->getTemplateResource('loaTemplateFormPage.tpl'));
+	}
+
+	function deleteTemplate($args, $request) {
+		$context = $request->getContext();
+		$user = $request->getUser();
+		if (!$request->isPost() || !$request->checkCSRF()) {
+			$request->redirect(null, 'loa', 'templates');
+		}
+		if (!$user || !$user->hasRole([ROLE_ID_MANAGER, ROLE_ID_SITE_ADMIN, ROLE_ID_SUB_EDITOR], $context->getId())) {
+			$request->redirect(null, 'index');
+		}
+
+		$templateId = (int) $request->getUserVar('templateId');
+		$templateDao = DAORegistry::getDAO('LoATemplateDAO');
+		$template = $templateId ? $templateDao->getById($templateId) : null;
+		if (!$template || $template->getJournalId() != $context->getId()) {
+			$request->redirect(null, 'loa', 'templates');
+		}
+
+		$templateDao->deleteById($templateId, $context->getId());
+
+		$request->redirect(null, 'loa', 'templates');
+	}
+
+	function activateTemplate($args, $request) {
+		$context = $request->getContext();
+		$user = $request->getUser();
+		if (!$request->isPost() || !$request->checkCSRF()) {
+			$request->redirect(null, 'loa', 'templates');
+		}
+		if (!$user || !$user->hasRole([ROLE_ID_MANAGER, ROLE_ID_SITE_ADMIN, ROLE_ID_SUB_EDITOR], $context->getId())) {
+			$request->redirect(null, 'index');
+		}
+
+		$templateId = (int) $request->getUserVar('templateId');
+		$templateDao = DAORegistry::getDAO('LoATemplateDAO');
+		$template = $templateId ? $templateDao->getById($templateId) : null;
+		if (!$template || $template->getJournalId() != $context->getId()) {
+			$request->redirect(null, 'loa', 'templates');
+		}
+
+		$templateDao->activate($templateId, $context->getId());
+
+		$request->redirect(null, 'loa', 'templates');
 	}
 }

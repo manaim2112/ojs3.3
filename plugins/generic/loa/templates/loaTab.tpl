@@ -27,6 +27,7 @@
 
 			{if $canManage}
 				<form method="post" action="{$loaRegenerateUrl|escape}" style="display:inline;" class="loa-confirm-form" data-msg="{translate key="plugins.generic.loa.confirmRegenerate"}">
+					{csrf}
 					<input type="hidden" name="submissionId" value="{$submissionId|escape}">
 					<button type="submit" class="pkp_button" style="margin-left: 5px;">
 						{translate key="plugins.generic.loa.regenerate"}
@@ -35,6 +36,7 @@
 
 				{if $loa->getStatus() == 'active'}
 					<form method="post" action="{$loaRevokeUrl|escape}" style="display:inline;" class="loa-confirm-form" data-msg="{translate key="plugins.generic.loa.confirmRevoke"}">
+						{csrf}
 						<input type="hidden" name="submissionId" value="{$submissionId|escape}">
 						<button type="submit" class="pkp_button" style="margin-left: 5px; background-color: #dc3545;">
 							{translate key="plugins.generic.loa.revoke"}
@@ -64,12 +66,13 @@
 		</div>
 
 		{if $canManage}
-			<form method="post" action="{$loaGenerateUrl|escape}">
-				<input type="hidden" name="submissionId" value="{$submissionId|escape}">
-				<button type="submit" class="pkp_button">
-					{translate key="plugins.generic.loa.generate"}
-				</button>
-			</form>
+<form method="post" action="{$loaGenerateUrl|escape}">
+			{csrf}
+			<input type="hidden" name="submissionId" value="{$submissionId|escape}">
+			<button type="submit" class="pkp_button">
+				{translate key="plugins.generic.loa.generate"}
+			</button>
+		</form>
 		{/if}
 	{/if}
 </div>

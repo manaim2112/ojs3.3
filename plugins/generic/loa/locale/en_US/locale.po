@@ -131,6 +131,18 @@ msgstr "Editor-in-Chief Name"
 msgid "plugins.generic.loa.editorInChiefTitle"
 msgstr "Editor-in-Chief Title"
 
+msgid "plugins.generic.loa.loaHeaderImageUrl"
+msgstr "Header Image URL (file-template fallback)"
+
+msgid "plugins.generic.loa.loaIndexingImageUrl"
+msgstr "Indexing Logos Image URL (file-template fallback)"
+
+msgid "plugins.generic.loa.loaIssn"
+msgstr "ISSN (file-template fallback)"
+
+msgid "plugins.generic.loa.loaUniversityName"
+msgstr "University / Affiliation Name (file-template fallback)"
+
 msgid "plugins.generic.loa.signatureCaption"
 msgstr "Signed,"
 
@@ -181,4 +193,61 @@ msgstr "LoA Security settings saved successfully."
 
 msgid "plugins.generic.loa.securityModalTitle"
 msgstr "LoA Security Information"
+
+msgid "plugins.generic.loa.templates"
+msgstr "LoA Templates"
+
+msgid "plugins.generic.loa.templatesDescription"
+msgstr "Manage Letter of Acceptance templates for this journal. The active template is used when generating new LoA documents."
+
+msgid "plugins.generic.loa.addTemplate"
+msgstr "Add Template"
+
+msgid "plugins.generic.loa.editTemplate"
+msgstr "Edit"
+
+msgid "plugins.generic.loa.deleteTemplate"
+msgstr "Delete"
+
+msgid "plugins.generic.loa.activateTemplate"
+msgstr "Activate"
+
+msgid "plugins.generic.loa.activateTemplateLabel"
+msgstr "Activation"
+
+msgid "plugins.generic.loa.confirmDeleteTemplate"
+msgstr "Are you sure you want to delete this template? Existing LoA documents are not affected."
+
+msgid "plugins.generic.loa.statusInactive"
+msgstr "Inactive"
+
+msgid "plugins.generic.loa.noTemplates"
+msgstr "No templates found. Add one to get started."
+
+msgid "plugins.generic.loa.dateModified"
+msgstr "Last modified"
+
+msgid "plugins.generic.loa.templateForm"
+msgstr "LoA Template"
+
+msgid "plugins.generic.loa.templateFormDescription"
+msgstr "Use the placeholder tokens [[article_title]], [[authors]], [[journal_name]], [[unique_code]], [[date_generated]], [[status]], [[editor_in_chief_name]], [[editor_in_chief_title]], [[base_url]] and [[current_locale]] inside the content."
+
+msgid "plugins.generic.loa.templateName"
+msgstr "Template Name"
+
+msgid "plugins.generic.loa.templateNameRequired"
+msgstr "Template name is required."
+
+msgid "plugins.generic.loa.templateContent"
+msgstr "Template Content"
+
+msgid "plugins.generic.loa.templateContentHelp"
+msgstr "HTML content of the template. Available placeholder tokens are listed in the description."
+
+msgid "plugins.generic.loa.backToManagement"
+msgstr "Back to LoA Management"
+
+msgid "plugins.generic.loa.backToTemplates"
+msgstr "Back to Templates"
 
