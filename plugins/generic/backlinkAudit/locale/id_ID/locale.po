@@ -1,0 +1,51 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: backlinkAudit\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "plugins.generic.backlinkAudit.displayName"
+msgstr "Audit Backlink"
+
+msgid "plugins.generic.backlinkAudit.description"
+msgstr "Mencatat siapa yang memasukkan <a href> ke kolom teks kaya (TinyMCE): user, jurnal, semua tautan, alamat IP. Melacak injeksi backlink spam sampai ke orangnya."
+
+msgid "plugins.generic.backlinkAudit.menu"
+msgstr "Audit Backlink"
+
+msgid "plugins.generic.backlinkAudit.report.title"
+msgstr "Log Audit Backlink"
+
+msgid "plugins.generic.backlinkAudit.report.description"
+msgstr "Setiap penyimpanan kolom teks kaya yang berisi <a href> dicatat di sini: siapa yang menyimpan, di jurnal apa, di field mana, dan semua tautannya (tautan eksternal ditandai). Tombol Scan memeriksa data lama di database untuk tautan yang dimasukkan sebelum plugin ini terpasang."
+
+msgid "plugins.generic.backlinkAudit.report.scanned"
+msgstr "Scan selesai: {$count} entri baru ditemukan dan dicatat."
+
+msgid "plugins.generic.backlinkAudit.report.scan"
+msgstr "Pindai data lama"
+
+msgid "plugins.generic.backlinkAudit.report.export"
+msgstr "Ekspor CSV"
+
+msgid "plugins.generic.backlinkAudit.report.empty"
+msgstr "Belum ada aktivitas tautan yang tercatat."
+
+msgid "plugins.generic.backlinkAudit.col.date"
+msgstr "Tanggal / Aksi"
+
+msgid "plugins.generic.backlinkAudit.col.user"
+msgstr "User"
+
+msgid "plugins.generic.backlinkAudit.col.journal"
+msgstr "Jurnal"
+
+msgid "plugins.generic.backlinkAudit.col.source"
+msgstr "Field sumber"
+
+msgid "plugins.generic.backlinkAudit.col.links"
+msgstr "Tautan (+ditambah / -dihapus)"
+
+msgid "plugins.generic.backlinkAudit.col.ip"
+msgstr "IP / Peramban"

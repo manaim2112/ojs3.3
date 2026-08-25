@@ -1,0 +1,51 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: backlinkAudit\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "plugins.generic.backlinkAudit.displayName"
+msgstr "Backlink Audit"
+
+msgid "plugins.generic.backlinkAudit.description"
+msgstr "Records who inserted <a href> links into rich text fields (TinyMCE): user, journal, every link, IP address. Trace spam backlink injections to a person."
+
+msgid "plugins.generic.backlinkAudit.menu"
+msgstr "Backlink Audit"
+
+msgid "plugins.generic.backlinkAudit.report.title"
+msgstr "Backlink Audit Log"
+
+msgid "plugins.generic.backlinkAudit.report.description"
+msgstr "Every save of a rich text field containing <a href> links is recorded here: who saved it, in which journal, which field, and all links (external links are highlighted). The Scan button inspects existing database content for links that were inserted before this plugin was installed."
+
+msgid "plugins.generic.backlinkAudit.report.scanned"
+msgstr "Scan complete: {$count} new entries were found and logged."
+
+msgid "plugins.generic.backlinkAudit.report.scan"
+msgstr "Scan existing data"
+
+msgid "plugins.generic.backlinkAudit.report.export"
+msgstr "Export CSV"
+
+msgid "plugins.generic.backlinkAudit.report.empty"
+msgstr "No link activity has been recorded yet."
+
+msgid "plugins.generic.backlinkAudit.col.date"
+msgstr "Date / Action"
+
+msgid "plugins.generic.backlinkAudit.col.user"
+msgstr "User"
+
+msgid "plugins.generic.backlinkAudit.col.journal"
+msgstr "Journal"
+
+msgid "plugins.generic.backlinkAudit.col.source"
+msgstr "Source field"
+
+msgid "plugins.generic.backlinkAudit.col.links"
+msgstr "Links (+added / -removed)"
+
+msgid "plugins.generic.backlinkAudit.col.ip"
+msgstr "IP / Browser"
