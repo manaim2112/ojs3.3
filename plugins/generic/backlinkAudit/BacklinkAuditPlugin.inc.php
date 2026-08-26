@@ -200,7 +200,6 @@ class BacklinkAuditPlugin extends GenericPlugin {
 
 	public function addToBackendMenu($hookName, $args) {
 		$request = Application::get()->getRequest();
-		if (!is_array($args)) return false;
 		$templateMgr = TemplateManager::getManager($request);
 		if (!$templateMgr) return false;
 
@@ -218,11 +217,19 @@ class BacklinkAuditPlugin extends GenericPlugin {
 		}
 
 		$menu = (array) $templateMgr->getState('menu');
-		$menu['backlinkAudit'] = [
+		$entry = [
 			'name' => __('plugins.generic.backlinkAudit.menu'),
 			'url' => $router->url($request, $context->getPath(), 'securityaudit'),
 			'isCurrent' => $request->getRequestedPage() === 'securityaudit',
 		];
+
+		if (isset($menu['statistics']) && is_array($menu['statistics'])) {
+			// Nest under Statistics submenu
+			$menu['statistics']['submenu']['backlinkAudit'] = $entry;
+		} else {
+			// Fallback: no Statistics group (e.g. pure site admin) — top-level entry
+			$menu['backlinkAudit'] = $entry;
+		}
 		$templateMgr->setState(['menu' => $menu]);
 
 		return false;
