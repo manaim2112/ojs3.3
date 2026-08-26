@@ -20,8 +20,30 @@ class BacklinkAuditHandler extends Handler {
 
 	static $plugin;
 
+	/** @var array Ops reachable on this handler */
+	var $_allowedOps = ['index', 'scan', 'export'];
+
 	static function setPlugin($plugin) {
 		self::$plugin = $plugin;
+	}
+
+	/**
+	 * @copydoc PKPHandler::authorize()
+	 *
+	 * Requires a signed-in user and restricts the callable ops. Role
+	 * scoping (manager vs site admin, per-journal visibility) is enforced
+	 * per-op in _authorizeUser().
+	 */
+	function authorize($request, &$args, $roleAssignments) {
+		import('lib.pkp.classes.security.authorization.UserRequiredPolicy');
+		$this->addPolicy(new UserRequiredPolicy($request));
+
+		$op = $request->getRequestedOp();
+		if (!in_array($op, $this->_allowedOps, true)) {
+			return false;
+		}
+
+		return parent::authorize($request, $args, $roleAssignments);
 	}
 
 	/**
