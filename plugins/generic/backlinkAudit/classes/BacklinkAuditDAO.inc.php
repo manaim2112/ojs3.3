@@ -14,6 +14,8 @@
 
 import('lib.pkp.classes.db.DAO');
 
+use Illuminate\Database\Capsule\Manager as Capsule;
+
 class BacklinkAuditDAO extends DAO {
 
 	/** @var bool */
@@ -27,12 +29,12 @@ class BacklinkAuditDAO extends DAO {
 		if ($this->_tableChecked) return;
 		$this->_tableChecked = true;
 		try {
-			$result = $this->retrieve('SHOW TABLES LIKE ?', ['backlink_audit_log']);
-			$row = $result->current();
-			if (!$row) {
+			// Not "SHOW TABLES LIKE ?": DAO::retrieve() prepares through PDO
+			// and MariaDB rejects a placeholder inside SHOW TABLES.
+			if (!Capsule::schema()->hasTable('backlink_audit_log')) {
 				error_log('BacklinkAuditDAO: backlink_audit_log table missing; re-enable the Backlink Audit plugin to create it.');
 			}
-		} catch (\Exception $e) {
+		} catch (\Throwable $e) {
 			error_log('BacklinkAuditDAO::_ensureTable failed: ' . $e->getMessage());
 		}
 	}
@@ -96,7 +98,7 @@ class BacklinkAuditDAO extends DAO {
 			);
 			$row = $result->current();
 			return (bool) $row;
-		} catch (\Exception $e) {
+		} catch (\Throwable $e) {
 			return false;
 		}
 	}

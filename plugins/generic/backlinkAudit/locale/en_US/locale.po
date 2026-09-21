@@ -18,7 +18,7 @@ msgid "plugins.generic.backlinkAudit.report.title"
 msgstr "Backlink Audit Log"
 
 msgid "plugins.generic.backlinkAudit.report.description"
-msgstr "Every save of a rich text field containing <a href> links is recorded here: who saved it, in which journal, which field, and all links (external links are highlighted). The Scan button inspects existing database content for links that were inserted before this plugin was installed."
+msgstr "Every save of a rich text field containing <a href> links is recorded here: who saved it, in which journal, which field, and all links (external links are highlighted). Role and account changes are recorded here too, including ones not made through the OJS interface. The Scan button inspects existing database content for links that were inserted before this plugin was installed."
 
 msgid "plugins.generic.backlinkAudit.report.scanned"
 msgstr "Scan complete: {$count} new entries were found and logged."
@@ -45,7 +45,61 @@ msgid "plugins.generic.backlinkAudit.col.source"
 msgstr "Source field"
 
 msgid "plugins.generic.backlinkAudit.col.links"
-msgstr "Links (+added / -removed)"
+msgstr "Links / Roles (+added / -removed)"
 
 msgid "plugins.generic.backlinkAudit.col.ip"
 msgstr "IP / Browser"
+
+msgid "plugins.generic.backlinkAudit.report.bootstrap"
+msgstr "Baseline recorded"
+
+msgid "plugins.generic.backlinkAudit.report.tamper"
+msgstr "Snapshot emptied - detection rebuilt"
+
+msgid "plugins.generic.backlinkAudit.detail.before"
+msgstr "Before"
+
+msgid "plugins.generic.backlinkAudit.detail.after"
+msgstr "After"
+
+msgid "plugins.generic.backlinkAudit.change.newAccount"
+msgstr "new account created"
+
+msgid "plugins.generic.backlinkAudit.change.deletedAccount"
+msgstr "account deleted"
+
+msgid "plugins.generic.backlinkAudit.change.email"
+msgstr "email: {$old} to {$new}"
+
+msgid "plugins.generic.backlinkAudit.change.username"
+msgstr "username: {$old} to {$new}"
+
+msgid "plugins.generic.backlinkAudit.change.password"
+msgstr "password changed"
+
+msgid "plugins.generic.backlinkAudit.change.disabled"
+msgstr "account disabled"
+
+msgid "plugins.generic.backlinkAudit.change.enabled"
+msgstr "account re-enabled"
+
+msgid "plugins.generic.backlinkAudit.alert.subject"
+msgstr "[Security Audit] {$count} role/account change(s) detected"
+
+msgid "plugins.generic.backlinkAudit.alert.intro"
+msgstr "The Backlink Audit plugin detected the following role or account changes."
+
+msgid "plugins.generic.backlinkAudit.alert.col.actor"
+msgstr "Actor"
+
+msgid "plugins.generic.backlinkAudit.alert.col.account"
+msgstr "Account affected"
+
+msgid "plugins.generic.backlinkAudit.alert.col.change"
+msgstr "Change"
+
+msgid "plugins.generic.backlinkAudit.alert.unexplained"
+msgstr "UNEXPLAINED - not submitted through the OJS interface"
+
+msgid "plugins.generic.backlinkAudit.alert.footer"
+msgstr "Open the Backlink Audit report in OJS for the full history. Changes marked UNEXPLAINED were not made through the user interface, so the account that made them is unknown. Investigate those first."

@@ -13,6 +13,8 @@
  * saved them, in which journal, and what changed.
  */
 
+use Illuminate\Database\Capsule\Manager as Capsule;
+
 class BacklinkAuditLogger {
 
 	/** @var BacklinkAuditDAO */
@@ -351,14 +353,81 @@ class BacklinkAuditLogger {
 		return $hosts;
 	}
 
+	/**
+	 * Add rel="nofollow" to every anchor pointing outside this OJS site.
+	 *
+	 * Operates on the whole rendered page. Only <a ...> opening tags are
+	 * rewritten; element content is never touched. Regions where an anchor
+	 * could appear inside non-HTML text (<script>, <style>, comments) are
+	 * matched first and passed through untouched.
+	 *
+	 * Deliberately regex-based rather than DOMDocument: re-serialising a full
+	 * OJS page through DOMDocument rewrites the doctype, entities and
+	 * whitespace, which is far more dangerous than the edge case it fixes.
+	 *
+	 * @param $html string Rendered page
+	 * @param $request Request
+	 * @return string
+	 */
+	function rewriteExternalLinks($html, $request) {
+		if (!is_string($html) || stripos($html, '<a') === false) return $html;
+
+		$pattern = '#(<script\b[^>]*>.*?</script>|<style\b[^>]*>.*?</style>|<!--.*?-->)|(<a\b[^>]*>)#is';
+		$result = preg_replace_callback($pattern, function ($m) use ($request) {
+			if (!empty($m[1])) return $m[1];	// script/style/comment: leave alone
+			if (empty($m[2])) return $m[0];
+			return $this->_addNoFollow($m[2], $request);
+		}, $html);
+
+		// preg_replace_callback returns null on PCRE failure; never break the page
+		return ($result === null) ? $html : $result;
+	}
+
+	/**
+	 * Append rel="nofollow" to a single <a ...> tag when its href is external.
+	 * Merges into an existing rel attribute and is safe to run twice.
+	 *
+	 * @param $tag string A single anchor opening tag
+	 * @param $request Request
+	 * @return string
+	 */
+	function _addNoFollow($tag, $request) {
+		if (!preg_match('/\bhref\s*=\s*(?:"([^"]*)"|\'([^\']*)\'|([^\s>]+))/i', $tag, $h)) return $tag;
+
+		$href = '';
+		foreach ([1, 2, 3] as $i) {
+			if (isset($h[$i]) && $h[$i] !== '') { $href = $h[$i]; break; }
+		}
+		$href = trim(html_entity_decode($href, ENT_QUOTES, 'UTF-8'));
+
+		// No host (relative, #fragment, mailto:, tel:, javascript:, data:) => internal
+		if ($href === '' || !$this->_isExternal($href, $request)) return $tag;
+
+		if (preg_match('/\brel\s*=\s*(?:"([^"]*)"|\'([^\']*)\'|([^\s>]+))/i', $tag, $r)) {
+			$rel = '';
+			foreach ([1, 2, 3] as $i) {
+				if (isset($r[$i]) && $r[$i] !== '') { $rel = $r[$i]; break; }
+			}
+			if (preg_match('/(?:^|\s)nofollow(?:\s|$)/i', $rel)) return $tag;	// already applied
+
+			$replacement = 'rel="' . htmlspecialchars(trim($rel . ' nofollow'), ENT_QUOTES, 'UTF-8') . '"';
+			$pos = strpos($tag, $r[0]);
+			return $pos === false ? $tag : substr_replace($tag, $replacement, $pos, strlen($r[0]));
+		}
+
+		return preg_replace('#(\s*/?>)$#', ' rel="nofollow"$1', $tag, 1);
+	}
+
 	function _tableReady() {
 		static $ready = null;
 		if ($ready !== null) return $ready;
 		try {
-			$result = $this->_dao->retrieve('SHOW TABLES LIKE ?', ['backlink_audit_log']);
-			$row = $result->current();
-			$ready = (bool) $row;
-		} catch (\Exception $e) {
+			// Must not be "SHOW TABLES LIKE ?": DAO::retrieve() runs the
+			// statement through PDO, and MariaDB cannot prepare a placeholder
+			// inside SHOW TABLES (SQLSTATE 42000). That made every logging
+			// call bail out silently, leaving the audit log empty.
+			$ready = Capsule::schema()->hasTable('backlink_audit_log');
+		} catch (\Throwable $e) {
 			$ready = false;
 		}
 		return $ready;
@@ -386,6 +455,48 @@ class BacklinkAuditLogger {
 			'added_count' => $args['addedCount'],
 			'removed_count' => $args['removedCount'],
 			'content_hash' => $hash,
+			'old_content' => $args['oldContent'],
+			'new_content' => $args['newContent'],
+			'ip' => $request ? $request->getRemoteAddr() : '',
+			'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '',
+		]);
+	}
+
+	/**
+	 * Write a privilege/account audit row.
+	 *
+	 * Deliberately bypasses the 6-hour dedupe in _log(): for a security row
+	 * the dedupe is dangerous. Removing then re-adding the same role
+	 * reproduces the identical (before => after) pair, so the second
+	 * escalation would be swallowed silently — exactly the event we most want
+	 * to see.
+	 *
+	 * @param $args array Same shape as _log(), minus the dedupe hash. The
+	 *   actor is passed as resolved values (actorUserId / actorUsername /
+	 *   actorEmail) rather than a User object, because the diff runs from a
+	 *   shutdown callback where the session has already been closed.
+	 * @return int|false
+	 */
+	function logSecurityRow($args) {
+		if (!$this->_tableReady()) return false;
+
+		$request = isset($args['request']) ? $args['request'] : null;
+
+		return $this->_dao->insertEntry([
+			'created_at' => date('Y-m-d H:i:s'),
+			'user_id' => isset($args['actorUserId']) ? $args['actorUserId'] : null,
+			'username' => isset($args['actorUsername']) ? $args['actorUsername'] : null,
+			'user_email' => isset($args['actorEmail']) ? $args['actorEmail'] : null,
+			'context_id' => $args['contextId'],
+			'context_path' => $args['contextPath'],
+			'source_type' => $args['sourceType'],
+			'source_desc' => $args['sourceDesc'],
+			'object_id' => $args['objectId'],
+			'action' => $args['action'],
+			'links' => $args['links'],
+			'added_count' => $args['addedCount'],
+			'removed_count' => $args['removedCount'],
+			'content_hash' => sha1($args['sourceType'] . '|' . $args['sourceDesc'] . '|' . microtime(true)),
 			'old_content' => $args['oldContent'],
 			'new_content' => $args['newContent'],
 			'ip' => $request ? $request->getRemoteAddr() : '',

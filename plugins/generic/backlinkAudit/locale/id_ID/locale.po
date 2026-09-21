@@ -18,7 +18,7 @@ msgid "plugins.generic.backlinkAudit.report.title"
 msgstr "Log Audit Backlink"
 
 msgid "plugins.generic.backlinkAudit.report.description"
-msgstr "Setiap penyimpanan kolom teks kaya yang berisi <a href> dicatat di sini: siapa yang menyimpan, di jurnal apa, di field mana, dan semua tautannya (tautan eksternal ditandai). Tombol Scan memeriksa data lama di database untuk tautan yang dimasukkan sebelum plugin ini terpasang."
+msgstr "Setiap penyimpanan kolom teks kaya yang berisi <a href> dicatat di sini: siapa yang menyimpan, di jurnal apa, di field mana, dan semua tautannya (tautan eksternal ditandai). Perubahan role dan akun juga dicatat di sini, termasuk yang tidak dilakukan lewat antarmuka OJS. Tombol Scan memeriksa data lama di database untuk tautan yang dimasukkan sebelum plugin ini terpasang."
 
 msgid "plugins.generic.backlinkAudit.report.scanned"
 msgstr "Scan selesai: {$count} entri baru ditemukan dan dicatat."
@@ -45,7 +45,61 @@ msgid "plugins.generic.backlinkAudit.col.source"
 msgstr "Field sumber"
 
 msgid "plugins.generic.backlinkAudit.col.links"
-msgstr "Tautan (+ditambah / -dihapus)"
+msgstr "Tautan / Role (+ditambah / -dihapus)"
 
 msgid "plugins.generic.backlinkAudit.col.ip"
 msgstr "IP / Peramban"
+
+msgid "plugins.generic.backlinkAudit.report.bootstrap"
+msgstr "Baseline dicatat"
+
+msgid "plugins.generic.backlinkAudit.report.tamper"
+msgstr "Snapshot dikosongkan - deteksi dibangun ulang"
+
+msgid "plugins.generic.backlinkAudit.detail.before"
+msgstr "Sebelum"
+
+msgid "plugins.generic.backlinkAudit.detail.after"
+msgstr "Sesudah"
+
+msgid "plugins.generic.backlinkAudit.change.newAccount"
+msgstr "akun baru dibuat"
+
+msgid "plugins.generic.backlinkAudit.change.deletedAccount"
+msgstr "akun dihapus"
+
+msgid "plugins.generic.backlinkAudit.change.email"
+msgstr "email: {$old} ke {$new}"
+
+msgid "plugins.generic.backlinkAudit.change.username"
+msgstr "username: {$old} ke {$new}"
+
+msgid "plugins.generic.backlinkAudit.change.password"
+msgstr "password diubah"
+
+msgid "plugins.generic.backlinkAudit.change.disabled"
+msgstr "akun dinonaktifkan"
+
+msgid "plugins.generic.backlinkAudit.change.enabled"
+msgstr "akun diaktifkan kembali"
+
+msgid "plugins.generic.backlinkAudit.alert.subject"
+msgstr "[Audit Keamanan] {$count} perubahan role/akun terdeteksi"
+
+msgid "plugins.generic.backlinkAudit.alert.intro"
+msgstr "Plugin Audit Backlink mendeteksi perubahan role atau akun berikut."
+
+msgid "plugins.generic.backlinkAudit.alert.col.actor"
+msgstr "Pelaku"
+
+msgid "plugins.generic.backlinkAudit.alert.col.account"
+msgstr "Akun yang diubah"
+
+msgid "plugins.generic.backlinkAudit.alert.col.change"
+msgstr "Perubahan"
+
+msgid "plugins.generic.backlinkAudit.alert.unexplained"
+msgstr "TIDAK TERJELASKAN - tidak dikirim lewat antarmuka OJS"
+
+msgid "plugins.generic.backlinkAudit.alert.footer"
+msgstr "Buka laporan Audit Backlink di OJS untuk riwayat lengkap. Perubahan bertanda TIDAK TERJELASKAN tidak dilakukan lewat antarmuka pengguna, jadi akun pelakunya tidak diketahui. Periksa itu lebih dulu."
