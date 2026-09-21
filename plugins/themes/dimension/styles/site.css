@@ -1,0 +1,819 @@
+/* ================================================================
+   Dimension theme — design system, shared by:
+     1. ALL frontend pages (loaded via addStyle() on the theme, so
+        every OJS page — issue, article, about, announcements, the
+        bare lib/pkp pages, pagination, forms — gets the same
+        colour/grid/container language).
+     2. The standalone marketing pages (indexSite, arsitekturLegal,
+        kepemimpinan) which additionally carry .dim-standalone.
+   The behaviour that drives the [data-*] hooks (reveal, counters,
+   tilt, parallax, accordion, scrollspy, progress bar) lives in
+   js/site.js.
+   ================================================================ */
+
+:root {
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+  --dim-blue: #1e3a8a;
+  --dim-indigo: #4f46e5;
+  --dim-teal: #0d9488;
+  --dim-cyan: #0891b2;
+  --dim-ink: #070a13;
+}
+
+/* Typography for the standalone marketing pages only — the normal
+   OJS pages keep the font chosen by the "typography" theme option
+   (loaded via styles/fonts/*.css). */
+.dim-standalone, .dim-standalone .font-sans { font-family: 'Inter', sans-serif; }
+.dim-standalone .font-serif { font-family: 'Playfair Display', serif; }
+
+::selection { background: rgba(79, 70, 229, 0.25); }
+
+/* Anchor sections clear the sticky header */
+section[id] { scroll-margin-top: 96px; }
+
+/* ----------------------------------------------------------------
+   Surfaces & gradients
+   ---------------------------------------------------------------- */
+
+.grid-pattern {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+}
+
+.glass-dark {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.gradient-brand {
+  background: linear-gradient(135deg, #1e3a8a 0%, #4f46e5 50%, #0d9488 100%);
+}
+
+.gradient-aurora {
+  background:
+    radial-gradient(60% 80% at 20% 20%, rgba(30, 58, 138, 0.5), transparent 60%),
+    radial-gradient(50% 60% at 80% 30%, rgba(79, 70, 229, 0.4), transparent 60%),
+    radial-gradient(60% 80% at 60% 90%, rgba(13, 148, 136, 0.4), transparent 60%),
+    #070a13;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #1e3a8a 0%, #4f46e5 50%, #0d9488 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-text-light {
+  background: linear-gradient(120deg, #a5b4fc 0%, #67e8f9 55%, #5eead4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.ring-soft {
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.6) inset, 0 8px 24px -10px rgba(15, 23, 42, 0.12);
+}
+
+.blob {
+  filter: blur(80px);
+  opacity: 0.35;
+}
+
+/* ----------------------------------------------------------------
+   Keyframes
+   ---------------------------------------------------------------- */
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes blob-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(28px, -22px, 0) scale(1.07); }
+  66% { transform: translate3d(-22px, 26px, 0) scale(0.96); }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes line-up {
+  from { transform: translateY(112%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes sheen {
+  from { transform: translateX(-130%) skewX(-18deg); }
+  to { transform: translateX(240%) skewX(-18deg); }
+}
+
+/* ----------------------------------------------------------------
+   Motion utilities
+   ---------------------------------------------------------------- */
+
+.floating { animation: float-y 6s ease-in-out infinite; }
+
+.animate-blob-drift { animation: blob-drift 16s ease-in-out infinite; }
+
+.animate-fade-up {
+  animation: fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: var(--fade-delay, 0ms);
+}
+
+.marquee {
+  display: flex;
+  gap: 2.5rem;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+.marquee:hover { animation-play-state: paused; }
+
+/* Hero line-mask title reveal (pure CSS, on load) */
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+
+.line-mask > span {
+  display: block;
+  transform: translateY(112%);
+  animation: line-up 0.95s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  animation-delay: var(--line-delay, 0s);
+}
+
+/* Sheen sweep for CTA buttons */
+.btn-sheen {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-sheen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: translateX(-130%) skewX(-18deg);
+  pointer-events: none;
+}
+
+.btn-sheen:hover::after { animation: sheen 0.9s ease forwards; }
+
+/* Generic hover lift for cards */
+.lift {
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.lift:hover { transform: translateY(-6px); }
+
+/* ----------------------------------------------------------------
+   Scroll reveal — driven by IntersectionObserver in js/site.js.
+   The hidden state only applies when <html> carries .js-reveal,
+   so no-JS / reduced-motion visitors always see the content.
+   ---------------------------------------------------------------- */
+
+.js-reveal [data-reveal] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.js-reveal [data-reveal="left"] { transform: translateX(-36px); }
+.js-reveal [data-reveal="right"] { transform: translateX(36px); }
+.js-reveal [data-reveal="zoom"] { transform: scale(0.9); }
+
+.js-reveal [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Staggered children reveal — put data-reveal + data-reveal-stagger on the
+   grid container; each direct child fades up with a progressive delay. */
+.js-reveal [data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.js-reveal [data-reveal-stagger].is-visible > * { opacity: 1; transform: none; }
+.js-reveal [data-reveal-stagger].is-visible > *:nth-child(1) { transition-delay: 0.05s; }
+.js-reveal [data-reveal-stagger].is-visible > *:nth-child(2) { transition-delay: 0.12s; }
+.js-reveal [data-reveal-stagger].is-visible > *:nth-child(3) { transition-delay: 0.19s; }
+.js-reveal [data-reveal-stagger].is-visible > *:nth-child(4) { transition-delay: 0.26s; }
+.js-reveal [data-reveal-stagger].is-visible > *:nth-child(5) { transition-delay: 0.33s; }
+.js-reveal [data-reveal-stagger].is-visible > *:nth-child(6) { transition-delay: 0.40s; }
+.js-reveal [data-reveal-stagger].is-visible > *:nth-child(7) { transition-delay: 0.47s; }
+.js-reveal [data-reveal-stagger].is-visible > *:nth-child(8) { transition-delay: 0.54s; }
+.js-reveal [data-reveal-stagger].is-visible > *:nth-child(n+9) { transition-delay: 0.6s; }
+
+/* Animated counters (values written by js/site.js) */
+.counter-value { font-variant-numeric: tabular-nums; }
+
+/* Scroll progress bar (top of page, scaled by js/site.js) */
+#dimProgressBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--dim-blue), var(--dim-indigo), var(--dim-teal), #22d3ee);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  z-index: 200;
+  pointer-events: none;
+}
+
+/* Nav scrollspy underline (js/site.js toggles .dim-nav-active) */
+a[data-spy] { position: relative; }
+
+a[data-spy]::after {
+  content: '';
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 5px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--dim-indigo), var(--dim-teal));
+  opacity: 0;
+  transform: scaleX(0.3);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+a[data-spy].dim-nav-active::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* ----------------------------------------------------------------
+   Sub-page hero
+   ---------------------------------------------------------------- */
+
+.dim-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--dim-ink);
+}
+
+.dim-hero .hero-grid {
+  position: absolute;
+  inset: 0;
+}
+
+/* ----------------------------------------------------------------
+   3D Journal card
+   ---------------------------------------------------------------- */
+
+.journal-container {
+  perspective: 1200px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.journal-card {
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.journal-container:hover .journal-card {
+  transform: rotateY(-12deg) rotateX(4deg) translateY(-10px);
+}
+
+.journal-cover {
+  aspect-ratio: 3/4;
+  width: 100%;
+  border-radius: 4px 14px 14px 4px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.journal-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
+}
+
+.spine-effect {
+  width: 14px;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.02) 50%, rgba(255, 255, 255, 0.05) 100%);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 20;
+}
+
+.cover-gloss {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 40%, rgba(0, 0, 0, 0.03) 100%);
+  pointer-events: none;
+  z-index: 21;
+}
+
+/* ----------------------------------------------------------------
+   Director portrait frame
+   ---------------------------------------------------------------- */
+
+.director-frame {
+  position: relative;
+  padding: 12px;
+}
+
+.director-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid #0d9488;
+  border-radius: 2rem;
+  transform: translate(-18px, -18px);
+  z-index: -1;
+  opacity: 0.4;
+}
+
+.director-frame img {
+  transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.director-frame:hover img { transform: scale(1.05); }
+
+/* ----------------------------------------------------------------
+   Timeline (legal journey)
+   ---------------------------------------------------------------- */
+
+.dim-timeline {
+  position: relative;
+}
+
+.dim-timeline::before {
+  content: '';
+  position: absolute;
+  top: 0.5rem;
+  bottom: 0;
+  left: 1.05rem;
+  width: 2px;
+  background: linear-gradient(180deg, var(--dim-indigo), var(--dim-teal), transparent);
+  opacity: 0.35;
+}
+
+.dim-timeline-item {
+  position: relative;
+  padding-left: 3.5rem;
+}
+
+.dim-timeline-item + .dim-timeline-item { margin-top: 2.5rem; }
+
+.dim-timeline-dot {
+  position: absolute;
+  left: 0.25rem;
+  top: 0.1rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background: #eef2ff;
+  border: 2px solid var(--dim-indigo);
+  color: var(--dim-indigo);
+  display: grid;
+  place-items: center;
+  font-size: 0.7rem;
+  font-weight: 800;
+  z-index: 1;
+}
+
+/* ----------------------------------------------------------------
+   Accordion (FAQ)
+   ---------------------------------------------------------------- */
+
+.dim-acc {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dim-acc:hover { border-color: rgba(79, 70, 229, 0.35); }
+
+.dim-acc.open {
+  border-color: rgba(79, 70, 229, 0.5);
+  box-shadow: 0 18px 40px -18px rgba(79, 70, 229, 0.25);
+}
+
+.dim-acc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  text-align: left;
+  padding: 1.25rem 1.5rem;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  font: inherit;
+  color: #0f172a;
+}
+
+.dim-acc-icon {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.75rem;
+  display: grid;
+  place-items: center;
+  background: #eef2ff;
+  color: var(--dim-indigo);
+  transition: transform 0.35s ease, background 0.3s ease, color 0.3s ease;
+}
+
+.dim-acc.open .dim-acc-icon {
+  transform: rotate(45deg);
+  background: var(--dim-indigo);
+  color: #ffffff;
+}
+
+.dim-acc-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.dim-acc.open .dim-acc-body { grid-template-rows: 1fr; }
+
+.dim-acc-body > div { overflow: hidden; }
+
+.dim-acc-body p {
+  padding: 0 1.5rem 1.35rem;
+  margin: 0;
+  color: #475569;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+/* ----------------------------------------------------------------
+   Misc
+   ---------------------------------------------------------------- */
+
+.hidden-el { display: none !important; }
+[x-cloak] { display: none !important; }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ================================================================
+   GLOBAL FRONTEND LAYER
+   Applied to every OJS page that uses the theme header/footer
+   (including bare lib/pkp pages: editorial team, information,
+   message, error). Uses only utilities already compiled in
+   reboot.css plus plain-CSS component rules.
+   ================================================================ */
+
+/* Page background + type scale ------------------------------------------------ */
+
+body {
+  background-color: #f6f7fb;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+}
+
+body .page {
+  max-width: 72rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem 1.5rem 3rem;
+}
+
+body .page h1 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: #0f172a;
+}
+
+body .page h1 + .pkp_edit_link,
+body .page h1 + span,
+body .page h1 + p {
+  margin-top: 0.5rem;
+}
+
+/* Prose content (about pages, navigation menu items, policies…) */
+body .prose {
+  color: #334155;
+  line-height: 1.75;
+}
+
+body .prose h2,
+body .prose h3 {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+body .prose a {
+  color: var(--dim-base, #1E6292);
+}
+
+body .prose img {
+  border-radius: 0.75rem;
+}
+
+/* Breadcrumbs ------------------------------------------------------------------ */
+body .pkp_breadcrumb,
+body .page nav {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 0.625rem 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+/* Content cards (about.tpl, announcements.tpl, navigationMenuItemView…) */
+body .page .bg-white,
+body .page > .bg-white {
+  border: 1px solid #e2e8f0;
+}
+
+/* Page hero (dim-page-hero) — gradient band used by the bare lib/pkp pages */
+body .dim-page-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(60% 120% at 15% 0%, rgba(79, 70, 229, 0.28), transparent 55%),
+    radial-gradient(50% 110% at 90% 10%, rgba(13, 148, 136, 0.22), transparent 55%),
+    linear-gradient(135deg, #1e3a8a 0%, #1e40af 45%, #0f766e 100%);
+  color: #ffffff;
+  padding: 2.75rem 1.5rem 2.5rem;
+  margin-bottom: 2rem;
+}
+
+body .dim-page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent 85%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent 85%);
+}
+
+body .dim-page-hero .dim-page-hero-inner {
+  position: relative;
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+body .dim-page-hero .dim-eyebrow {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #a5f3fc;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 9999px;
+  padding: 0.3rem 0.9rem;
+  margin-bottom: 0.9rem;
+}
+
+body .dim-page-hero h1 {
+  font-size: clamp(1.9rem, 4.5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  color: #ffffff;
+  margin: 0;
+}
+
+body .dim-page-hero p {
+  margin: 0.75rem 0 0;
+  max-width: 56ch;
+  color: rgba(226, 232, 240, 0.92);
+  line-height: 1.6;
+}
+
+/* Announcements list (cmp_announcements) --------------------------------------- */
+body .cmp_announcements {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+body .cmp_announcements .obj_announcement_summary {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+body .cmp_announcements .obj_announcement_summary:hover {
+  border-color: rgba(79, 70, 229, 0.35);
+  box-shadow: 0 14px 30px -18px rgba(30, 58, 138, 0.35);
+  transform: translateY(-3px);
+}
+
+body .cmp_announcements .obj_announcement_summary a {
+  color: #0f172a;
+  text-decoration: none;
+}
+
+body .cmp_announcements .obj_announcement_summary a:hover {
+  color: var(--dim-base, #1E6292);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+body .cmp_announcements .obj_announcement_summary .date {
+  display: inline-block;
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, var(--dim-base, #1E6292), #0f766e);
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 0.25rem 0.85rem;
+}
+
+body .cmp_announcements .obj_announcement_summary .read_more,
+body .cmp_announcements .obj_announcement_summary a[role="presentation"] + .read_more {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--dim-base, #1E6292);
+}
+
+/* Pagination (cmp_pagination) --------------------------------------------------- */
+body .cmp_pagination {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e2e8f0;
+  font-size: 0.9rem;
+}
+
+body .cmp_pagination .current {
+  color: #64748b;
+  white-space: nowrap;
+}
+
+body .cmp_pagination a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  color: var(--dim-base, #1E6292);
+  background: #eef2ff;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+body .cmp_pagination a:hover {
+  background: var(--dim-base, #1E6292);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* Editorial team (lib/pkp bare page) --------------------------------------------- */
+body .page_editorial_team .prose ul,
+body .page_editorial_team ul {
+  line-height: 1.9;
+}
+
+/* Error & message pages ----------------------------------------------------------- */
+body .page_error .description,
+body .page_message .description {
+  color: #475569;
+  line-height: 1.7;
+  max-width: 62ch;
+  margin-top: 0.75rem;
+}
+
+body .cmp_back_link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.5rem;
+  padding: 0.55rem 1.25rem;
+  border-radius: 0.75rem;
+  background: var(--dim-base, #1E6292);
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+body .cmp_back_link a:hover {
+  filter: brightness(1.12);
+  transform: translateY(-2px);
+}
+
+/* Sidebar (sideLeft/sideRight) ------------------------------------------------------ */
+body .pkp_structure_side_left,
+body .pkp_structure_side_right,
+body [class*="col-span-1"] [class*="col-span-2"] {
+  min-width: 0;
+}
+
+/* Sticky sidebars clear the sticky site header */
+body .lg\:sticky {
+  top: 5.5rem;
+}
+
+/* ================================================================
+   Dark mode refinements (opt-in only — default is light)
+   ================================================================ */
+
+.dark body { background-color: #0b1220; color: #e2e8f0; }
+
+.dark body .page h1 { color: #f1f5f9; }
+.dark body .prose { color: #cbd5e1; }
+.dark body .prose h2, .dark body .prose h3 { color: #f1f5f9; }
+.dark body .pkp_breadcrumb, .dark body .page nav { background: #111a2e; border-color: #1e293b; }
+.dark body .cmp_announcements .obj_announcement_summary { background: #111a2e; border-color: #1e293b; }
+.dark body .cmp_pagination a { background: #1e293b; color: #93c5fd; }
+.dark body .cmp_pagination .current { color: #94a3b8; }
+
+@media (prefers-reduced-motion: reduce) {
+  body .cmp_announcements .obj_announcement_summary,
+  body .cmp_pagination a,
+  body .cmp_back_link a { transition: none; }
+}
+
+/* ----------------------------------------------------------------
+   Reduced motion — everything stays visible & static
+   ---------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .floating,
+  .animate-blob-drift,
+  .marquee,
+  .animate-fade-up {
+    animation: none !important;
+  }
+
+  .line-mask > span {
+    transform: none;
+    animation: none;
+  }
+
+  .js-reveal [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .js-reveal [data-reveal-stagger] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  * { scroll-behavior: auto !important; }
+}

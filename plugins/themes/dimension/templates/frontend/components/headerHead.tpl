@@ -11,7 +11,6 @@
 	{* enable google scholar plugin *}
 	{load_header context="frontend"}
 	{load_stylesheet context="frontend"}
-	<link rel="stylesheet" href="/plugins/themes/dimension/styles/reboot.css" type="text/css"/>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 	{* <link rel="stylesheet" href="/plugins/themes/dimension/js/script.js" type="text/css"/> *}
 </head>

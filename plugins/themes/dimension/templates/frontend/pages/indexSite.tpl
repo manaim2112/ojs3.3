@@ -31,181 +31,14 @@
   <!-- Built Tailwind CSS -->
   {/literal}
   <link rel="stylesheet" href="{$baseUrl}/plugins/themes/dimension/styles/reboot.css">
+  <link rel="stylesheet" href="{$baseUrl}/plugins/themes/dimension/styles/site.css">
   {literal}
-
-  <!-- Custom Premium Styles -->
-  <style>
-    :root {
-      --font-sans: 'Inter', sans-serif;
-      --font-serif: 'Playfair Display', serif;
-    }
-    body, .font-sans { font-family: 'Inter', sans-serif; }
-    .font-serif { font-family: 'Playfair Display', serif; }
-    .grid-pattern {
-      background-image:
-        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-      background-size: 40px 40px;
-    }
-
-    .glass {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: saturate(180%) blur(16px);
-      -webkit-backdrop-filter: saturate(180%) blur(16px);
-    }
-
-    .glass-dark {
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-    }
-
-    .gradient-brand {
-      background: linear-gradient(135deg, #1e3a8a 0%, #4f46e5 50%, #0d9488 100%);
-    }
-
-    .gradient-aurora {
-      background:
-        radial-gradient(60% 80% at 20% 20%, rgba(30, 58, 138, 0.5), transparent 60%),
-        radial-gradient(50% 60% at 80% 30%, rgba(79, 70, 229, 0.4), transparent 60%),
-        radial-gradient(60% 80% at 60% 90%, rgba(13, 148, 136, 0.4), transparent 60%),
-        #070a13;
-    }
-
-    .gradient-text {
-      background: linear-gradient(135deg, #1e3a8a 0%, #4f46e5 50%, #0d9488 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .ring-soft {
-      box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.6) inset, 0 8px 24px -10px rgba(15, 23, 42, 0.12);
-    }
-
-    .blob {
-      filter: blur(80px);
-      opacity: 0.35;
-    }
-
-    @keyframes float-y {
-
-      0%,
-      100% {
-        transform: translateY(0);
-      }
-
-      50% {
-        transform: translateY(-12px);
-      }
-    }
-
-    .floating {
-      animation: float-y 6s ease-in-out infinite;
-    }
-
-    .marquee {
-      display: flex;
-      gap: 2.5rem;
-      width: max-content;
-      animation: marquee 35s linear infinite;
-    }
-
-    @keyframes marquee {
-      from {
-        transform: translateX(0);
-      }
-
-      to {
-        transform: translateX(-50%);
-      }
-    }
-
-    /* 3D Journal Interaction */
-    .journal-container {
-      perspective: 1200px;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-
-    .journal-card {
-      transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-      transform-style: preserve-3d;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-
-    .journal-container:hover .journal-card {
-      transform: rotateY(-12deg) rotateX(4deg) translateY(-10px);
-    }
-
-    /* Standard Journal Ratio 3:4 Layout */
-    .journal-cover {
-      aspect-ratio: 3/4;
-      width: 100%;
-      border-radius: 4px 14px 14px 4px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-      position: relative;
-      overflow: hidden;
-      background: #ffffff;
-      border: 1px solid rgba(0, 0, 0, 0.06);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .journal-cover img {
-      width: 100%;
-      height: 100%;
-      object-fit: fill;
-      display: block;
-    }
-
-    .spine-effect {
-      width: 14px;
-      height: 100%;
-      background: linear-gradient(to right, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.02) 50%, rgba(255, 255, 255, 0.05) 100%);
-      position: absolute;
-      left: 0;
-      top: 0;
-      z-index: 20;
-    }
-
-    .cover-gloss {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(115deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 40%, rgba(0, 0, 0, 0.03) 100%);
-      pointer-events: none;
-      z-index: 21;
-    }
-
-    .director-frame {
-      position: relative;
-      padding: 12px;
-    }
-
-    .director-frame::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border: 2px solid #0d9488;
-      border-radius: 2rem;
-      transform: translate(-18px, -18px);
-      z-index: -1;
-      opacity: 0.4;
-    }
-
-    .hidden-el { display: none !important; }
-
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-  </style>
 </head>
 
-<body class="antialiased text-slate-900 bg-[#fbfbfd]">
+<body class="antialiased text-slate-900 bg-[#fbfbfd] dim-standalone">
+
+  <!-- Scroll Progress Bar (scaled by js/site.js) -->
+  <div id="dimProgressBar" aria-hidden="true"></div>
 
   <!-- Top Info Bar -->
   <div class="hidden lg:block bg-slate-950 text-slate-300 relative z-50">
@@ -244,7 +77,7 @@
             <img src="https://assyfa.com/storage/uploads/1/SWMgigsbuTMZLB9n8zJzhifJyeWrR43pJ3vFuLkY.jpg" alt="PB Logo" class="h-8 w-auto object-contain">
           </div>
           <div class="leading-tight">
-            <p class="text-md sm:text-lg font-extrabold tracking-tight text-slate-950">PT Brilliant Eduriset
+            <p class="text-base sm:text-lg font-extrabold tracking-tight text-slate-950">PT Brilliant Eduriset
               Global</p>
             <p class="text-[9px] uppercase tracking-[0.2em] text-indigo-600 font-extrabold">ASSYFA GROUP
               EKOSISTEM</p>
@@ -255,10 +88,10 @@
         <nav class="hidden lg:flex items-center gap-2">
           <a href="https://assyfa.com/"
             class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:text-indigo-600 hover:bg-indigo-50/50 transition-all">Beranda</a>
-          <a href="/index.php/index/arsitektur-legal"
+          <a href="{/literal}{$baseUrl}{literal}/index.php/index/arsitektur-legal"
             class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:text-indigo-600 hover:bg-indigo-50/50 transition-all">Arsitektur
             Legal</a>
-          <a href="/index.php/index/kepemimpinan"
+          <a href="{/literal}{$baseUrl}{literal}/index.php/index/kepemimpinan"
             class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:text-indigo-600 hover:bg-indigo-50/50 transition-all">Kepemimpinan</a>
           <a href="#calculator-section"
             class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:text-indigo-600 hover:bg-indigo-50/50 transition-all">Kalkulator</a>
@@ -339,10 +172,10 @@
           <li><a href="https://assyfa.com/" onclick="closeMobileMenu()"
               class="block px-3 py-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-slate-50">Beranda</a>
           </li>
-          <li><a href="/index.php/index/arsitektur-legal" onclick="closeMobileMenu()"
+          <li><a href="{/literal}{$baseUrl}{literal}/index.php/index/arsitektur-legal" onclick="closeMobileMenu()"
               class="block px-3 py-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-slate-50">Arsitektur
               Legal</a></li>
-          <li><a href="/index.php/index/kepemimpinan" onclick="closeMobileMenu()"
+          <li><a href="{/literal}{$baseUrl}{literal}/index.php/index/kepemimpinan" onclick="closeMobileMenu()"
               class="block px-3 py-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-slate-50">Kepemimpinan</a>
           </li>
           <li><a href="#calculator-section" onclick="closeMobileMenu()"
@@ -392,7 +225,7 @@
       <div class="px-5 py-5 border-t border-slate-100 shrink-0 bg-slate-50">
         <a href="https://wa.me/6289679670318" target="_blank"
           class="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-500 text-white text-xs font-bold shadow-lg hover:bg-emerald-600 transition">
-          <i class="fab fa-whatsapp text-md"></i>
+          <i class="fab fa-whatsapp text-base"></i>
           Hubungi Tim Litbang (WhatsApp)
         </a>
       </div>
@@ -423,36 +256,35 @@
     <section class="relative overflow-hidden gradient-aurora text-white">
       <div class="absolute inset-0 grid-pattern opacity-35 mix-blend-overlay"></div>
 
-      <div class="absolute -top-40 -left-40 w-[28rem] h-[28rem] rounded-full bg-indigo-900/60 blob"></div>
-      <div class="absolute -bottom-40 -right-40 w-[32rem] h-[32rem] rounded-full bg-cyan-900/50 blob"></div>
+      <div class="absolute -top-40 -left-40 w-[28rem] h-[28rem] rounded-full bg-indigo-900/60 blob animate-blob-drift"></div>
+      <div class="absolute -bottom-40 -right-40 w-[32rem] h-[32rem] rounded-full bg-cyan-900/50 blob animate-blob-drift" style="animation-delay:-8s"></div>
 
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-28 lg:pt-24 lg:pb-36">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
           <!-- Hero Content Left -->
           <div class="lg:col-span-7 space-y-8">
-            <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-semibold tracking-wide">
+            <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-semibold tracking-wide animate-fade-up" style="--fade-delay:120ms">
                             <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
             PT Brilliant Eduriset Global - SK Kemenkumham RI 2025
             </span>
 
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.08] tracking-tight">
-              Ekosistem Integrasi
-              <span class="block mt-2">
-                                <span class="bg-gradient-to-r from-cyan-300 via-indigo-200 to-teal-300 bg-clip-text text-transparent">
-                                    Diseminasi Riset &amp; Buku ISBN.
-                                </span>
-              </span>
+              <span class="line-mask"><span style="--line-delay:.1s">Ekosistem Integrasi</span></span>
+              <span class="line-mask mt-2"><span style="--line-delay:.32s"
+                class="bg-gradient-to-r from-cyan-300 via-indigo-200 to-teal-300 bg-clip-text text-transparent">
+                Diseminasi Riset &amp; Buku ISBN.
+              </span></span>
             </h1>
 
-            <p class="text-md sm:text-lg text-indigo-100/90 max-w-xl leading-relaxed">
+            <p class="text-base sm:text-lg text-indigo-100/90 max-w-xl leading-relaxed animate-fade-up" style="--fade-delay:.45s">
               Memfasilitasi publikasi ilmiah dosen dan peneliti nasional secara tepercaya lewat
               pengelolaan sistem OJS multidisiplin serta penerbitan karya ilmiah terdaftar ISBN resmi
               Perpustakaan Nasional RI.
             </p>
 
             <!-- Highlight KBLI Boxes -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl animate-fade-up" style="--fade-delay:.58s">
               <div class="p-3 bg-white/5 border border-white/10 rounded-xl flex items-center gap-3">
                 <span class="w-8 h-8 rounded-lg bg-indigo-500/25 text-indigo-300 flex items-center justify-center font-bold text-xs">OJS</span>
                 <div class="text-xs">
@@ -469,7 +301,7 @@
               </div>
             </div>
 
-            <div class="flex flex-col sm:flex-row gap-4">
+            <div class="flex flex-col sm:flex-row gap-4 animate-fade-up" style="--fade-delay:.72s">
               <a href="#journal"
                 class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-white text-slate-950 font-bold shadow-lg shadow-black/20 hover:-translate-y-0.5 transition-all duration-300 text-sm">
                 Jelajahi Katalog Jurnal
@@ -484,8 +316,8 @@
           </div>
 
           <!-- Hero Visual Widget Right (Dashboard Preview) -->
-          <div class="lg:col-span-5">
-            <div class="relative">
+          <div class="lg:col-span-5 animate-fade-up" style="--fade-delay:.5s">
+            <div class="relative" data-tilt="4">
               <div
                 class="absolute inset-0 -m-6 rounded-[2.5rem] bg-gradient-to-br from-indigo-500/10 to-transparent blur-2xl">
               </div>
@@ -509,9 +341,9 @@
                     <p class="text-white font-semibold">Integrasi Crossref DOI &amp; Google Scholar
                     </p>
                     <div class="flex gap-2 pt-1 text-[10px] text-slate-400 font-mono">
-                      <span>$h\text{-index} \ge 12$</span>
+                      <span>h-index ≥ 12</span>
                       <span>•</span>
-                      <span>$i10\text{-index} \ge 24$</span>
+                      <span>i10-index ≥ 24</span>
                     </div>
                   </div>
 
@@ -547,33 +379,37 @@
       <!-- Stats Overlay Banner -->
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 -mt-12">
         <div
-          class="rounded-3xl glass border border-slate-200/50 p-6 grid grid-cols-2 md:grid-cols-4 gap-6 shadow-xl text-slate-900">
+          class="rounded-3xl glass border border-slate-200/50 p-6 grid grid-cols-2 md:grid-cols-4 gap-6 shadow-xl text-slate-900"
+          data-reveal="zoom">
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 grid place-items-center font-bold shadow-sm">
-              <i class="fas fa-file-invoice text-md"></i>
+              <i class="fas fa-file-invoice text-base"></i>
             </div>
             <div>
-              <p class="text-xl sm:text-2xl font-extrabold text-slate-950"><span id="statArticles">2,400</span>+</p>
+              <p class="text-xl sm:text-2xl font-extrabold text-slate-950"><span id="statArticles"
+                class="counter-value" data-counter="2400" data-suffix="+">2.400+</span></p>
               <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Artikel Jurnal
                 Terbit</p>
             </div>
           </div>
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-2xl bg-cyan-50 text-cyan-600 grid place-items-center font-bold shadow-sm">
-              <i class="fas fa-user-tie text-md"></i>
+              <i class="fas fa-user-tie text-base"></i>
             </div>
             <div>
-              <p class="text-xl sm:text-2xl font-extrabold text-slate-950"><span id="statReviewerEditor">120</span>+</p>
+              <p class="text-xl sm:text-2xl font-extrabold text-slate-950"><span id="statReviewerEditor"
+                class="counter-value" data-counter="120" data-suffix="+">120+</span></p>
               <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Reviewer &amp;
                 Editor</p>
             </div>
           </div>
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 grid place-items-center font-bold shadow-sm">
-              <i class="fas fa-book-bookmark text-md"></i>
+              <i class="fas fa-book-bookmark text-base"></i>
             </div>
             <div>
-              <p class="text-xl sm:text-2xl font-extrabold text-slate-950">450+</p>
+              <p class="text-xl sm:text-2xl font-extrabold text-slate-950"><span
+                  class="counter-value" data-counter="450" data-suffix="+">450+</span></p>
               <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Buku Ber-ISBN Resmi
               </p>
             </div>
@@ -581,7 +417,7 @@
           <div class="flex items-center gap-4">
             <div
               class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 grid place-items-center font-bold shadow-sm">
-              <i class="fas fa-certificate text-md"></i>
+              <i class="fas fa-certificate text-base"></i>
             </div>
             <div>
               <p class="text-xl sm:text-2xl font-extrabold text-slate-950">100%</p>
@@ -621,7 +457,8 @@
               <i class="fas fa-circle-nodes text-rose-500"></i> ORCID ID Connected
             </div>
 
-            <!-- Duplicated for Infinite Loop -->
+            <!-- Duplicated for Infinite Loop: must repeat the full set above,
+                 because the animation shifts by translateX(-50%). -->
             <div
               class="shrink-0 px-6 py-3 rounded-xl bg-slate-50 border border-slate-100 text-slate-600 font-bold text-sm tracking-wide flex items-center gap-2">
               <i class="fas fa-book-atlas text-indigo-500"></i> Perpustakaan Nasional RI
@@ -634,6 +471,14 @@
               class="shrink-0 px-6 py-3 rounded-xl bg-slate-50 border border-slate-100 text-slate-600 font-bold text-sm tracking-wide flex items-center gap-2">
               <i class="fas fa-graduation-cap text-cyan-500"></i> Google Scholar Index
             </div>
+            <div
+              class="shrink-0 px-6 py-3 rounded-xl bg-slate-50 border border-slate-100 text-slate-600 font-bold text-sm tracking-wide flex items-center gap-2">
+              <i class="fas fa-building-columns text-amber-500"></i> LPPM Universitas Negeri
+            </div>
+            <div
+              class="shrink-0 px-6 py-3 rounded-xl bg-slate-50 border border-slate-100 text-slate-600 font-bold text-sm tracking-wide flex items-center gap-2">
+              <i class="fas fa-circle-nodes text-rose-500"></i> ORCID ID Connected
+            </div>
           </div>
         </div>
       </div>
@@ -641,7 +486,7 @@
 
 {/literal}
 <script>window._journalsData = {journals_json};</script>
-<script>window._authData = {auth_data_json}; window._loginUrl = "{url page='login'}"; window._registerUrl = "{url page='user' op='register'}"; window._logoutUrl = "{url page='login' op='signOut'}"; window._profileUrl = "{url page='user' op='profile'}"; window._dashboardUrl = "{url page='submissions'}";</script>
+<script>window._authData = {auth_data_json}; window._loginUrl = "{url page='login'}"; window._registerUrl = "{url page='user' op='register'}"; window._logoutUrl = "{url page='login' op='signOut'}"; window._profileUrl = "{url page='user' op='profile'}"; window._dashboardUrl = "{url page='submissions'}"; window._arsitekturUrl = "{$baseUrl}/index.php/index/arsitektur-legal"; window._kepemimpinanUrl = "{$baseUrl}/index.php/index/kepemimpinan"; window._journalBaseUrl = "{$baseUrl}/index.php/";</script>
 <script>window._siteStats = {site_stats_json};</script>
 {literal}
     <!-- Dynamic Journal Catalogue -->
@@ -649,7 +494,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <!-- Section Header -->
-        <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-6">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-16 gap-6" data-reveal>
           <div class="max-w-2xl space-y-4">
             <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold uppercase tracking-wider">
                             Verified Journal Directory
@@ -674,7 +519,7 @@
         </div>
 
         <!-- Interactive Filters & Search Box -->
-        <div class="bg-slate-50 border border-slate-200 rounded-[2rem] p-6 mb-16 space-y-6">
+        <div class="bg-slate-50 border border-slate-200 rounded-[2rem] p-6 mb-16 space-y-6" data-reveal>
           <div class="relative w-full">
             <span class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-slate-400">
                             <i class="fas fa-search text-lg"></i>
@@ -693,8 +538,10 @@
           </div>
         </div>
 
-        <!-- 3D Journal Grid -->
-        <div id="journalGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24"></div>
+        <!-- 3D Journal Grid (reveal on the static container — grid innerHTML
+             is replaced on every filter/search pass, so cards must not carry
+             their own [data-reveal]) -->
+        <div id="journalGrid" data-reveal class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24"></div>
 
         <!-- Empty State -->
         <div id="journalEmpty" class="hidden-el text-center py-20 bg-slate-50 rounded-3xl border border-dashed border-slate-200">
@@ -711,7 +558,7 @@
     <section id="press" class="py-20 bg-white border-t border-slate-100">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div class="lg:col-span-5 space-y-6">
+          <div class="lg:col-span-5 space-y-6" data-reveal="left">
             <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 text-cyan-700 text-xs font-bold uppercase tracking-wider">
                             Assyfa Press (ISBN)
                         </span>
@@ -749,7 +596,7 @@
             </div>
           </div>
 
-          <div class="lg:col-span-7 bg-slate-50 border border-slate-200 rounded-[2.5rem] p-8 space-y-6">
+          <div class="lg:col-span-7 bg-slate-50 border border-slate-200 rounded-[2.5rem] p-8 space-y-6" data-reveal="right">
             <h3 class="text-xl font-extrabold text-slate-950">Alur Penerbitan Assyfa Press</h3>
 
             <div class="space-y-4">
@@ -815,7 +662,7 @@
       </div>
 
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="text-center max-w-3xl mx-auto mb-16" data-reveal>
           <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-indigo-300 text-xs font-bold uppercase tracking-wider">
                         Interactive Academic Console
                     </span>
@@ -830,7 +677,7 @@
         </div>
 
         <!-- Simulator Console Wrapper -->
-        <div id="consoleWrapper" class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl p-4 sm:p-8 max-w-4xl mx-auto">
+        <div id="consoleWrapper" data-reveal="zoom" class="bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl p-4 sm:p-8 max-w-4xl mx-auto">
 
           <!-- Tab Selector -->
           <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-6 mb-6">
@@ -848,7 +695,7 @@
           <div id="screen-jurnal" class="space-y-6">
             <div class="flex justify-between items-center">
               <div>
-                <h4 class="text-md sm:text-lg font-bold">Simulator Evaluasi Manuskrip Ilmiah</h4>
+                <h4 class="text-base sm:text-lg font-bold">Simulator Evaluasi Manuskrip Ilmiah</h4>
                 <p class="text-[11px] text-slate-400">Verifikasi Keselarasan Format Jurnal OJS &amp;
                   Ambang Turnitin Similiarity</p>
               </div>
@@ -893,7 +740,7 @@
                     (Similarity)</p>
                   <div class="flex items-baseline gap-2">
                     <span id="similarityScore" class="text-2xl font-extrabold text-emerald-400"></span>
-                    <span class="text-[10px] text-slate-400">(Ambang Batas Maksimal $20\%$)</span>
+                    <span class="text-[10px] text-slate-400">(Ambang Batas Maksimal 20%)</span>
                   </div>
                   <p id="similarityPass" class="text-[10px] text-emerald-300 font-semibold">✓ Lolos Turnitin check</p>
                   <p id="similarityFail" class="text-[10px] text-amber-300 font-semibold hidden-el">! Disarankan parafrase bagian abstrak</p>
@@ -922,7 +769,7 @@
           <div id="screen-press" class="hidden-el space-y-6">
             <div class="flex justify-between items-center">
               <div>
-                <h4 class="text-md sm:text-lg font-bold">Kalkulator Estimasi Penerbitan &amp; ISBN</h4>
+                <h4 class="text-base sm:text-lg font-bold">Kalkulator Estimasi Penerbitan &amp; ISBN</h4>
                 <p class="text-[11px] text-slate-400">Penerbitan Buku Sesuai Regulasi KBLI 58110 &amp;
                   Cetak 18111</p>
               </div>
@@ -1004,7 +851,7 @@
     <!-- Why Choose Us -->
     <section class="py-20 lg:py-28 bg-[#f8fafc]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-2xl mx-auto mb-16">
+        <div class="text-center max-w-2xl mx-auto mb-16" data-reveal>
           <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 text-cyan-700 text-xs font-bold tracking-wide uppercase">
                         Keunggulan Mutu Akademik
                     </span>
@@ -1017,7 +864,7 @@
           </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-reveal data-reveal-stagger>
           <div
             class="rounded-2xl bg-white border border-slate-200 p-6 hover:border-indigo-500/30 hover:shadow-xl transition duration-300">
             <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 grid place-items-center mb-4 text-lg">
@@ -1074,6 +921,7 @@
   <div class="pkp_structure_main page_content" style="display:none"></div>
 {/literal}
 
+<script src="{$baseUrl}/plugins/themes/dimension/js/site.js"></script>
 <script>
 (function() {
   'use strict';
@@ -1090,20 +938,6 @@
     copiesCount: 50,
     bookType: 'monograf'
   };
-
-  // ===== HEADER SCROLL EFFECT =====
-  var pageHeader = document.getElementById('pageHeader');
-  if (pageHeader) {
-    window.addEventListener('scroll', function() {
-      if (window.scrollY > 20) {
-        pageHeader.classList.add('glass', 'shadow-[0_8px_30px_rgb(0_0_0/0.04)]', 'border-b', 'border-slate-200/50');
-        pageHeader.classList.remove('bg-transparent');
-      } else {
-        pageHeader.classList.remove('glass', 'shadow-[0_8px_30px_rgb(0_0_0/0.04)]', 'border-b', 'border-slate-200/50');
-        pageHeader.classList.add('bg-transparent');
-      }
-    }, { passive: true });
-  }
 
   // ===== AUTH STATE =====
   (function() {
@@ -1178,10 +1012,12 @@
   (function() {
     var stats = window._siteStats;
     if (!stats) return;
+    // Feed the live counts into the counter animation (js/site.js reads
+    // data-counter when the element scrolls into view).
     var articleEl = document.getElementById('statArticles');
     var reviewerEl = document.getElementById('statReviewerEditor');
-    if (articleEl && stats.articles) articleEl.textContent = stats.articles.toLocaleString();
-    if (reviewerEl && stats.reviewerEditor) reviewerEl.textContent = stats.reviewerEditor.toLocaleString();
+    if (articleEl && stats.articles) articleEl.setAttribute('data-counter', stats.articles);
+    if (reviewerEl && stats.reviewerEditor) reviewerEl.setAttribute('data-counter', stats.reviewerEditor);
   })();
 
   // ===== MOBILE MENU =====
@@ -1226,13 +1062,13 @@
 
   var searchItems = [
     { name: 'Submission Jurnal OJS Pascasarjana', cat: 'Assyfa Journal', href: '#journal' },
-    { name: 'KBLI 58130 & KBLI 72209 Penulisan Riset', cat: 'Legalitas', href: '/index.php/index/arsitektur-legal' },
+    { name: 'KBLI 58130 & KBLI 72209 Penulisan Riset', cat: 'Legalitas', href: window._arsitekturUrl },
     { name: 'Penerbitan Monograf & Referensi ISBN', cat: 'Assyfa Press', href: '#press' },
     { name: 'Kalkulator Simulasi Biaya Cetak Umum', cat: 'Assyfa Press', href: '#calculator-section' },
     { name: 'Call For Papers & Konferensi Nasional 2026', cat: 'Events', href: '#conference' },
     { name: 'Sertifikat LoA & Layanan DOI Registered', cat: 'OJS Publishing', href: '#journal' },
     { name: 'Editor & Penelaah Sejawat Eksternal', cat: 'Litbang', href: '#journal' },
-    { name: 'Jasa Cetak Umum KBLI 18111', cat: 'Cetak Umum', href: '/index.php/index/arsitektur-legal' }
+    { name: 'Jasa Cetak Umum KBLI 18111', cat: 'Cetak Umum', href: window._arsitekturUrl }
   ];
 
   function toggleSearchModal() {
@@ -1320,7 +1156,7 @@
     for (var j = 0; j < filtered.length; j++) {
       var p = filtered[j];
       var abbrSafe = p.abbr ? p.abbr.toLowerCase() : '';
-      var url = 'https://journal.assyfa.com/index.php/' + encodeURIComponent(abbrSafe);
+      var url = window._journalBaseUrl + encodeURIComponent(abbrSafe);
       var bgColor = p.color || '#1e3a8a';
       var theme = escapeHtml(p.theme || 'SCIENCE');
       var title = escapeHtml(p.title || '');
@@ -1354,7 +1190,7 @@
         + '<span class="w-2 h-2 rounded-full bg-teal-500 shadow-[0_0_10px_rgba(20,184,166,0.6)]"></span>'
         + '<span class="text-[9px] font-black text-slate-500 uppercase tracking-widest">Verified International Journal</span>'
         + '</div>'
-        + '<h4 class="font-black text-md text-slate-950 group-hover:text-indigo-600 transition-all leading-snug line-clamp-2 uppercase">' + title + '</h4>'
+        + '<h4 class="font-black text-base text-slate-950 group-hover:text-indigo-600 transition-all leading-snug line-clamp-2 uppercase">' + title + '</h4>'
         + '<p class="text-xs text-slate-500 leading-relaxed italic">'
         + '<span class="text-indigo-950 font-bold uppercase text-[9px] not-italic block mb-0.5">Focus &amp; Scope:</span>'
         + desc + '</p>'

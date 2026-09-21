@@ -40,7 +40,12 @@
 
 					{capture name="searchFormUrl"}{url escape=false}{/capture}
 					{assign var=formUrlParameters value=[]}{* Prevent Smarty warning *}
-					{$smarty.capture.searchFormUrl|parse_url:$smarty.const.PHP_URL_QUERY|parse_str:$formUrlParameters}
+					{assign var="formUrlQuery" value=$smarty.capture.searchFormUrl|parse_url:$smarty.const.PHP_URL_QUERY}
+					{* parse_url() returns null when the URL carries no query string, and
+					   parse_str() deprecates null on PHP 8.1, so only call it when set. *}
+					{if $formUrlQuery}
+						{$formUrlQuery|parse_str:$formUrlParameters}
+					{/if}
 
 					<form class="cmp_form space-y-6" method="get"
 						action="{$smarty.capture.searchFormUrl|strtok:"?"|escape}">

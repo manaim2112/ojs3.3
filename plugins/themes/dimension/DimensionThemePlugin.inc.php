@@ -204,6 +204,12 @@ class DimensionThemePlugin extends ThemePlugin {
 		// Load primary stylesheet (pre-built Tailwind v4)
 		$this->addStyle('reboot', 'styles/reboot.css');
 
+		// Shared design system: loaded on every frontend page so the
+		// standard OJS pages (issues, articles, about, announcements,
+		// bare lib/pkp pages, pagination, forms) share the same
+		// colour/grid/container language as the custom pages.
+		$this->addStyle('site', 'styles/site.css', ['priority' => 5]);
+
 		// Note: main.css is a PostCSS source (not loaded directly — compiled into reboot.css)
 		// $this->addStyle('main', 'styles/main.css');
 
@@ -254,28 +260,8 @@ class DimensionThemePlugin extends ThemePlugin {
 			}
 		}
 
-
-		// Get homepage image and use as header background if useAsHeader is true
-		$context = Application::get()->getRequest()->getContext();
-		
-		if ($context && $this->getOption('useHomepageImageAsHeader')) {
-
-			$publicFileManager = new PublicFileManager();
-			$publicFilesDir = $request->getBaseUrl() . '/' . $publicFileManager->getContextFilesPath($context->getId());
-
-			$homepageImage = $context->getLocalizedData('homepageImage');
-
-            if($homepageImage && array_key_exists("uploadName", $homepageImage)) {
-    			$homepageImageUrl = $publicFilesDir . '/' . $homepageImage['uploadName'];
-    			
-    			$this->addStyle('homepageImage',
-				'.pkp_structure_head { background: center / cover no-repeat url("' . $homepageImageUrl . '");}',
-				['inline' => true]
-			);
-            }
-			
-		
-		}
+		// Homepage-image-as-header is rendered directly by
+		// templates/frontend/components/header.tpl (see useHomepageImageAsHeader).
 
 		// // Load jQuery from a CDN or, if CDNs are disabled, from a local copy.
 		$min = Config::getVar('general', 'enable_minified') ? '.min' : '';
@@ -312,6 +298,11 @@ class DimensionThemePlugin extends ThemePlugin {
 			$smarty->registerPlugin('function', 'journals_json', array($this, 'smartyJournalsJson'));
 			$smarty->registerPlugin('function', 'auth_data_json', array($this, 'smartyAuthDataJson'));
 			$smarty->registerPlugin('function', 'site_stats_json', array($this, 'smartySiteStatsJson'));
+
+			// Smarty 4 deprecates using raw PHP functions as modifiers. PKP already
+			// registers most of them (see PKPTemplateManager::__construct), but not
+			// md5, which this theme uses for gravatar URLs.
+			$smarty->registerPlugin('modifier', 'md5', 'md5');
 		}
 
 		// Ensure our indexSite.tpl is used for the site index page

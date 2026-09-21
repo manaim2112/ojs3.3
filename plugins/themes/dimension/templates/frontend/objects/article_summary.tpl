@@ -76,7 +76,9 @@
 				
 				{foreach from=$authors item=author name=authorList key="idx"}
 					<span class="inline-flex items-center space-x-2">
+						{if $author->_data["country"]}
 						<img loading="lazy" style="display:inline-block;margin-right:4px;width:16px;height:11px;border:1px solid #ccc;border-radius:2px;" src="https://flagcdn.com/w20/{$author->_data["country"]|lower}.png" alt="{$author->getFullName()|escape}" onerror="this.onerror=null;this.style.display='none'">
+						{/if}
 						{$author->getLocalizedData("givenName")|escape} 
             			{$author->getLocalizedData("familyName")|escape}
 				{if $idx+1 < count($authors)}, {/if}

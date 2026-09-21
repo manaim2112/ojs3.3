@@ -1,19 +1,21 @@
-<style>
-.views {
-
-}
-</style>
-
-
+{*
+ * Views / Downloads / Google Scholar citation block, appended to the article
+ * page by DimensionThemePlugin::ShowViewAndDownload().
+ *
+ * The Google Scholar parts are guarded by $statistic_scholar, which is only
+ * assigned when both "Statistics Views" and "Google Scholar User ID" are set.
+ * Without the guard this template threw a JS error on every article page
+ * because $statistic_scholar->cited_by->graph resolved to null.
+ *}
 <div class="item views grid grid-cols-2 my-4 dark:text-black">
-    <div class="bg-white p-3 ">
+    <div class="bg-white p-3">
         {if $publication->getData('datePublished')}
             <div class="item published">
                 <section class="sub_item">
                     <h2 class="label text-lg!">
                         {translate key="submissions.published"}
                     </h2>
-                    <div class="value text-md">
+                    <div class="value text-base">
                         {* If this is the original version *}
                         {if $firstPublication->getID() === $publication->getId()}
                             <span>{$firstPublication->getData('datePublished')|date_format:$dateFormatShort}</span>
@@ -49,39 +51,38 @@
         {/if}
     </div>
     <div class="border-l p-3 bg-orange-200">
-        <span class="text-md">Views</span>
+        <span class="text-base">Views</span>
         <p class="view count" data-min="1" data-max="{$article->getViews()}"> {$article->getViews()} </p>
     </div>
+
+    {if $statistic_scholar}
     <div class="bg-lime-300 p-3">
         Citation Google Scholar
         {foreach from=$statistic_scholar->cited_by->table item=metric}
             {if $metric->citations}
                 <p class="font-bold text-2xl google-citation-count">
-                    {$metric->citations->all} 
+                    {$metric->citations->all}
                 </p>
                 Citations
             {/if}
             {if $metric->h_index}
                 <p class="font-bold text-2xl google-citation-h">
-                    {$metric->h_index->all} 
+                    {$metric->h_index->all}
                 </p>
                 H-index
             {/if}
             {if $metric->i10_index}
                 <p class="font-bold text-2xl google-citation-i10">
-                    {$metric->i10_index->all} 
+                    {$metric->i10_index->all}
                 </p>
                 i10-index
             {/if}
         {/foreach}
-
-
-        {assign var=pubIdDoi value=$publication->getData("pub-id::doi")}
-        {capture assign="urlPathMe"}{url page="index" router=$smarty.const.ROUTE_PAGE}{/capture}
-
     </div>
+    {/if}
+
     <div class="border-l p-3 bg-slate-200 text-black">
-        <span class="text-md">Downloads</span>
+        <span class="text-base">Downloads</span>
         {if $galleys}
             {assign var="totalViews" value=0}
             {foreach from=$galleys item=galley name=galleyList}
@@ -92,18 +93,15 @@
             </p>
         {/if}
     </div>
+
+    {if $statistic_scholar}
     <div id="area-chart" class="col-span-2 p-2 bg-linear-to-b from-white to-lime-300">
     </div>
-    <div id="buttonCitationUpdate" class="col-span-2 text-center text-sm text-blue-500 mt-4">
-        <button type="button"
-            class="py-1 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-hidden bg-linear-to-tr from-white to-blue-200 rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
-            onclick="updateCitation()">Update Citation</button>
-    </div>
-
-
+    {/if}
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/apexcharts" integrity="sha384-7QMVf2SRGQLP+7Qs3NcPqNqN3JpC7x+eFCzAD4rBJgW6ioBX6cJfB4M2NjLJ7xK" crossorigin="anonymous"></script>
+{if $statistic_scholar}
+<script src="{$baseUrl}/plugins/themes/dimension/js/lib/apexcharts.min.js"></script>
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", async () => {
         const graphData = {$statistic_scholar->cited_by->graph|@json_encode};
@@ -160,3 +158,4 @@
         }
     });
 </script>
+{/if}

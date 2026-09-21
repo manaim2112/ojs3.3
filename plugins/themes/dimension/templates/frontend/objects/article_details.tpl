@@ -146,7 +146,7 @@
 				{if $publication->getData('pub-id::doi')}
 			<div class="text-right mt-2 mb-4">
 				<a href="https://doi.org/{$publication->getData('pub-id::doi')}" target="_blank" class="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 transition-colors">
-				<img src="/plugins/generic/badges/images/DOI_logo.svg" class="w-4 h-4" alt="Doi Url"/>
+				<img src="{$baseUrl}/plugins/generic/badges/images/DOI_logo.svg" class="w-4 h-4" alt="Doi Url"/>
 				https://doi.org/{$publication->getData('pub-id::doi')}
 				</a>
 			</div>

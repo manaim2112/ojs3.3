@@ -20,7 +20,7 @@
 				{if $currentFrontendUser}
 					<img src="https://www.gravatar.com/avatar/{$currentFrontendUser->getEmail()|lower|md5}?s=80&d=mp"
 						alt="" class="w-8 h-8 rounded-full border-2 border-white"
-						onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e40af/white?text={$currentFrontendUser->getFullName()|truncate:1:''|escape:url}'">
+						onerror="this.onerror=null;this.style.display='none'">
 					<span class="hidden md:inline text-sm font-medium max-w-[100px] truncate">{$currentFrontendUser->getFullName()|escape}</span>
 				{else}
 					<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 0112 15a9 9 0 016.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -97,6 +97,11 @@
 		</script>
 	{else}
 		{* === Primary Menu (Desktop & Mobile) === *}
+		{* Active item detection: highlight the nav item that points to
+		   the current page (matched against the current request URI). *}
+		{capture assign="currentPath"}{url page=$requestedPage op=$requestedOp router=$smarty.const.ROUTE_PAGE}{/capture}
+		{* Normalise the trailing /index so ".../alj/about/index" matches ".../alj/about" *}
+		{assign var="currentPath" value=$currentPath|regex_replace:"/\/index$/":""}
 
 		{* Desktop Menu (hanya tampil di md: ke atas) *}
 		<ul id="{$id|escape}" class="{$ulClass|escape} text-white">
@@ -104,9 +109,15 @@
 				{if !$navigationMenuItemAssignment->navigationMenuItem->getIsDisplayed()}
 					{continue}
 				{/if}
-				<li class="relative group px-2 py-1">
-					<a class="px-4 py-2 block hover:bg-blue-700 rounded-full transition-colors duration-200 animate-slide-in-nav-item"
-						href="{$navigationMenuItemAssignment->navigationMenuItem->getUrl()}">
+				{assign var="menuItemUrl" value=$navigationMenuItemAssignment->navigationMenuItem->getUrl()|regex_replace:"/\/index$/":""}
+				{assign var="isActive" value=false}
+				{if $menuItemUrl|escape == $currentPath|escape}
+					{assign var="isActive" value=true}
+				{/if}
+				<li class="relative group px-2 py-1{if $isActive} dim-nav-item-active{/if}">
+					<a class="px-4 py-2 block hover:bg-white/15 {if $isActive}bg-white/20 font-semibold{/if} rounded-full transition-colors duration-200 animate-slide-in-nav-item"
+						href="{$navigationMenuItemAssignment->navigationMenuItem->getUrl()}"
+						{if $isActive}aria-current="page"{/if}>
 						{$navigationMenuItemAssignment->navigationMenuItem->getLocalizedTitle()}
 					</a>
 					{if $navigationMenuItemAssignment->navigationMenuItem->getIsChildVisible()}

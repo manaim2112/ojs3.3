@@ -55,7 +55,7 @@
 				<div class="flex items-center gap-3 mb-3">
 					<img src="https://www.gravatar.com/avatar/{$currentFrontendUser->getEmail()|lower|md5}?s=80&d=mp"
 						alt="" class="w-10 h-10 rounded-full border-2 border-blue-200 dark:border-gray-600"
-						onerror="this.onerror=null;this.src='https://placehold.co/80x80/1e40af/white?text={$currentFrontendUser->getFullName()|truncate:1:''|escape:url}'">
+						onerror="this.onerror=null;this.style.display='none'">
 					<div class="min-w-0">
 						<p class="font-semibold text-gray-800 dark:text-gray-100 text-sm truncate">{$currentFrontendUser->getFullName()|escape}</p>
 						<p class="text-xs text-gray-500 dark:text-gray-400 truncate">{$currentFrontendUser->getEmail()|escape}</p>
@@ -75,7 +75,7 @@
 				</div>
 			</div>
 		{else}
-			{assign var="loginUrl" value=implode("/", ["/index.php", $currentJournal->getData('urlPath'), "login/signIn"])}
+			{capture assign="loginUrl"}{url page="login" op="signIn"}{/capture}
 			<form class="bg-white dark:bg-gray-800 rounded-lg shadow-xs p-5" method="post" action="{$loginUrl}">
 				{csrf}
 				{if $error}

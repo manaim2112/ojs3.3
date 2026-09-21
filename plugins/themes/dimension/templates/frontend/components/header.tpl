@@ -43,7 +43,7 @@
 </div>
 {/if}
 
-<header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg sticky top-0 z-[100] dark:from-gray-800 dark:to-gray-900">
+<header class="dim-brand-gradient text-white shadow-lg sticky top-0 z-[100]">
     <div class="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
 		{capture assign="homeUrl"}
 			{url page="index" router=$smarty.const.ROUTE_PAGE}
@@ -51,12 +51,12 @@
         <a href="{$homeUrl}" class="flex items-center animate-fade-in-down">
         	{if $displayPageHeaderLogo}
 	        	<img src="{$publicFilesDir}/{$displayPageHeaderLogo.uploadName|escape:"url"}" alt="{$displayPageHeaderTitle|escape}"
-	        		class="h-10" onerror="this.onerror=null;this.src='https://placehold.co/160x40/1E6292/ffffff?text=Logo'">
+	        		class="h-10" onerror="this.onerror=null;this.src='{$baseUrl}/templates/images/structure/logo.png'">
         	{elseif $displayPageHeaderTitle}
 	        	<span class="text-base font-bold tracking-tight">{$displayPageHeaderTitle|escape}</span>
         	{else}
 	        	<img class="w-10" src="{$baseUrl}/templates/images/structure/logo.png" alt="{$applicationName|escape}"
-	        		title="{$applicationName|escape}" onerror="this.onerror=null;this.src='https://placehold.co/40x40/1E6292/ffffff?text=OJ'" />
+	        		title="{$applicationName|escape}" onerror="this.onerror=null;this.style.display='none'" />
         	{/if}
 		</a>
 
@@ -148,8 +148,9 @@
     const key = 'dimension-theme-pref';
     const html = document.documentElement;
     const stored = localStorage.getItem(key);
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (stored === 'dark' || (!stored && prefersDark)) {
+    // Light mode is the default; dark mode is only applied when the
+    // visitor has explicitly chosen it via the header toggle.
+    if (stored === 'dark') {
         html.classList.add('dark');
     } else {
         html.classList.remove('dark');
@@ -161,25 +162,6 @@
         localStorage.setItem(key, isDark ? 'dark' : 'light');
     });
 })();
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('img').forEach(function(img) {
-        if (img.complete && img.naturalWidth === 0) {
-            img.setAttribute('onerror', '');
-            img.src = 'https://placehold.co/' + (img.getAttribute('width') || 400) + 'x' + (img.getAttribute('height') || 300) + '/e2e8f0/64748b?text=Image';
-        }
-    });
-});
-document.addEventListener('error', function(e) {
-    if (e.target.tagName === 'IMG') {
-        e.target.onerror = null;
-        var w = e.target.getAttribute('width') || e.target.clientWidth || 400;
-        var h = e.target.getAttribute('height') || e.target.clientHeight || 300;
-        e.target.src = 'https://placehold.co/' + w + 'x' + h + '/e2e8f0/64748b?text=Image';
-    }
-}, true);
 </script>
 
 <div class="max-w-7xl mx-auto">

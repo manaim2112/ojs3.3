@@ -1,7 +1,7 @@
 </div><!-- pkp_structure_main -->
 
 {* Pre-footer section *}
-<section class="bg-gradient-to-r from-blue-600 to-blue-800 dark:from-gray-800 dark:to-gray-900 py-12">
+<section class="dim-brand-gradient py-12">
     <div class="max-w-7xl mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
             <div class="bg-white/10 dark:bg-white/5 backdrop-blur-sm rounded-xl p-8 text-center md:text-left">
@@ -31,7 +31,7 @@
     </div>
 </section>
 
-<footer class="bg-gradient-to-r from-blue-700 to-blue-900 py-10 text-blue-100 dark:from-gray-900 dark:to-black dark:text-gray-200">
+<footer class="dim-brand-gradient dim-brand-gradient--deep py-10 text-blue-100 dark:text-gray-200">
     <div class="max-w-7xl mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-8">
             <div>
