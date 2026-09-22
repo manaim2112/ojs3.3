@@ -1,0 +1,57 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-22T00:00:00+07:00\n"
+"PO-Revision-Date: 2026-09-22T00:00:00+07:00\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "plugins.themes.difusi.name"
+msgstr "Difusi Ipteks Legowo Theme"
+
+msgid "plugins.themes.difusi.description"
+msgstr "Modern, professional theme built from the Jurnal Difusi Ipteks Legowo style guide: dark forest green curves, halftone dot patterns, a two-tone italic journal title and a geometric polygon footer."
+
+msgid "plugins.themes.difusi.option.coverFrame.label"
+msgstr "Issue cover frame"
+
+msgid "plugins.themes.difusi.option.coverFrame.description"
+msgstr "How issue and journal covers are framed, following the circular collage frame of the style guide."
+
+msgid "plugins.themes.difusi.option.coverFrame.circle"
+msgstr "Circular frame with emerald border"
+
+msgid "plugins.themes.difusi.option.coverFrame.rounded"
+msgstr "Rounded rectangle with emerald border"
+
+msgid "plugins.themes.difusi.option.coverFrame.none"
+msgstr "No frame"
+
+msgid "plugins.themes.difusi.option.publisherName.label"
+msgstr "Publisher name"
+
+msgid "plugins.themes.difusi.option.publisherName.description"
+msgstr "Shown in the footer, e.g. Perkumpulan Legowo Cerdas Sejahtera. Leave empty to hide."
+
+msgid "plugins.themes.difusi.option.publisherUrl.label"
+msgstr "Publisher website"
+
+msgid "plugins.themes.difusi.option.publisherUrl.description"
+msgstr "Full URL linked from the globe icon in the footer, e.g. https://example.org. Leave empty to hide the icon."
+
+msgid "plugins.themes.difusi.option.publisherPhone.label"
+msgstr "Publisher phone"
+
+msgid "plugins.themes.difusi.option.publisherPhone.description"
+msgstr "Phone number linked from the phone icon in the footer. Leave empty to hide the icon."
+
+msgid "plugins.themes.difusi.contact.website"
+msgstr "Publisher website"
+
+msgid "plugins.themes.difusi.contact.phone"
+msgstr "Publisher phone"

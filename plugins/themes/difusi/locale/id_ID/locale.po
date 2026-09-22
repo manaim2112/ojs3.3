@@ -1,0 +1,57 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-22T00:00:00+07:00\n"
+"PO-Revision-Date: 2026-09-22T00:00:00+07:00\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: id_ID\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "plugins.themes.difusi.name"
+msgstr "Tema Difusi Ipteks Legowo"
+
+msgid "plugins.themes.difusi.description"
+msgstr "Tema modern dan profesional berdasarkan panduan gaya Jurnal Difusi Ipteks Legowo: kurva hijau gelap, pola titik halftone, judul jurnal italic dua warna, dan footer poligon geometris."
+
+msgid "plugins.themes.difusi.option.coverFrame.label"
+msgstr "Bingkai cover issue"
+
+msgid "plugins.themes.difusi.option.coverFrame.description"
+msgstr "Cara cover issue dan jurnal dibingkai, mengikuti bingkai kolase lingkaran pada panduan gaya."
+
+msgid "plugins.themes.difusi.option.coverFrame.circle"
+msgstr "Bingkai lingkaran dengan tepi hijau zamrud"
+
+msgid "plugins.themes.difusi.option.coverFrame.rounded"
+msgstr "Persegi membulat dengan tepi hijau zamrud"
+
+msgid "plugins.themes.difusi.option.coverFrame.none"
+msgstr "Tanpa bingkai"
+
+msgid "plugins.themes.difusi.option.publisherName.label"
+msgstr "Nama penerbit"
+
+msgid "plugins.themes.difusi.option.publisherName.description"
+msgstr "Ditampilkan di footer, mis. Perkumpulan Legowo Cerdas Sejahtera. Kosongkan untuk menyembunyikan."
+
+msgid "plugins.themes.difusi.option.publisherUrl.label"
+msgstr "Situs web penerbit"
+
+msgid "plugins.themes.difusi.option.publisherUrl.description"
+msgstr "URL lengkap yang ditautkan dari ikon globe di footer, mis. https://contoh.org. Kosongkan untuk menyembunyikan ikon."
+
+msgid "plugins.themes.difusi.option.publisherPhone.label"
+msgstr "Telepon penerbit"
+
+msgid "plugins.themes.difusi.option.publisherPhone.description"
+msgstr "Nomor telepon yang ditautkan dari ikon telepon di footer. Kosongkan untuk menyembunyikan ikon."
+
+msgid "plugins.themes.difusi.contact.website"
+msgstr "Situs web penerbit"
+
+msgid "plugins.themes.difusi.contact.phone"
+msgstr "Telepon penerbit"

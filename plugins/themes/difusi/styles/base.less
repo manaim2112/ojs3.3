@@ -1,0 +1,90 @@
+/**
+ * @file plugins/themes/difusi/styles/base.less
+ *
+ * @brief CSS custom properties and base typography for the JDI theme.
+ */
+
+:root {
+	/* Colours (style.md §1) */
+	--jdi-primary-dark: @jdi-primary-dark;
+	--jdi-primary-light: @jdi-primary-light;
+	--jdi-accent-blue: @jdi-accent-blue;
+	--jdi-accent-orange: @jdi-accent-orange;
+
+	/* Neutrals */
+	--jdi-text-main: @jdi-text-main;
+	--jdi-text-muted: @jdi-text-muted;
+	--jdi-bg-body: @jdi-bg-body;
+	--jdi-bg-alt: @jdi-bg-alt;
+
+	/* Typography (style.md §2) */
+	--font-heading: @font-heading;
+	--font-metadata: @font-metadata;
+	--font-body: @font;
+
+	/* Effects */
+	--shadow-title: @jdi-shadow-title;
+}
+
+html,
+body {
+	font-family: @font;
+	color: @jdi-text-main;
+	background: @jdi-bg-body;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+a {
+	color: @jdi-accent-blue;
+
+	&:hover,
+	&:focus {
+		color: @primary-lift;
+	}
+}
+
+.pkp_structure_main {
+
+	h1,
+	h2,
+	h3 {
+		font-family: @font-heading;
+		color: @jdi-text-main;
+	}
+
+	h1 {
+		font-weight: @jdi-weight-extrabold;
+		letter-spacing: -0.01em;
+	}
+
+	h2 {
+		font-weight: @jdi-weight-bold;
+		position: relative;
+		padding-bottom: @half;
+
+		// Emerald underline accent (style.md §1)
+		&:after {
+			content: '';
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			width: 56px;
+			height: 3px;
+			border-radius: 2px;
+			background: @jdi-primary-light;
+		}
+	}
+
+	h3 {
+		font-weight: @jdi-weight-bold;
+	}
+}
+
+// Institutional / metadata text (style.md §2)
+.pkp_footer_content,
+.obj_issue_summary .metadata,
+.obj_article_details .item.doi,
+.obj_article_details .item.published {
+	font-family: @font-metadata;
+}

@@ -1,0 +1,97 @@
+/**
+ * @file plugins/themes/difusi/styles/pages.less
+ *
+ * @brief Page-level accents that carry the JDI identity across the public site.
+ */
+
+// Journal homepage
+.pkp_page_index {
+
+	.homepage_about {
+		h2 {
+			color: @jdi-primary-dark;
+		}
+	}
+
+	.current_issue {
+		.current_issue_title {
+			color: @jdi-primary-dark;
+			font-family: @font-heading;
+		}
+
+		.read_more {
+			color: @jdi-accent-orange;
+
+			&:hover,
+			&:focus {
+				color: darken(@jdi-accent-orange, 12%);
+			}
+		}
+	}
+
+	.additional_content {
+		border-top-color: rgba(0, 168, 107, 0.35);
+	}
+}
+
+// Issue archive
+.obj_issue_summary {
+	border-left: 4px solid transparent;
+	padding-left: @base;
+	transition: border-color 0.2s ease;
+
+	&:hover {
+		border-left-color: @jdi-primary-light;
+	}
+
+	.title {
+		color: @jdi-primary-dark;
+
+		&:hover,
+		&:focus {
+			color: @jdi-accent-blue;
+		}
+	}
+}
+
+// Sidebar blocks
+.pkp_structure_sidebar .pkp_block {
+	border-top: 3px solid @jdi-primary-light;
+	border-radius: @radius;
+	background: @jdi-bg-alt;
+	padding: @base;
+
+	.title {
+		font-family: @font-heading;
+		font-weight: @jdi-weight-bold;
+		color: @jdi-primary-dark;
+	}
+}
+
+// Article landing page
+.obj_article_details {
+
+	.page_title {
+		font-family: @font-heading;
+		font-weight: @jdi-weight-extrabold;
+		color: @jdi-text-main;
+	}
+
+	.item.doi a,
+	.item.published .value {
+		color: @jdi-accent-blue;
+	}
+}
+
+// Search results
+.pkp_page_search {
+
+	.search_results .obj_article_summary .title a {
+		color: @jdi-primary-dark;
+
+		&:hover,
+		&:focus {
+			color: @jdi-accent-blue;
+		}
+	}
+}

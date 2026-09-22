@@ -1,0 +1,99 @@
+/**
+ * @file plugins/themes/difusi/styles/components.less
+ *
+ * @brief Reusable JDI components: buttons, badges, call to action and the
+ *  circular cover frame (style.md §1, §3.C).
+ */
+
+// Buttons (style.md §1: emerald hover accent)
+.cmp_button {
+	background: @jdi-primary-dark;
+	border: 1px solid @jdi-primary-dark;
+	border-top-color: @jdi-primary-dark;
+	box-shadow: none;
+	color: #fff;
+
+	&:hover,
+	&:focus {
+		background: @jdi-primary-light;
+		border-color: @jdi-primary-light;
+		box-shadow: none;
+		color: #fff;
+	}
+}
+
+.cmp_button_wire {
+	background: transparent;
+	border: 1px solid @jdi-primary-dark;
+	color: @jdi-primary-dark;
+
+	&:hover,
+	&:focus {
+		background: @jdi-primary-light;
+		border-color: @jdi-primary-light;
+		color: #fff;
+	}
+}
+
+// Badge / call to action pill (style.md §1: vibrant orange)
+.jdi_badge {
+	display: inline-block;
+	padding: 0.15em 0.75em;
+	border-radius: 999px;
+	background: @jdi-accent-orange;
+	color: #fff;
+	font-family: @font-metadata;
+	font-size: @font-sml;
+	font-weight: @jdi-weight-bold;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	text-decoration: none;
+}
+
+// Metadata text such as "ISSUE", "Vol." and ISSN (style.md §1)
+.jdi_metadata {
+	font-family: @font-metadata;
+	font-weight: @jdi-weight-bold;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: @jdi-text-muted;
+}
+
+//
+// Circular collage frame for covers (style.md §3.C)
+//
+.jdi_cover_frame(@radius) {
+	border: 8px solid @jdi-primary-light;
+	border-radius: @radius;
+	box-shadow: 0 6px 20px rgba(11, 94, 60, 0.18);
+}
+
+.jdi_cover_circle {
+
+	.obj_issue_summary .cover img,
+	.obj_issue_toc .cover img,
+	.obj_article_summary .cover img {
+		width: 100%;
+		max-width: 260px;
+		max-height: none;
+		aspect-ratio: 1 / 1;
+		object-fit: cover;
+		.jdi_cover_frame(50%);
+	}
+}
+
+.jdi_cover_rounded {
+
+	.obj_issue_summary .cover img,
+	.obj_issue_toc .cover img,
+	.obj_article_summary .cover img {
+		max-height: none;
+		.jdi_cover_frame(16px);
+	}
+}
+
+// Journal homepage header image keeps the emerald border without a crop.
+.jdi_cover_circle .homepage_image img,
+.jdi_cover_rounded .homepage_image img {
+	border-bottom: 8px solid @jdi-primary-light;
+}
