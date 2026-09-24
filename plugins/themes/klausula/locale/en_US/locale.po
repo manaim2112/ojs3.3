@@ -1,0 +1,117 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-24T00:00:00+07:00\n"
+"PO-Revision-Date: 2026-09-24T00:00:00+07:00\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "plugins.themes.klausula.name"
+msgstr "Klausula Law Journal Theme"
+
+msgid "plugins.themes.klausula.description"
+msgstr "Classic, formal theme for a law journal: serif typography, a red palette, engraved rules and an optional seal emblem."
+
+msgid "plugins.themes.klausula.option.colourScheme.label"
+msgstr "Colour scheme"
+
+msgid "plugins.themes.klausula.option.colourScheme.description"
+msgstr "The palette used across the site. Both schemes share the same layout and typography, only the colours differ."
+
+msgid "plugins.themes.klausula.option.colourScheme.classic"
+msgstr "Classic — deep, formal red on white"
+
+msgid "plugins.themes.klausula.option.colourScheme.strong"
+msgstr "Strong — saturated red on white"
+
+msgid "plugins.themes.klausula.option.emblem.label"
+msgstr "Header emblem"
+
+msgid "plugins.themes.klausula.option.emblem.description"
+msgstr "Adds a formal seal emblem beside the journal name in the header."
+
+msgid "plugins.themes.klausula.option.emblem.seal"
+msgstr "Show seal emblem"
+
+msgid "plugins.themes.klausula.option.emblem.none"
+msgstr "No emblem"
+
+msgid "plugins.themes.klausula.option.coverFrame.label"
+msgstr "Issue cover frame"
+
+msgid "plugins.themes.klausula.option.coverFrame.description"
+msgstr "How issue and journal covers are framed."
+
+msgid "plugins.themes.klausula.option.coverFrame.ruled"
+msgstr "Ruled frame"
+
+msgid "plugins.themes.klausula.option.coverFrame.plain"
+msgstr "Plain border"
+
+msgid "plugins.themes.klausula.option.coverFrame.none"
+msgstr "No frame"
+
+msgid "plugins.themes.klausula.option.showStats.label"
+msgstr "Article metrics"
+
+msgid "plugins.themes.klausula.option.showStats.description"
+msgstr "Show the total abstract views and file downloads on the article list and article page."
+
+msgid "plugins.themes.klausula.option.showStats.yes"
+msgstr "Show views and downloads"
+
+msgid "plugins.themes.klausula.option.showStats.no"
+msgstr "Hide"
+
+msgid "plugins.themes.klausula.option.showFlags.label"
+msgstr "Author country flags"
+
+msgid "plugins.themes.klausula.option.showFlags.description"
+msgstr "Show a country flag next to each author, based on the country in the author's profile. Authors without a country show no flag."
+
+msgid "plugins.themes.klausula.option.showFlags.yes"
+msgstr "Show flags"
+
+msgid "plugins.themes.klausula.option.showFlags.no"
+msgstr "Hide"
+
+msgid "plugins.themes.klausula.option.publisherName.label"
+msgstr "Publisher name"
+
+msgid "plugins.themes.klausula.option.publisherName.description"
+msgstr "Shown in the footer, e.g. Faculty of Law, Universitas Example. Leave empty to hide."
+
+msgid "plugins.themes.klausula.option.publisherUrl.label"
+msgstr "Publisher website"
+
+msgid "plugins.themes.klausula.option.publisherUrl.description"
+msgstr "Full URL linked from the globe icon in the footer, e.g. https://example.org. Leave empty to hide the icon."
+
+msgid "plugins.themes.klausula.option.publisherPhone.label"
+msgstr "Publisher phone"
+
+msgid "plugins.themes.klausula.option.publisherPhone.description"
+msgstr "Phone number linked from the phone icon in the footer. Leave empty to hide the icon."
+
+msgid "plugins.themes.klausula.option.headerBgImage.label"
+msgstr "Header background image"
+
+msgid "plugins.themes.klausula.option.headerBgImage.description"
+msgstr "Full URL of an image blended behind the red header, e.g. https://example.org/header.jpg. Leave empty for the plain red header."
+
+msgid "plugins.themes.klausula.option.footerBgImage.label"
+msgstr "Footer background image"
+
+msgid "plugins.themes.klausula.option.footerBgImage.description"
+msgstr "Full URL of an image blended behind the red footer, e.g. https://example.org/footer.jpg. Leave empty for the plain red footer."
+
+msgid "plugins.themes.klausula.contact.website"
+msgstr "Publisher website"
+
+msgid "plugins.themes.klausula.contact.phone"
+msgstr "Publisher phone"

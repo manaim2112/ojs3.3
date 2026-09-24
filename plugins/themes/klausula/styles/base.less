@@ -1,0 +1,159 @@
+/**
+ * @file plugins/themes/klausula/styles/base.less
+ *
+ * @brief Colour schemes and base typography for the Klausula theme.
+ */
+
+//
+// Colour schemes
+//
+// The tokens in variables.less resolve to var(--klausula-*), so a scheme swap
+// is just a different set of custom properties — no recompile. This mixin
+// emits the full token set for one palette, including the shades and tints the
+// theme derives from it, so both schemes stay in sync. The LESS colour
+// functions run here at compile time, which is why derived values can be
+// emitted as custom properties and still change at runtime.
+//
+.klausula-palette(
+	@maroon-dark, @maroon, @maroon-lift,
+	@accent, @accent-ink, @accent-pale,
+	@ivory, @parchment, @parchment-dark,
+	@ink, @ink-soft
+) {
+	--klausula-maroon-dark: @maroon-dark;
+	--klausula-maroon: @maroon;
+	--klausula-maroon-lift: @maroon-lift;
+	--klausula-accent: @accent;
+	--klausula-accent-ink: @accent-ink;
+	--klausula-accent-pale: @accent-pale;
+
+	--klausula-ivory: @ivory;
+	--klausula-parchment: @parchment;
+	--klausula-parchment-dark: @parchment-dark;
+
+	--klausula-ink: @ink;
+	--klausula-ink-soft: @ink-soft;
+
+	// Derived shades and tints.
+	--klausula-maroon-d8: darken(@maroon, 8%);
+	--klausula-maroon-dark-d8: darken(@maroon-dark, 8%);
+	--klausula-maroon-dark-a78: fade(@maroon-dark, 78%);
+	--klausula-maroon-dark-a90: fade(@maroon-dark, 90%);
+	--klausula-maroon-dark-d5-a80: fade(darken(@maroon-dark, 5%), 80%);
+	--klausula-accent-a22: fade(@accent, 22%);
+	--klausula-accent-a28: fade(@accent, 28%);
+	--klausula-accent-a40: fade(@accent, 40%);
+	--klausula-accent-a55: fade(@accent, 55%);
+	--klausula-ink-a18: fade(@ink, 18%);
+}
+
+:root {
+	.klausula-palette(
+		@scheme-classic-maroon-dark, @scheme-classic-maroon, @scheme-classic-maroon-lift,
+		@scheme-classic-accent, @scheme-classic-accent-ink, @scheme-classic-accent-pale,
+		@scheme-classic-ivory, @scheme-classic-parchment, @scheme-classic-parchment-dark,
+		@scheme-classic-ink, @scheme-classic-ink-soft
+	);
+
+	/* Typography */
+	--font-heading: @font-heading;
+	--font-body: @font;
+	--font-metadata: @font-metadata;
+}
+
+// "Strong" scheme — saturated red on white. Applied as a body class so every
+// descendant repaints from the same token names.
+body.klausula_scheme_strong {
+	.klausula-palette(
+		@scheme-strong-maroon-dark, @scheme-strong-maroon, @scheme-strong-maroon-lift,
+		@scheme-strong-accent, @scheme-strong-accent-ink, @scheme-strong-accent-pale,
+		@scheme-strong-ivory, @scheme-strong-parchment, @scheme-strong-parchment-dark,
+		@scheme-strong-ink, @scheme-strong-ink-soft
+	);
+}
+
+html,
+body {
+	// The default theme declares `font-size: @rem` (14px) in its own
+	// stylesheet, so overriding @rem in variables.less is not enough — the
+	// declaration has to be repeated here to win the cascade. This also
+	// rescales every rem-based token (body copy, metadata, headings, spacing)
+	// because rem resolves against this value.
+	font-size: @rem;
+	font-family: @font;
+	color: @text;
+	background-color: @bg;
+	background-image: @klausula-parchment-texture;
+	background-repeat: repeat;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+a {
+	color: @klausula-maroon;
+
+	&:hover,
+	&:focus {
+		color: @klausula-maroon-lift;
+	}
+}
+
+//
+// Headings (classic, formal)
+//
+.pkp_structure_main {
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5 {
+		font-family: @font-heading;
+		color: @klausula-maroon-dark;
+	}
+
+	h1 {
+		font-weight: @klausula-weight-bold;
+		letter-spacing: 0.005em;
+	}
+
+	h2 {
+		font-weight: @klausula-weight-bold;
+		position: relative;
+		padding-bottom: @half;
+
+		// Short accent rule (classic engraved underline)
+		&:after {
+			content: '';
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			width: 64px;
+			height: 2px;
+			background: @klausula-accent;
+		}
+	}
+
+	h3 {
+		font-weight: @klausula-weight-semibold;
+	}
+}
+
+// Page title used across the public pages.
+.page_title {
+	font-family: @font-heading;
+	font-weight: @klausula-weight-bold;
+	color: @klausula-maroon-dark;
+	border-bottom: 1px solid @klausula-accent;
+	padding-bottom: @half;
+}
+
+// Institutional / metadata text
+.pkp_footer_content,
+.obj_issue_summary .metadata,
+.obj_article_details .item.doi,
+.obj_article_details .item.published,
+.obj_article_details .label,
+.obj_issue_toc .pub_id {
+	font-family: @font-metadata;
+}

@@ -1,0 +1,278 @@
+/**
+ * @file plugins/themes/klausula/styles/pages.less
+ *
+ * @brief Page-level accents that carry the Klausula identity across the
+ *  public site.
+ */
+
+//
+// Journal homepage
+//
+.pkp_page_index {
+
+	.homepage_about {
+
+		h2 {
+			color: @klausula-maroon-dark;
+		}
+	}
+
+	.current_issue {
+
+		.current_issue_title {
+			color: @klausula-maroon-dark;
+			font-family: @font-heading;
+		}
+
+		.read_more {
+			color: @klausula-accent-ink;
+
+			&:hover,
+			&:focus {
+				color: @klausula-maroon;
+			}
+		}
+	}
+
+	.additional_content {
+		border-top-color: @klausula-accent;
+	}
+
+	.cmp_announcements {
+		border-top-color: @klausula-accent;
+		border-bottom-color: @klausula-accent;
+	}
+}
+
+//
+// Issue archive
+//
+.obj_issue_summary {
+	border-left: 3px solid transparent;
+	padding-left: @base;
+	transition: border-color 0.2s ease;
+
+	&:hover {
+		border-left-color: @klausula-accent;
+	}
+}
+
+//
+// Issue table of contents
+//
+.obj_issue_toc {
+
+	.heading .title {
+		font-family: @font-heading;
+		color: @klausula-maroon-dark;
+	}
+
+	.pub_id {
+		color: @klausula-ink-soft;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	.section .title {
+		font-family: @font-heading;
+		color: @klausula-maroon-dark;
+	}
+}
+
+//
+// Article landing page
+//
+.obj_article_details {
+
+	> .page_title {
+		font-family: @font-heading;
+		font-weight: @klausula-weight-bold;
+		color: @klausula-maroon-dark;
+	}
+
+	// Author block: one author per line, with affiliation and the contact
+	// links (ORCID iD, email) stacked beneath the name. OJS ships no styling
+	// for .authors, so without this the name, affiliation and URLs run
+	// together on a single line.
+	.authors {
+
+		li {
+			margin-bottom: @base;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+
+		.name {
+			display: block;
+			font-weight: @klausula-weight-semibold;
+			color: @klausula-maroon-dark;
+		}
+
+		.affiliation,
+		.orcid,
+		.email {
+			display: block;
+			font-family: @font-metadata;
+			font-size: @font-sml;
+			color: @klausula-ink-soft;
+		}
+
+		.affiliation {
+			font-style: italic;
+		}
+
+		.orcid,
+		.email {
+			margin-top: 0.15rem;
+		}
+
+		.orcid a,
+		.email a {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.4em;
+			color: @klausula-maroon;
+			text-decoration: none;
+
+			&:hover,
+			&:focus {
+				color: @klausula-maroon-lift;
+				text-decoration: underline;
+			}
+		}
+
+		.klausula_orcid_mark {
+			flex: none;
+			width: 1.1em;
+			height: 1.1em;
+		}
+
+		.email .fa {
+			flex: none;
+			width: 1.1em;
+			text-align: center;
+			color: @klausula-accent-ink;
+		}
+	}
+
+	.item.doi a,
+	.item.published .value {
+		color: @klausula-accent-ink;
+	}
+
+	// Classic abstract panel
+	.abstract {
+		background: @klausula-parchment;
+		border-left: 3px solid @klausula-accent;
+		padding: @double;
+		font-size: @font-bump;
+		line-height: @line-lead;
+	}
+
+	.references {
+		font-size: @font-sml;
+	}
+
+	.item .label {
+		color: @klausula-maroon-dark;
+	}
+}
+
+//
+// Search results
+//
+.pkp_page_search {
+
+	.search_results .obj_article_summary .title a {
+		color: @klausula-maroon-dark;
+
+		&:hover,
+		&:focus {
+			color: @klausula-maroon-lift;
+		}
+	}
+
+	.search_advanced,
+	.date_range {
+		color: @klausula-ink-soft;
+	}
+}
+
+//
+// About / contact / editorial team / submissions
+//
+.pkp_page_about,
+.page_contact,
+.page_editorial_team,
+.page_submissions,
+.page_privacy {
+
+	h2 {
+		border-bottom: 1px solid @klausula-accent;
+		padding-bottom: @half;
+	}
+
+	.contact_section,
+	.submission_sections {
+		.title {
+			color: @klausula-maroon-dark;
+		}
+	}
+
+	.submission_checklist {
+		border-left: 3px solid @klausula-accent;
+		padding-left: @double;
+	}
+}
+
+//
+// Announcements
+//
+.obj_announcement_summary,
+.obj_announcement_full {
+
+	.date {
+		font-family: @font-metadata;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: @klausula-accent-ink;
+	}
+
+	.title {
+		font-family: @font-heading;
+		color: @klausula-maroon-dark;
+	}
+}
+
+//
+// Authentication pages
+//
+.page_login,
+.page_lost_password,
+.page_register {
+
+	.cmp_form {
+		background: @klausula-parchment;
+		border-top: 3px solid @klausula-accent;
+		padding: @triple;
+	}
+}
+
+//
+// Catalog / section
+//
+.page_catalog_category {
+
+	.about_section .description {
+		color: @klausula-ink-soft;
+	}
+}
+
+.page_section {
+
+	.section_description {
+		color: @klausula-ink-soft;
+	}
+}

@@ -1,0 +1,188 @@
+/**
+ * @file plugins/themes/klausula/styles/variables.less
+ *
+ * @brief Design tokens for the Klausula law-journal theme.
+ *
+ * pkp-lib tokens are imported first (the parent's variables file does not
+ * include them), then the parent (default) theme tokens, then everything is
+ * remapped onto the Klausula palette so the inherited rules recolour
+ * automatically.
+ *
+ * Colour tokens resolve to CSS custom properties rather than literal hex
+ * values. The palettes themselves are emitted in base.less, so switching
+ * scheme (body.klausula_scheme_strong) repaints the whole theme at runtime —
+ * no stylesheet recompile, no cache invalidation.
+ */
+
+// pkp-lib tokens (@font-tiny, @offset, @lift, @normal, ...).
+@import "../../../../lib/pkp/styles/variables.less";
+
+// Parent theme tokens (spacing, breakpoints, type scale, defaults).
+@import "../../default/styles/variables.less";
+
+//
+// Type scale base
+//
+// The default theme sets `html, body { font-size: @rem }` with @rem: 14px, so
+// every rem-based size (body copy, metadata, headings and all spacing tokens)
+// is 12.5% smaller than the browser default. Raising the root to 16px scales
+// the whole design up proportionally — text and rhythm together — which is what
+// "the fonts look small" actually needs. Override a single value rather than
+// patching individual font sizes.
+@rem: 16px;
+
+//
+// Colour schemes — raw palettes
+//
+// Only base colours are listed; the shades/tints the theme needs (darkened
+// borders, translucent rules) are derived from them in base.less so each
+// scheme stays internally consistent.
+//
+// Both schemes are red on a clean white page — no brown and no gold. The
+// "accent" tokens carry a brighter red used for rules, ticks and hover states,
+// so the decorative layer stays distinct from the darker primary red.
+//
+
+// "Classic" (default): deep, formal red on white.
+@scheme-classic-maroon-dark: #6E0B10; // header bar, footer
+@scheme-classic-maroon:      #A4161A; // links, buttons, heading accents
+@scheme-classic-maroon-lift: #C1121F; // hover / focus
+@scheme-classic-accent:      #D62828; // rules, ticks, borders (decorative only)
+@scheme-classic-accent-ink:  #A4161A; // accent-coloured text (contrast-safe on white)
+@scheme-classic-accent-pale: #F3B6BA; // accent text on the dark bands
+@scheme-classic-ivory:          #FFFFFF; // page background
+@scheme-classic-parchment:      #F8F8F8; // block / alt background
+@scheme-classic-parchment-dark: #E6E6E6; // borders / dividers
+@scheme-classic-ink:      #1A1A1A; // body text
+@scheme-classic-ink-soft: #555555; // secondary text
+
+// "Strong": saturated red on white, high contrast.
+@scheme-strong-maroon-dark: #8B0000;
+@scheme-strong-maroon:      #9E0000;
+@scheme-strong-maroon-lift: #B30000;
+@scheme-strong-accent:      #D40000;
+@scheme-strong-accent-ink:  #B30000; // the bright accent fails contrast on white, so text uses a deeper red
+@scheme-strong-accent-pale: #FFC9CC;
+@scheme-strong-ivory:          #FFFFFF;
+@scheme-strong-parchment:      #F7F7F7;
+@scheme-strong-parchment-dark: #E0E0E0;
+@scheme-strong-ink:      #333333;
+@scheme-strong-ink-soft: #555555;
+
+//
+// Design tokens — reference the CSS custom properties emitted in base.less
+//
+@klausula-maroon-dark: var(--klausula-maroon-dark);
+@klausula-maroon:      var(--klausula-maroon);
+@klausula-maroon-lift: var(--klausula-maroon-lift);
+@klausula-accent:      var(--klausula-accent);
+@klausula-accent-ink:  var(--klausula-accent-ink);
+@klausula-accent-pale: var(--klausula-accent-pale);
+
+@klausula-ivory:          var(--klausula-ivory);
+@klausula-parchment:      var(--klausula-parchment);
+@klausula-parchment-dark: var(--klausula-parchment-dark);
+
+@klausula-ink:      var(--klausula-ink);
+@klausula-ink-soft: var(--klausula-ink-soft);
+
+// Derived shades/tints. LESS functions cannot operate on a var(), so the
+// computed values are emitted once per scheme as their own custom properties.
+@klausula-maroon-d8:            var(--klausula-maroon-d8);
+@klausula-maroon-dark-d8:       var(--klausula-maroon-dark-d8);
+@klausula-maroon-dark-a78:      var(--klausula-maroon-dark-a78);
+@klausula-maroon-dark-a90:      var(--klausula-maroon-dark-a90);
+@klausula-maroon-dark-d5-a80:   var(--klausula-maroon-dark-d5-a80);
+@klausula-accent-a22:           var(--klausula-accent-a22);
+@klausula-accent-a28:           var(--klausula-accent-a28);
+@klausula-accent-a40:           var(--klausula-accent-a40);
+@klausula-accent-a55:           var(--klausula-accent-a55);
+@klausula-ink-a18:              var(--klausula-ink-a18);
+
+//
+// Remap the parent tokens onto the Klausula palette
+//
+@bg:                   @klausula-ivory;
+@bg-shade:             @klausula-parchment;
+@bg-base:              @klausula-maroon-dark;
+@bg-border-color:      @klausula-parchment-dark;
+@bg-base-border-color: rgba(255, 255, 255, 0.18);
+
+// NOTE: @primary / @primary-lift / @primary-shade are deliberately NOT remapped.
+// pkp-lib declares them with colour functions (`@primary-lift: lighten(@primary,
+// 10%)`, `@primary-shade: darken(@primary, 10%)`) and less.php evaluates every
+// variable declaration in a scope, even the ones a later declaration overrides.
+// Pointing @primary at a var() therefore makes lighten()/darken() fail at compile
+// time. The Klausula rules reference @klausula-maroon / @klausula-maroon-lift
+// directly instead, which keeps runtime scheme switching without the collision.
+
+@text:         @klausula-ink;
+@text-light:   @klausula-ink-soft;
+@text-bg-base: @klausula-ivory;
+
+@yes: #2E6B4F;
+@no:  #8A1E1E;
+
+@radius: 2px; // formal, near-square corners
+
+//
+// Typography — classic, formal serif stack
+//
+@font:            'EB Garamond', 'Source Serif 4', Georgia, 'Times New Roman', serif;
+@font-heading:    'Playfair Display', 'EB Garamond', Georgia, serif;
+@font-site-title: 'Playfair Display', 'EB Garamond', Georgia, serif;
+@font-metadata:   'Roboto Condensed', 'Inter', sans-serif;
+
+@klausula-weight-semibold: 600;
+@klausula-weight-bold:     700;
+@klausula-weight-black:    800;
+
+//
+// Law-journal motifs
+//
+
+// Double rule (classic engraved line) used on header/footer edges.
+.klausula-double-rule(@color: @klausula-accent) {
+	border-top: 1px solid @color;
+	border-bottom: 1px solid @color;
+	height: 3px;
+	background: transparent;
+}
+
+// Centered rule with a diamond node, used as a heading underline.
+.klausula-divider(@color: @klausula-accent) {
+	position: relative;
+	border-top: 1px solid @color;
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: -4px;
+		left: 50%;
+		width: 7px;
+		height: 7px;
+		background: @color;
+		transform: translateX(-50%) rotate(45deg);
+	}
+}
+
+// Seal / medallion ring — double accent ring on a white face.
+.klausula-seal(@size: 84px) {
+	width: @size;
+	height: @size;
+	border-radius: 50%;
+	background: @klausula-ivory;
+	border: 2px solid @klausula-accent;
+	box-shadow:
+		0 0 0 4px @klausula-ivory,
+		0 0 0 5px @klausula-accent,
+		0 3px 12px rgba(0, 0, 0, 0.18);
+}
+
+// Very subtle hatch, layered over the page background.
+@klausula-parchment-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 40L40 0M-10 10L10 -10M30 50L50 30' stroke='%23A4161A' stroke-opacity='0.03' stroke-width='1'/%3E%3C/svg%3E");
+
+// Subtle vertical accent pinstripes for header/footer bands.
+.klausula-columns(@color: @klausula-accent-a22) {
+	background-image: repeating-linear-gradient(90deg, @color 0 1px, transparent 1px 14px);
+}

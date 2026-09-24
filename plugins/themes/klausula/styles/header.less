@@ -1,0 +1,283 @@
+/**
+ * @file plugins/themes/klausula/styles/header.less
+ *
+ * @brief Site header: red band (optionally blended with a background
+ *  image), engraved double rule, serif journal title, an optional seal
+ *  emblem and a formal primary navigation.
+ */
+
+//
+// Header band
+//
+.pkp_structure_head {
+	position: relative;
+	background-color: @klausula-maroon-dark;
+	// A red wash is layered over the optional background image so the photo
+	// reads as a texture rather than a competing colour, and the light title and
+	// navigation keep their contrast whatever the image is.
+	background-image:
+		linear-gradient(180deg, @klausula-maroon-dark-a78 0%, @klausula-maroon-dark-a90 100%),
+		var(--klausula-header-bg-image, none);
+	background-size: auto, cover;
+	background-position: center center, center center;
+	background-repeat: no-repeat, no-repeat;
+	border-bottom: 0; // replaced by the double rule below
+}
+
+// Engraved double rule along the bottom edge of the header.
+.pkp_structure_head:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	.klausula-double-rule(@klausula-accent);
+	z-index: 3;
+	pointer-events: none;
+}
+
+//
+// Site name / journal title
+//
+.pkp_site_name .is_text.klausula_site_title {
+	display: inline-flex;
+	align-items: center;
+	font-family: @font-site-title;
+	font-weight: @klausula-weight-bold;
+	letter-spacing: 0.01em;
+	color: @klausula-accent-pale;
+	text-decoration: none;
+
+	&:hover,
+	&:focus {
+		color: #fff;
+	}
+}
+
+// Decorative seal emblem (scales of justice) shown beside a text title.
+.klausula_emblem {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: none;
+	width: 44px;
+	height: 44px;
+	margin-right: @base;
+	border-radius: 50%;
+	background: @klausula-ivory;
+	border: 2px solid @klausula-accent;
+	box-shadow: 0 0 0 3px @klausula-maroon-dark, 0 0 0 4px @klausula-accent;
+	color: @klausula-maroon;
+	font-size: 20px;
+	line-height: 1;
+	vertical-align: middle;
+}
+
+@media (min-width: @screen-desktop) {
+
+	.klausula_emblem {
+		width: 56px;
+		height: 56px;
+		margin-right: @double;
+		font-size: 26px;
+	}
+
+	//
+	// Site logo — full width, proportional
+	//
+	// The default theme caps the logo at roughly 34px tall so it sits on the
+	// same line as the navigation. Journals that supply a wide banner want it to
+	// span the header container instead, so the image fills the container width
+	// and keeps its aspect ratio. On smaller screens it stays contained so it
+	// cannot collide with the menu toggle.
+	//
+	.pkp_site_name .is_img {
+		display: block;
+		width: 100%;
+		margin-top: @base;
+		margin-bottom: @base;
+
+		img {
+			display: block;
+			width: 100%;
+			max-width: 100%;
+			max-height: none;
+			height: auto;
+		}
+	}
+
+	//
+	// Primary navigation — formal, condensed, accent-ruled
+	//
+
+	// An accent hairline separates the navigation band from the title/logo above.
+	.pkp_navigation_primary_row {
+		margin-top: @double;
+		padding-top: @half;
+		border-top: 1px solid @klausula-accent-a40;
+	}
+
+	.pkp_navigation_primary {
+
+		> li > a {
+			margin: 0 0.1em;
+			padding: @half 0.9em;
+			border-bottom: 2px solid transparent;
+			font-family: @font-metadata;
+			font-size: @font-sml;
+			font-weight: @klausula-weight-bold;
+			letter-spacing: 0.09em;
+			text-transform: uppercase;
+			color: @klausula-accent-pale;
+			text-decoration: none;
+			transition: color 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+
+			&:hover {
+				background-color: fade(#000, 16%);
+				border-color: @klausula-accent;
+				color: #fff;
+				outline: 0;
+			}
+
+			&:focus {
+				background: @klausula-accent;
+				border-color: @klausula-accent;
+				color: @klausula-maroon-dark;
+				outline: 0;
+			}
+		}
+
+		> li:first-child > a {
+			margin-left: 0;
+		}
+
+		> li:last-child > a {
+			margin-right: 0;
+		}
+
+		// Caret on dropdown parents, softened so it reads as an ornament.
+		[aria-haspopup]:after {
+			margin-left: 0.35em;
+			opacity: 0.65;
+		}
+
+		// Dropdown panels: formal white card with an accent header edge.
+		ul {
+			min-width: 15em;
+			padding: @half 0;
+			background: @klausula-ivory;
+			border: 1px solid @klausula-accent;
+			border-top: 3px solid @klausula-accent;
+			border-radius: 0;
+			box-shadow: 0 12px 26px rgba(0, 0, 0, 0.28);
+
+			a {
+				padding: @half @base;
+				border-left: 3px solid transparent;
+				font-family: @font-metadata;
+				font-size: @font-sml;
+				letter-spacing: 0.02em;
+				text-transform: none;
+				color: @klausula-maroon;
+
+				&:hover,
+				&:focus {
+					background: @klausula-parchment;
+					border-left-color: @klausula-accent;
+					color: @klausula-maroon-dark;
+				}
+			}
+
+			li:first-child a,
+			li:last-child a {
+				border-radius: 0;
+			}
+		}
+	}
+
+	//
+	// Search link — accent-outlined box
+	//
+	.pkp_navigation_search_wrapper a.pkp_search {
+		margin: @half 0 0;
+		padding: @half @base;
+		border: 1px solid @klausula-accent-a55;
+		border-radius: @radius;
+		font-family: @font-metadata;
+		font-size: @font-sml;
+		font-weight: @klausula-weight-bold;
+		letter-spacing: 0.09em;
+		text-transform: uppercase;
+		color: @klausula-accent-pale;
+		transition: color 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
+
+		.fa {
+			margin-right: 0.35em;
+		}
+
+		&:hover {
+			background-color: fade(#000, 16%);
+			border-color: @klausula-accent;
+			color: #fff;
+			outline: 0;
+		}
+
+		&:focus {
+			background: @klausula-accent;
+			border-color: @klausula-accent;
+			color: @klausula-maroon-dark;
+			outline: 0;
+		}
+	}
+
+	//
+	// User navigation (Register / Login / account) — quiet, top-right
+	//
+	.pkp_navigation_user {
+		font-family: @font-metadata;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+
+		> li > a {
+			color: @klausula-accent-pale;
+			text-decoration: none;
+
+			&:hover {
+				border-color: @klausula-accent;
+				color: #fff;
+				text-decoration: none;
+			}
+		}
+
+		> li > a:focus {
+			background: @klausula-accent;
+			color: @klausula-maroon-dark;
+		}
+
+		> li > a:focus .task_count {
+			background: @klausula-maroon-dark;
+			color: @klausula-accent-pale;
+		}
+
+		// Account dropdown shares the formal white panel treatment.
+		ul {
+			background: @klausula-ivory;
+			border: 1px solid @klausula-accent;
+			border-top: 3px solid @klausula-accent;
+			border-radius: 0;
+			box-shadow: 0 12px 26px rgba(0, 0, 0, 0.28);
+
+			a {
+				color: @klausula-maroon;
+				text-transform: none;
+				letter-spacing: 0.02em;
+
+				&:hover,
+				&:focus {
+					background: @klausula-parchment;
+					color: @klausula-maroon-dark;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,111 @@
+/**
+ * @file plugins/themes/klausula/styles/footer.less
+ *
+ * @brief Red footer with an engraved double rule and a publisher contact
+ *  block.
+ */
+
+.pkp_structure_footer_wrapper {
+	position: relative;
+	margin-top: @quadruple;
+	padding-top: @base;
+	background-color: @klausula-maroon-dark;
+	// Red wash layered over the optional footer background image, matching the
+	// header treatment so the two bands read as a pair.
+	background-image:
+		linear-gradient(180deg, @klausula-maroon-dark-a90 0%, @klausula-maroon-dark-d5-a80 100%),
+		var(--klausula-footer-bg-image, none);
+	background-size: auto, cover;
+	background-position: center center, center center;
+	background-repeat: no-repeat, no-repeat;
+	color: #fff;
+}
+
+// Engraved double rule along the top edge of the footer.
+.pkp_structure_footer_wrapper:before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	.klausula-double-rule(@klausula-accent);
+	z-index: 2;
+	pointer-events: none;
+}
+
+.pkp_footer_content {
+	color: rgba(255, 255, 255, 0.9);
+
+	a {
+		color: @klausula-accent-pale;
+		text-decoration: none;
+
+		&:hover,
+		&:focus {
+			color: #fff;
+			text-decoration: underline;
+		}
+	}
+}
+
+//
+// Publisher contact block
+//
+.klausula_footer_contact {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: @base @double;
+	padding: @triple @base @half;
+	font-family: @font-metadata;
+	font-weight: @bold;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+	color: #fff;
+}
+
+.klausula_contact_icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	background: @klausula-maroon-dark-d8;
+	border: 2px solid @klausula-accent;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+	color: @klausula-accent-pale;
+	font-size: 1.15rem;
+	text-decoration: none;
+	transition: background 0.2s ease, transform 0.2s ease;
+
+	&:hover,
+	&:focus {
+		background: @klausula-accent;
+		color: @klausula-maroon-dark;
+		transform: translateY(-2px);
+	}
+}
+
+.klausula_publisher_name {
+	color: #fff;
+	font-family: @font-heading;
+	font-weight: @klausula-weight-bold;
+	font-size: @font-bump;
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+.pkp_brand_footer {
+	padding-bottom: @triple;
+
+	a {
+		opacity: 0.85;
+
+		&:hover,
+		&:focus {
+			opacity: 1;
+		}
+	}
+}

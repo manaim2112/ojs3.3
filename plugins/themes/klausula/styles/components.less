@@ -1,0 +1,439 @@
+/**
+ * @file plugins/themes/klausula/styles/components.less
+ *
+ * @brief Reusable Klausula components: buttons, forms, notifications,
+ *  pagination, breadcrumbs, tables, sidebar blocks and cover frames.
+ */
+
+//
+// Buttons
+//
+.cmp_button {
+	background: @klausula-maroon;
+	border: 1px solid @klausula-maroon-d8;
+	border-top-color: @klausula-maroon-d8;
+	box-shadow: none;
+	color: #fff;
+	letter-spacing: 0.02em;
+
+	&:hover,
+	&:focus {
+		background: @klausula-maroon-lift;
+		border-color: @klausula-accent;
+		box-shadow: none;
+		color: #fff;
+	}
+}
+
+.cmp_button_wire {
+	background: transparent;
+	border: 1px solid @klausula-maroon;
+	color: @klausula-maroon;
+
+	&:hover,
+	&:focus {
+		background: @klausula-maroon;
+		border-color: @klausula-accent;
+		color: #fff;
+	}
+}
+
+//
+// Forms
+//
+.cmp_form {
+
+	input[type="text"],
+	input[type="email"],
+	input[type="password"],
+	input[type="url"],
+	input[type="tel"],
+	select,
+	textarea {
+		background: #fff;
+		border: 1px solid @klausula-parchment-dark;
+
+		&:focus {
+			border-color: @klausula-accent;
+			box-shadow: 0 0 0 2px @klausula-accent-a28;
+			outline: 0;
+		}
+	}
+
+	.label {
+		color: @klausula-ink-soft;
+
+		.required {
+			color: @no;
+		}
+	}
+
+	legend {
+		font-family: @font-heading;
+		color: @klausula-maroon-dark;
+	}
+}
+
+//
+// Notifications
+//
+.cmp_notification {
+	background: @klausula-parchment;
+	border-left: 4px solid @klausula-maroon;
+	color: @klausula-ink;
+
+	.success,
+	&.success {
+		border-color: @yes;
+	}
+
+	.no,
+	&.no {
+		border-color: @no;
+	}
+}
+
+//
+// Pagination
+//
+.cmp_pagination {
+	.prev,
+	.next {
+		color: @klausula-maroon;
+		font-weight: @bold;
+
+		&:hover,
+		&:focus {
+			color: @klausula-accent-ink;
+		}
+	}
+
+	.current {
+		font-weight: @bold;
+		color: @klausula-maroon-dark;
+	}
+}
+
+//
+// Breadcrumbs
+//
+.cmp_breadcrumbs {
+
+	.separator {
+		color: @klausula-accent;
+	}
+
+	.current {
+		color: @klausula-ink-soft;
+	}
+}
+
+//
+// Tables
+//
+.cmp_table {
+
+	th {
+		border-bottom: 2px solid @klausula-accent;
+		color: @klausula-maroon-dark;
+	}
+}
+
+//
+// Sidebar blocks
+//
+.pkp_structure_sidebar .pkp_block {
+	background: @klausula-parchment;
+	border-top: 2px solid @klausula-accent;
+	border-radius: @radius;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+
+	.title {
+		font-family: @font-heading;
+		font-weight: @klausula-weight-bold;
+		color: @klausula-maroon-dark;
+	}
+
+	a {
+		color: @klausula-maroon;
+
+		&:hover,
+		&:focus {
+			color: @klausula-maroon-lift;
+		}
+	}
+}
+
+//
+// Sidebar link list (helper class)
+//
+// Custom sidebar blocks are usually a hand-written list of links, e.g.
+//
+//   <div class="klausula_link_list">
+//     <a href="…">Link label</a>
+//     <a href="…">Link label</a>
+//   </div>
+//
+// This class turns that markup into a themed contents list: one row per link,
+// a red chevron in the margin, a hairline rule between rows and a light wash on
+// hover. Link colours match the surrounding sidebar links, so the
+// helper works inside a block or on its own. See readme.md for usage.
+.klausula_link_list {
+	display: block;
+	margin: 0;
+
+	a {
+		position: relative;
+		display: block;
+		padding: @half 0 @half @base;
+		border-bottom: 1px solid @klausula-parchment-dark;
+		font-family: @font-metadata;
+		text-decoration: none;
+		transition: background-color 0.15s ease;
+
+		// Gold chevron in the margin.
+		&:before {
+			content: '\203A'; // ›
+			position: absolute;
+			left: 0;
+			top: @half;
+			color: @klausula-accent;
+			font-weight: @bold;
+		}
+
+		&:last-child {
+			border-bottom: 0;
+		}
+
+		&:hover,
+		&:focus {
+			background: @klausula-parchment;
+		}
+	}
+
+	// Optional trailing count or badge.
+	.count {
+		float: right;
+		color: @klausula-ink-soft;
+		font-family: @font-metadata;
+	}
+}
+
+//
+// Article lists
+//
+// The generic heading treatment (a short accent rule under every h2, see
+// base.less) is meant for section headings. Repeated on every row of an
+// article list it reads as noise, so rows are set like a printed contents page
+// instead: a red tick in the margin, a hairline rule between entries, and a
+// title that carries the accent on hover rather than at rest.
+.obj_article_summary {
+	padding-left: @double;
+
+	> .title {
+		position: relative;
+		margin: 0 0 @half;
+		padding: 0;
+		font-family: @font-heading;
+		font-size: 1.3rem;
+		font-weight: @klausula-weight-bold;
+		line-height: 1.3;
+		color: @klausula-maroon-dark;
+
+		// Gold tick in the left margin, level with the title's first line. It
+		// lives on the title rather than on .obj_article_summary because the
+		// default theme uses that element's :before for its clearfix.
+		&:before {
+			content: '';
+			position: absolute;
+			left: -@double;
+			top: 0.1em;
+			width: 3px;
+			height: 1.2em;
+			background: @klausula-accent;
+		}
+
+		// Drop the rule inherited from the generic h2 rule in base.less.
+		&:after {
+			display: none;
+		}
+
+		a {
+			color: inherit;
+			text-decoration: none;
+
+			&:hover,
+			&:focus {
+				color: @klausula-maroon-lift;
+				text-decoration: underline;
+				text-decoration-color: @klausula-accent;
+				text-decoration-thickness: 2px;
+				text-underline-offset: 3px;
+			}
+		}
+
+		.subtitle {
+			display: block;
+			margin-top: 0.2em;
+			font-size: 0.8em;
+			font-weight: @normal;
+			font-style: italic;
+			color: @klausula-ink-soft;
+		}
+	}
+
+	.authors {
+		color: @klausula-ink-soft;
+		font-style: italic;
+	}
+}
+
+// Hairline rules between article-list rows (not after the last one).
+.cmp_article_list > li {
+	margin-bottom: 0;
+	padding: @double 0;
+	border-bottom: 1px solid @klausula-parchment-dark;
+
+	&:first-child {
+		padding-top: 0;
+	}
+
+	&:last-child {
+		border-bottom: 0;
+		padding-bottom: 0;
+	}
+}
+
+//
+// Issue summaries
+//
+.obj_issue_summary {
+
+	.title {
+		color: @klausula-maroon-dark;
+
+		&:hover,
+		&:focus {
+			color: @klausula-maroon-lift;
+		}
+	}
+
+	.series {
+		font-family: @font-metadata;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+}
+
+//
+// Galley links (PDF / HTML)
+//
+.obj_galley_link {
+
+	&:before {
+		color: @klausula-maroon;
+	}
+
+	&:hover:before,
+	&:focus:before {
+		color: #fff;
+	}
+}
+
+//
+// Cover frames
+//
+.klausula_cover_ruled {
+
+	.obj_issue_summary .cover img,
+	.obj_issue_toc .cover img,
+	.obj_article_summary .cover img {
+		border: 1px solid @klausula-accent;
+		box-shadow:
+			0 0 0 3px #fff,
+			0 0 0 4px @klausula-accent,
+			0 4px 14px rgba(0, 0, 0, 0.18);
+	}
+
+	.homepage_image img {
+		border-bottom: 4px solid @klausula-accent;
+	}
+}
+
+.klausula_cover_plain {
+
+	.obj_issue_summary .cover img,
+	.obj_issue_toc .cover img,
+	.obj_article_summary .cover img {
+		border: 1px solid @klausula-accent;
+	}
+
+	.homepage_image img {
+		border-bottom: 2px solid @klausula-accent;
+	}
+}
+
+//
+// Article metrics (abstract views / file downloads)
+//
+.klausula_stat_value {
+	font-weight: @bold;
+	color: @klausula-maroon-dark;
+
+	.fa {
+		color: @klausula-accent-ink;
+	}
+}
+
+// Article lists: inline metrics row
+.obj_article_summary .klausula_stats {
+	list-style: none;
+	margin: @base 0 0;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: @half @double;
+	font-family: @font-metadata;
+	font-size: @font-sml;
+}
+
+.obj_article_summary .klausula_stat {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35em;
+	color: @klausula-ink-soft;
+
+	.fa {
+		color: @klausula-accent-ink;
+	}
+}
+
+// Article page sidebar: stacked metrics
+.obj_article_details .klausula_stats {
+
+	.klausula_stat_value {
+		font-size: @font-bump;
+
+		.fa {
+			margin-right: 0.35em;
+		}
+	}
+}
+
+//
+// Author country flags
+//
+.klausula_author {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35em;
+}
+
+.klausula_author .fi,
+.obj_article_details .authors .name .fi {
+	margin-right: 0.35em;
+	border-radius: 2px;
+	box-shadow: 0 0 0 1px @klausula-ink-a18;
+	vertical-align: -0.1em;
+}

@@ -1,0 +1,117 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-24T00:00:00+07:00\n"
+"PO-Revision-Date: 2026-09-24T00:00:00+07:00\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: id_ID\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "plugins.themes.klausula.name"
+msgstr "Tema Jurnal Hukum Klausula"
+
+msgid "plugins.themes.klausula.description"
+msgstr "Tema klasik dan formal untuk jurnal hukum: tipografi serif, palet merah, garis terukir, dan emblem segel opsional."
+
+msgid "plugins.themes.klausula.option.colourScheme.label"
+msgstr "Skema warna"
+
+msgid "plugins.themes.klausula.option.colourScheme.description"
+msgstr "Palet warna yang dipakai di seluruh situs. Kedua skema memakai tata letak dan tipografi yang sama, hanya warnanya yang berbeda."
+
+msgid "plugins.themes.klausula.option.colourScheme.classic"
+msgstr "Classic — merah formal yang pekat di atas putih"
+
+msgid "plugins.themes.klausula.option.colourScheme.strong"
+msgstr "Strong — merah pekat di atas putih"
+
+msgid "plugins.themes.klausula.option.emblem.label"
+msgstr "Emblem header"
+
+msgid "plugins.themes.klausula.option.emblem.description"
+msgstr "Menambahkan emblem segel formal di samping nama jurnal pada header."
+
+msgid "plugins.themes.klausula.option.emblem.seal"
+msgstr "Tampilkan emblem segel"
+
+msgid "plugins.themes.klausula.option.emblem.none"
+msgstr "Tanpa emblem"
+
+msgid "plugins.themes.klausula.option.coverFrame.label"
+msgstr "Bingkai sampul terbitan"
+
+msgid "plugins.themes.klausula.option.coverFrame.description"
+msgstr "Cara memberi bingkai pada sampul terbitan dan jurnal."
+
+msgid "plugins.themes.klausula.option.coverFrame.ruled"
+msgstr "Bingkai bergaris"
+
+msgid "plugins.themes.klausula.option.coverFrame.plain"
+msgstr "Bingkai polos"
+
+msgid "plugins.themes.klausula.option.coverFrame.none"
+msgstr "Tanpa bingkai"
+
+msgid "plugins.themes.klausula.option.showStats.label"
+msgstr "Statistik artikel"
+
+msgid "plugins.themes.klausula.option.showStats.description"
+msgstr "Tampilkan total lihat abstrak dan unduhan berkas pada daftar artikel dan halaman artikel."
+
+msgid "plugins.themes.klausula.option.showStats.yes"
+msgstr "Tampilkan lihat & unduhan"
+
+msgid "plugins.themes.klausula.option.showStats.no"
+msgstr "Sembunyikan"
+
+msgid "plugins.themes.klausula.option.showFlags.label"
+msgstr "Bendera negara penulis"
+
+msgid "plugins.themes.klausula.option.showFlags.description"
+msgstr "Tampilkan bendera negara di samping setiap penulis, berdasarkan negara pada profil penulis. Penulis tanpa negara tidak menampilkan bendera."
+
+msgid "plugins.themes.klausula.option.showFlags.yes"
+msgstr "Tampilkan bendera"
+
+msgid "plugins.themes.klausula.option.showFlags.no"
+msgstr "Sembunyikan"
+
+msgid "plugins.themes.klausula.option.publisherName.label"
+msgstr "Nama penerbit"
+
+msgid "plugins.themes.klausula.option.publisherName.description"
+msgstr "Ditampilkan di footer, mis. Fakultas Hukum Universitas Contoh. Kosongkan untuk menyembunyikan."
+
+msgid "plugins.themes.klausula.option.publisherUrl.label"
+msgstr "Situs web penerbit"
+
+msgid "plugins.themes.klausula.option.publisherUrl.description"
+msgstr "URL lengkap yang ditautkan dari ikon globe di footer, mis. https://contoh.ac.id. Kosongkan untuk menyembunyikan ikon."
+
+msgid "plugins.themes.klausula.option.publisherPhone.label"
+msgstr "Telepon penerbit"
+
+msgid "plugins.themes.klausula.option.publisherPhone.description"
+msgstr "Nomor telepon yang ditautkan dari ikon telepon di footer. Kosongkan untuk menyembunyikan ikon."
+
+msgid "plugins.themes.klausula.option.headerBgImage.label"
+msgstr "Gambar latar header"
+
+msgid "plugins.themes.klausula.option.headerBgImage.description"
+msgstr "URL lengkap gambar yang dipadukan dengan warna dasar merah di belakang header, mis. https://contoh.ac.id/header.jpg. Kosongkan untuk header merah polos."
+
+msgid "plugins.themes.klausula.option.footerBgImage.label"
+msgstr "Gambar latar footer"
+
+msgid "plugins.themes.klausula.option.footerBgImage.description"
+msgstr "URL lengkap gambar yang dipadukan dengan warna dasar merah di belakang footer, mis. https://contoh.ac.id/footer.jpg. Kosongkan untuk footer merah polos."
+
+msgid "plugins.themes.klausula.contact.website"
+msgstr "Situs web penerbit"
+
+msgid "plugins.themes.klausula.contact.phone"
+msgstr "Telepon penerbit"
