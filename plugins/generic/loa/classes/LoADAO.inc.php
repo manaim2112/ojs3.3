@@ -53,7 +53,54 @@ class LoADAO extends DAO {
 		return new DAOResultFactory($result, $this, '_fromRow');
 	}
 
-	public function getPublishedArticlesByJournalId($journalId, $rangeInfo = null) {
+	public function getPublishedArticlesByJournalId($journalId, $search = null, $issueId = null, $rangeInfo = null) {
+		$params = [(int) STATUS_PUBLISHED];
+
+		$from = '
+			FROM submissions s
+				JOIN publications p ON s.current_publication_id = p.publication_id AND p.status = ?
+				LEFT JOIN publication_settings ps_title ON p.publication_id = ps_title.publication_id
+					AND ps_title.setting_name = \'title\'
+					AND ps_title.locale = s.locale
+				LEFT JOIN publication_settings ps_issue ON p.publication_id = ps_issue.publication_id
+					AND ps_issue.setting_name = \'issueId\'
+				LEFT JOIN article_loa_codes alc ON s.submission_id = alc.submission_id AND alc.status = \'active\'
+			WHERE s.context_id = ? AND s.status = ?';
+		$params[] = (int) $journalId;
+		$params[] = (int) STATUS_PUBLISHED;
+
+		if ((int) $issueId > 0) {
+			$from .= ' AND CAST(ps_issue.setting_value AS UNSIGNED) = ?';
+			$params[] = (int) $issueId;
+		}
+
+		$search = is_scalar($search) ? trim((string) $search) : '';
+		if ($search !== '') {
+			$like = '%' . addcslashes($search, '\\%_') . '%';
+			$from .= '
+				AND (
+					ps_title.setting_value LIKE ?
+					OR alc.unique_code LIKE ?
+					OR EXISTS (
+						SELECT 1 FROM publication_settings pt
+						WHERE pt.publication_id = p.publication_id
+							AND pt.setting_name = \'title\'
+							AND pt.setting_value LIKE ?
+					)
+					OR EXISTS (
+						SELECT 1 FROM authors arow
+							JOIN author_settings aus ON aus.author_id = arow.author_id
+						WHERE arow.publication_id = p.publication_id
+							AND aus.setting_name IN (\'givenName\', \'familyName\')
+							AND aus.setting_value LIKE ?
+					)
+				)';
+			$params[] = $like;
+			$params[] = $like;
+			$params[] = $like;
+			$params[] = $like;
+		}
+
 		$sql = 'SELECT
 				s.submission_id,
 				p.publication_id,
@@ -66,21 +113,10 @@ class LoADAO extends DAO {
 				alc.date_generated,
 				alc.date_downloaded,
 				alc.generated_by
-			FROM submissions s
-				JOIN publications p ON s.current_publication_id = p.publication_id AND p.status = ?
-				LEFT JOIN publication_settings ps_title ON p.publication_id = ps_title.publication_id
-					AND ps_title.setting_name = \'title\'
-					AND ps_title.locale = s.locale
-				LEFT JOIN publication_settings ps_issue ON p.publication_id = ps_issue.publication_id
-					AND ps_issue.setting_name = \'issueId\'
-				LEFT JOIN article_loa_codes alc ON s.submission_id = alc.submission_id AND alc.status = \'active\'
-			WHERE s.context_id = ? AND s.status = ?
+			' . $from . '
 			ORDER BY p.date_published DESC';
-		$params = [(int) STATUS_PUBLISHED, (int) $journalId, (int) STATUS_PUBLISHED];
-		$countSql = 'SELECT s.submission_id
-			FROM submissions s
-				JOIN publications p ON s.current_publication_id = p.publication_id AND p.status = ?
-			WHERE s.context_id = ? AND s.status = ?';
+		$countSql = 'SELECT s.submission_id ' . $from;
+
 		$result = $this->retrieveRange($sql, $params, $rangeInfo);
 		return new DAOResultFactory($result, $this, '_fromArticleRow', [], $countSql, $params, $rangeInfo);
 	}
@@ -131,11 +167,12 @@ class LoADAO extends DAO {
 
 	public function insertObject($loa) {
 		$this->update(
-			'INSERT INTO article_loa_codes (journal_id, submission_id, unique_code, date_generated, date_downloaded, status, generated_by, template_id, content_snapshot)
-			 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+			'INSERT INTO article_loa_codes (journal_id, submission_id, issue_id, unique_code, date_generated, date_downloaded, status, generated_by, template_id, content_snapshot)
+			 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 			[
 				(int) $loa->getJournalId(),
 				(int) $loa->getSubmissionId(),
+				$loa->getIssueId() ? (int) $loa->getIssueId() : null,
 				$loa->getUniqueCode(),
 				$loa->getDateGenerated(),
 				$loa->getDateDownloaded(),
@@ -152,13 +189,14 @@ class LoADAO extends DAO {
 	public function updateObject($loa) {
 		$this->update(
 			'UPDATE article_loa_codes
-			 SET journal_id = ?, submission_id = ?, unique_code = ?,
+			 SET journal_id = ?, submission_id = ?, issue_id = ?, unique_code = ?,
 			     date_generated = ?, date_downloaded = ?, status = ?, generated_by = ?,
 			     template_id = ?, content_snapshot = ?
 			 WHERE loa_id = ?',
 			[
 				(int) $loa->getJournalId(),
 				(int) $loa->getSubmissionId(),
+				$loa->getIssueId() ? (int) $loa->getIssueId() : null,
 				$loa->getUniqueCode(),
 				$loa->getDateGenerated(),
 				$loa->getDateDownloaded(),
@@ -185,9 +223,14 @@ class LoADAO extends DAO {
 		);
 	}
 
-	public function generateCode($submissionId, $journalId, $userId = null, $templateId = null, $contentSnapshot = null) {
+	public function generateCode($submissionId, $journalId, $userId = null, $templateId = null, $contentSnapshot = null, $issueId = null) {
+		$issueId = (int) $issueId > 0 ? (int) $issueId : null;
 		$loa = $this->getBySubmissionId($submissionId);
 		if ($loa) {
+			if ($issueId && (int) $loa->getIssueId() !== $issueId) {
+				$loa->setIssueId($issueId);
+				$this->updateObject($loa);
+			}
 			return $loa;
 		}
 
@@ -197,6 +240,7 @@ class LoADAO extends DAO {
 		$loa = $this->newDataObject();
 		$loa->setJournalId($journalId);
 		$loa->setSubmissionId($submissionId);
+		$loa->setIssueId($issueId);
 		$loa->setUniqueCode($uniqueCode);
 		$loa->setDateGenerated(date('Y-m-d H:i:s'));
 		$loa->setDateDownloaded(null);
@@ -208,9 +252,9 @@ class LoADAO extends DAO {
 		return $this->insertObject($loa);
 	}
 
-	public function regenerateCode($submissionId, $journalId, $userId = null, $templateId = null, $contentSnapshot = null) {
+	public function regenerateCode($submissionId, $journalId, $userId = null, $templateId = null, $contentSnapshot = null, $issueId = null) {
 		$this->revokeBySubmissionId($submissionId);
-		return $this->generateCode($submissionId, $journalId, $userId, $templateId, $contentSnapshot);
+		return $this->generateCode($submissionId, $journalId, $userId, $templateId, $contentSnapshot, $issueId);
 	}
 
 	public function compressSnapshot($html) {
@@ -244,6 +288,7 @@ class LoADAO extends DAO {
 		$loa->setLoaId($row['loa_id']);
 		$loa->setJournalId($row['journal_id']);
 		$loa->setSubmissionId($row['submission_id']);
+		$loa->setIssueId(isset($row['issue_id']) && $row['issue_id'] !== null ? (int) $row['issue_id'] : null);
 		$loa->setUniqueCode($row['unique_code']);
 		$loa->setDateGenerated($row['date_generated']);
 		$loa->setDateDownloaded($row['date_downloaded']);

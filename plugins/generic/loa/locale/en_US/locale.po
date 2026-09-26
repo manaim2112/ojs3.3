@@ -305,3 +305,45 @@ msgstr "Back to LoA Management"
 msgid "plugins.generic.loa.backToTemplates"
 msgstr "Back to Templates"
 
+msgid "plugins.generic.loa.publish"
+msgstr "Publish LoA"
+
+msgid "plugins.generic.loa.tabLabel"
+msgstr "LoA"
+
+msgid "plugins.generic.loa.publishTitle"
+msgstr "Publish LoA"
+
+msgid "plugins.generic.loa.regenerateTitle"
+msgstr "Regenerate LoA"
+
+msgid "plugins.generic.loa.selectIssue"
+msgstr "Target issue"
+
+msgid "plugins.generic.loa.selectIssueDesc"
+msgstr "Choose the issue this article will be published in, then confirm to publish the LoA."
+
+msgid "plugins.generic.loa.selectIssueRegenerateDesc"
+msgstr "Choose the target issue. The currently active LoA will be revoked and replaced with a new one."
+
+msgid "plugins.generic.loa.noIssues"
+msgstr "This journal has no issues yet. The LoA will be published without an issue assignment."
+
+msgid "plugins.generic.loa.issueUnpublished"
+msgstr "Not yet published"
+
+msgid "plugins.generic.loa.search"
+msgstr "Search"
+
+msgid "plugins.generic.loa.searchPlaceholder"
+msgstr "Article title, author, or LoA code..."
+
+msgid "plugins.generic.loa.filterByIssue"
+msgstr "Filter by issue"
+
+msgid "plugins.generic.loa.allIssues"
+msgstr "All issues"
+
+msgid "plugins.generic.loa.resetFilters"
+msgstr "Reset filters"
+

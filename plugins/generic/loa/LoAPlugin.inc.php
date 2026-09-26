@@ -25,9 +25,10 @@ class LoAPlugin extends GenericPlugin {
 			DAORegistry::registerDAO('LoATemplateDAO', $loaTemplateDao);
 
 			HookRegistry::register('LoadHandler', [$this, 'callbackHandleContent']);
-			HookRegistry::register('Template::Workflow::Publication', [$this, 'addToWorkflow']);
+			HookRegistry::register('Template::Workflow', [$this, 'addToWorkflow']);
 			HookRegistry::register('Templates::Article::Details', [$this, 'addToArticleDetails']);
 			HookRegistry::register('TemplateManager::setupBackendPage', [$this, 'addToBackendMenu']);
+			HookRegistry::register('TemplateManager::setupBackendPage', [$this, 'addIssueDialogAssets']);
 			HookRegistry::register('Template::Settings::distribution', [$this, 'callbackShowDistributionTabs']);
 			HookRegistry::register('Templates::Index::journal', [$this, 'callbackShowSecurityPopup']);
 		}
@@ -143,8 +144,234 @@ class LoAPlugin extends GenericPlugin {
 		return false;
 	}
 
+	/**
+	 * Only Journal Managers and Site Admins may publish/regenerate/revoke a LoA.
+	 */
+	public function canManageLoA($user, $context) {
+		if (!$user || !$context) {
+			return false;
+		}
+		return $user->hasRole([ROLE_ID_MANAGER, ROLE_ID_SITE_ADMIN], $context->getId())
+			|| $user->hasRole([ROLE_ID_SITE_ADMIN], 0);
+	}
+
+	/**
+	 * Issue choices offered when publishing a LoA.
+	 * @return array Array of ['id' => int, 'label' => string]
+	 */
+	public function getIssuesForTemplate($context) {
+		$issues = [];
+		if (!$context) {
+			return $issues;
+		}
+		$issueDao = DAORegistry::getDAO('IssueDAO');
+		$result = $issueDao->getIssues($context->getId());
+		while ($issue = $result->next()) {
+			$label = $issue->getIssueIdentification();
+			if (!$issue->getPublished()) {
+				$label .= ' — ' . __('plugins.generic.loa.issueUnpublished');
+			}
+			$issues[] = [
+				'id' => (int) $issue->getId(),
+				'label' => $label,
+			];
+		}
+		return $issues;
+	}
+
+	/**
+	 * Put the publication of a submission into the issue chosen in the dialog.
+	 * @return object|null The matched Issue, or null when nothing was applied.
+	 */
+	public function assignPublicationToIssue($submissionId, $context, $issueId) {
+		$issueId = (int) $issueId;
+		if (!$issueId || !$context) {
+			return null;
+		}
+
+		$issueDao = DAORegistry::getDAO('IssueDAO');
+		$issue = $issueDao->getById($issueId, $context->getId());
+		if (!$issue) {
+			return null;
+		}
+
+		$submissionDao = DAORegistry::getDAO('SubmissionDAO');
+		$submission = $submissionDao->getById($submissionId, $context->getId());
+		if (!$submission) {
+			return null;
+		}
+
+		$publication = $submission->getCurrentPublication();
+		if (!$publication) {
+			return null;
+		}
+
+		if ((int) $publication->getData('issueId') !== $issueId) {
+			$publication->setData('issueId', $issueId);
+			$publicationDao = DAORegistry::getDAO('PublicationDAO');
+			$publicationDao->updateObject($publication);
+		}
+
+		return $issue;
+	}
+
+	/**
+	 * Inject the shared issue-selection dialog behaviour (backend pages only).
+	 */
+	public function addIssueDialogAssets($hookName, $args = null) {
+		$templateMgr = TemplateManager::getManager(Application::get()->getRequest());
+
+		$templateMgr->addStyleSheet(
+			'loaIssueDialog',
+			$this->getIssueDialogCss(),
+			['contexts' => ['backend'], 'inline' => true]
+		);
+		$templateMgr->addJavaScript(
+			'loaIssueDialog',
+			$this->getIssueDialogJs(),
+			['contexts' => ['backend'], 'inline' => true]
+		);
+	}
+
+	public function getIssueDialogJs() {
+		return <<<'JS'
+(function () {
+	'use strict';
+
+	function one(root, sel) { return root ? root.querySelector(sel) : null; }
+
+	function findByAttr(el, attr) {
+		while (el && el.nodeType === 1) {
+			if (el.hasAttribute(attr)) { return el; }
+			el = el.parentNode;
+		}
+		return null;
+	}
+
+	function showOnly(root, attr, mode) {
+		var nodes = root.querySelectorAll('[data-' + attr + ']');
+		for (var i = 0; i < nodes.length; i++) {
+			nodes[i].hidden = nodes[i].getAttribute('data-' + attr) !== mode;
+		}
+	}
+
+	function openLoaIssueDialog(trigger) {
+		var d = document.getElementById('loaIssueDialog');
+		if (!d) { return; }
+		var form = one(d, 'form');
+		var submissionInput = one(d, 'input[name="submissionId"]');
+		var select = one(d, 'select[name="issueId"]');
+		var field = one(d, '[data-loa-issue-field]');
+		var emptyHint = one(d, '[data-loa-no-issues]');
+		if (!form || !submissionInput || !select) { return; }
+
+		var mode = trigger.getAttribute('data-mode') || 'generate';
+
+		form.setAttribute('action', trigger.getAttribute('data-action') || '');
+		submissionInput.value = trigger.getAttribute('data-submission-id') || '';
+
+		var hasIssues = select.options.length > 0;
+		if (field) { field.hidden = !hasIssues; }
+		if (emptyHint) { emptyHint.hidden = hasIssues; }
+		select.required = hasIssues;
+		select.disabled = !hasIssues;
+		if (hasIssues) {
+			var wanted = trigger.getAttribute('data-issue-id') || '';
+			if (wanted && select.querySelector('option[value="' + wanted + '"]')) {
+				select.value = wanted;
+			} else {
+				select.selectedIndex = 0;
+			}
+		}
+
+		showOnly(d, 'loa-label', mode);
+		showOnly(d, 'loa-desc', mode);
+		showOnly(d, 'loa-submit', mode);
+
+		d.hidden = false;
+		document.documentElement.classList.add('loaIssueDialogIsOpen');
+		if (hasIssues) { select.focus(); }
+	}
+
+	function closeLoaIssueDialog() {
+		var d = document.getElementById('loaIssueDialog');
+		if (!d) { return; }
+		d.hidden = true;
+		document.documentElement.classList.remove('loaIssueDialogIsOpen');
+	}
+
+	window.loaOpenIssueDialog = openLoaIssueDialog;
+	window.loaCloseIssueDialog = closeLoaIssueDialog;
+
+	document.addEventListener('click', function (e) {
+		var t = e.target;
+		if (!t || t.nodeType !== 1) { return; }
+		if (findByAttr(t, 'data-loa-dialog-close')) {
+			closeLoaIssueDialog();
+			return;
+		}
+		var trigger = findByAttr(t, 'data-loa-issue-trigger');
+		if (trigger) {
+			e.preventDefault();
+			openLoaIssueDialog(trigger);
+		}
+	});
+
+	document.addEventListener('keydown', function (e) {
+		if (e.key === 'Escape') { closeLoaIssueDialog(); }
+	});
+
+	document.addEventListener('submit', function (e) {
+		var form = e.target;
+		if (!form || form.nodeType !== 1) { return; }
+		if (form.classList.contains('loa-confirm-form')) {
+			var msg = form.getAttribute('data-msg');
+			if (msg && !window.confirm(msg)) { e.preventDefault(); }
+		}
+	}, false);
+})();
+JS;
+	}
+
+	public function getIssueDialogCss() {
+		return <<<'CSS'
+html.loaIssueDialogIsOpen, html.loaIssueDialogIsOpen body { overflow: hidden; }
+.loaPageHeader { display: -webkit-box; display: flex; -webkit-box-align: center; align-items: center; -webkit-box-pack: justify; justify-content: space-between; -webkit-box-flex: wrap; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
+.loaPageHeader .app__pageHeading { margin: 0; }
+.loaFilters { display: -webkit-box; display: flex; -webkit-box-flex: wrap; flex-wrap: wrap; -webkit-box-align: end; align-items: flex-end; gap: 1rem; margin: 1.25rem 0; padding: 1rem; background: #f4f6f8; border: 1px solid #d9dee3; border-radius: .25rem; }
+.loaFilters__item { display: -webkit-box; display: flex; -webkit-box-orient: vertical; flex-direction: column; gap: .375rem; }
+.loaFilters__item--search { -webkit-box-flex: 1; flex: 1 1 18rem; }
+.loaFilters__item--issue { -webkit-box-flex: 1; flex: 1 1 16rem; }
+.loaFilters__item label { font-size: .875rem; font-weight: 600; color: #1e2b34; }
+.loaFilters__item input, .loaFilters__item select { width: 100%; padding: .5rem .625rem; border: 1px solid #b8c0c6; border-radius: .25rem; background: #fff; font-size: .9375rem; color: #1e2b34; }
+.loaFilters__actions { display: -webkit-box; display: flex; gap: .5rem; }
+.loaIssueDialog { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 100000; display: -webkit-box; display: flex; -webkit-box-align: center; align-items: center; -webkit-box-pack: center; justify-content: center; }
+.loaIssueDialog[hidden] { display: none !important; }
+.loaIssueDialog__backdrop { position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: rgba(18, 21, 26, .6); }
+.loaIssueDialog__panel { position: relative; width: 30rem; max-width: 92vw; max-height: 90vh; overflow: auto; background: #fff; border-radius: .25rem; box-shadow: 0 18px 48px rgba(0, 0, 0, .3); padding: 1.25rem 1.5rem 1.5rem; }
+.loaIssueDialog__header { display: -webkit-box; display: flex; -webkit-box-align: start; align-items: flex-start; -webkit-box-pack: justify; justify-content: space-between; gap: 1rem; margin-bottom: .5rem; }
+.loaIssueDialog__title { margin: 0; font-size: 1.25rem; font-weight: 700; color: #1e2b34; }
+.loaIssueDialog__close { border: 0; background: none; font-size: 1.5rem; line-height: 1; color: #67727a; cursor: pointer; padding: 0; }
+.loaIssueDialog__close:hover { color: #1e2b34; }
+.loaIssueDialog__desc { margin: 0 0 1rem; color: #46515a; font-size: .9375rem; line-height: 1.5; }
+.loaIssueDialog__field { margin-bottom: 1rem; }
+.loaIssueDialog__field[hidden] { display: none; }
+.loaIssueDialog__field > label { display: block; margin-bottom: .375rem; font-weight: 600; color: #1e2b34; }
+.loaIssueDialog__field select { width: 100%; padding: .5rem .625rem; border: 1px solid #b8c0c6; border-radius: .25rem; background: #fff; font-size: .9375rem; color: #1e2b34; }
+.loaIssueDialog__field select:focus { outline: 2px solid #2a6ebb; outline-offset: 1px; }
+.loaIssueDialog__hint { margin: .5rem 0 0; font-size: .8125rem; color: #8a6d3b; }
+.loaIssueDialog__hint[hidden] { display: none; }
+.loaIssueDialog__actions { display: -webkit-box; display: flex; -webkit-box-pack: end; justify-content: flex-end; gap: .5rem; margin-top: 1.25rem; }
+CSS;
+	}
+
 	public function addToWorkflow($hookName, $params) {
 		if (!Capsule::schema()->hasTable('article_loa_codes')) {
+			return false;
+		}
+
+		$request = Application::get()->getRequest();
+		if ($request->getRequestedPage() !== 'workflow') {
 			return false;
 		}
 
@@ -156,7 +383,6 @@ class LoAPlugin extends GenericPlugin {
 			return false;
 		}
 
-		$request = Application::get()->getRequest();
 		$context = $request->getContext();
 		$dispatcher = $request->getDispatcher();
 
@@ -169,14 +395,17 @@ class LoAPlugin extends GenericPlugin {
 			$generatedByUser = $userDao->getById($loa->getGeneratedBy());
 		}
 
-		$user = $request->getUser();
-		$canManage = $user && $user->hasRole([ROLE_ID_MANAGER, ROLE_ID_SITE_ADMIN, ROLE_ID_SUB_EDITOR], $context->getId());
+		$publication = $submission->getCurrentPublication();
+		$currentIssueId = $publication ? (int) $publication->getData('issueId') : 0;
 
 		$smarty->assign([
 			'loa' => $loa,
 			'submissionId' => $submission->getId(),
 			'generatedByUser' => $generatedByUser,
-			'canManage' => $canManage,
+			'canManage' => $this->canManageLoA($request->getUser(), $context),
+			'currentIssueId' => $currentIssueId,
+			'loaReturnStageId' => (int) $smarty->get_template_vars('requestedStageId'),
+			'loaIssues' => $this->getIssuesForTemplate($context),
 			'loaGenerateUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'generate'),
 			'loaRegenerateUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'regenerate'),
 			'loaRevokeUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'revoke'),
@@ -184,9 +413,10 @@ class LoAPlugin extends GenericPlugin {
 		]);
 
 		$output .= sprintf(
-			'<tab id="loa" label="%s">%s</tab>',
-			__('plugins.generic.loa.displayName'),
-			$smarty->fetch($this->getTemplateResource('loaTab.tpl'))
+			'<tab id="loa" label="%s">%s%s</tab>',
+			__('plugins.generic.loa.tabLabel'),
+			$smarty->fetch($this->getTemplateResource('loaTab.tpl')),
+			$smarty->fetch($this->getTemplateResource('loaIssueDialog.tpl'))
 		);
 
 		return false;
@@ -212,16 +442,12 @@ class LoAPlugin extends GenericPlugin {
 
 		$menu = (array) $templateMgr->getState('menu');
 
+		$loaOps = ['management', 'templates', 'templateForm', 'activateTemplate', 'deleteTemplate'];
 		$loaLink = [
 			'name' => __('plugins.generic.loa.management'),
 			'url' => $router->url($request, $context->getPath(), 'loa', 'management'),
-			'isCurrent' => $request->getRequestedPage() === 'loa' && $request->getRequestedOp() === 'management',
-		];
-
-		$loaTemplatesLink = [
-			'name' => __('plugins.generic.loa.templates'),
-			'url' => $router->url($request, $context->getPath(), 'loa', 'templates'),
-			'isCurrent' => $request->getRequestedPage() === 'loa' && $request->getRequestedOp() === 'templates',
+			'isCurrent' => $request->getRequestedPage() === 'loa'
+				&& in_array($request->getRequestedOp(), $loaOps, true),
 		];
 
 		$index = array_search('issues', array_keys($menu));
@@ -230,10 +456,9 @@ class LoAPlugin extends GenericPlugin {
 		}
 		if ($index === false || count($menu) <= ($index + 1)) {
 			$menu['loa'] = $loaLink;
-			$menu['loaTemplates'] = $loaTemplatesLink;
 		} else {
 			$menu = array_slice($menu, 0, $index + 1, true) +
-					['loa' => $loaLink, 'loaTemplates' => $loaTemplatesLink] +
+					['loa' => $loaLink] +
 					array_slice($menu, $index + 1, null, true);
 		}
 
@@ -420,9 +645,11 @@ class LoAPlugin extends GenericPlugin {
 		return ['style' => trim($style), 'html' => trim($body)];
 	}
 
-	public function generateLoAWithSnapshot($submissionId, $context, $userId, $request) {
+	public function generateLoAWithSnapshot($submissionId, $context, $userId, $request, $issueId = null) {
+		$this->assignPublicationToIssue($submissionId, $context, $issueId);
+
 		$loaDao = DAORegistry::getDAO('LoADAO');
-		$loa = $loaDao->generateCode($submissionId, $context->getId(), $userId);
+		$loa = $loaDao->generateCode($submissionId, $context->getId(), $userId, null, null, $issueId);
 
 		if ($loa && $loa->getContentSnapshot() === null) {
 			$loaTemplateDao = DAORegistry::getDAO('LoATemplateDAO');
@@ -443,10 +670,12 @@ class LoAPlugin extends GenericPlugin {
 		return $loa;
 	}
 
-	public function regenerateLoAWithSnapshot($submissionId, $context, $userId, $request) {
+	public function regenerateLoAWithSnapshot($submissionId, $context, $userId, $request, $issueId = null) {
+		$this->assignPublicationToIssue($submissionId, $context, $issueId);
+
 		$loaDao = DAORegistry::getDAO('LoADAO');
 		$loaDao->revokeBySubmissionId($submissionId);
-		return $this->generateLoAWithSnapshot($submissionId, $context, $userId, $request);
+		return $this->generateLoAWithSnapshot($submissionId, $context, $userId, $request, $issueId);
 	}
 
 	public function sanitizeHtml($html) {

@@ -13,6 +13,7 @@ class LoASchemaMigration extends Migration {
 				$table->bigInteger('loa_id')->autoIncrement();
 				$table->bigInteger('journal_id');
 				$table->bigInteger('submission_id');
+				$table->bigInteger('issue_id')->nullable();
 				$table->string('unique_code', 100);
 				$table->datetime('date_generated');
 				$table->datetime('date_downloaded')->nullable();
@@ -24,6 +25,11 @@ class LoASchemaMigration extends Migration {
 				$table->unique(['unique_code'], 'article_loa_codes_unique_code');
 			});
 		} else {
+			if (!Capsule::schema()->hasColumn('article_loa_codes', 'issue_id')) {
+				Capsule::schema()->table('article_loa_codes', function (Blueprint $table) {
+					$table->bigInteger('issue_id')->nullable();
+				});
+			}
 			if (!Capsule::schema()->hasColumn('article_loa_codes', 'generated_by')) {
 				Capsule::schema()->table('article_loa_codes', function (Blueprint $table) {
 					$table->bigInteger('generated_by')->nullable();

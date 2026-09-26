@@ -109,6 +109,18 @@ class LoAHandler extends Handler {
 		return $submission;
 	}
 
+	/**
+	 * Go back to the workflow stage the action was started from and
+	 * re-open the LoA tab there.
+	 */
+	function _redirectAfterWorkflowAction($request, $submissionId) {
+		$stageId = (int) $request->getUserVar('stageId');
+		if ($stageId > 0 && $stageId <= WORKFLOW_STAGE_ID_PRODUCTION) {
+			$request->redirect(null, 'workflow', 'index', [$submissionId, $stageId], null, 'loa');
+		}
+		$request->redirect(null, 'workflow', 'access', $submissionId);
+	}
+
 	function generate($args, $request) {
 		if (!$request->isPost() || !$request->checkCSRF()) {
 			$request->redirect(null, 'index');
@@ -116,7 +128,7 @@ class LoAHandler extends Handler {
 
 		$context = $request->getContext();
 		$user = $request->getUser();
-		if (!$user || !$user->hasRole([ROLE_ID_MANAGER, ROLE_ID_SITE_ADMIN, ROLE_ID_SUB_EDITOR], $context->getId())) {
+		if (!self::$plugin->canManageLoA($user, $context)) {
 			$request->redirect(null, 'index');
 		}
 
@@ -125,9 +137,10 @@ class LoAHandler extends Handler {
 			$request->redirect(null, 'index');
 		}
 
-		self::$plugin->generateLoAWithSnapshot($submissionId, $context, $user->getId(), $request);
+		$issueId = (int) $request->getUserVar('issueId');
+		self::$plugin->generateLoAWithSnapshot($submissionId, $context, $user->getId(), $request, $issueId);
 
-		$request->redirect(null, 'workflow', 'access', $submissionId);
+		$this->_redirectAfterWorkflowAction($request, $submissionId);
 	}
 
 	function regenerate($args, $request) {
@@ -137,7 +150,7 @@ class LoAHandler extends Handler {
 
 		$context = $request->getContext();
 		$user = $request->getUser();
-		if (!$user || !$user->hasRole([ROLE_ID_MANAGER, ROLE_ID_SITE_ADMIN, ROLE_ID_SUB_EDITOR], $context->getId())) {
+		if (!self::$plugin->canManageLoA($user, $context)) {
 			$request->redirect(null, 'index');
 		}
 
@@ -146,9 +159,10 @@ class LoAHandler extends Handler {
 			$request->redirect(null, 'index');
 		}
 
-		self::$plugin->regenerateLoAWithSnapshot($submissionId, $context, $user->getId(), $request);
+		$issueId = (int) $request->getUserVar('issueId');
+		self::$plugin->regenerateLoAWithSnapshot($submissionId, $context, $user->getId(), $request, $issueId);
 
-		$request->redirect(null, 'workflow', 'access', $submissionId);
+		$this->_redirectAfterWorkflowAction($request, $submissionId);
 	}
 
 	function revoke($args, $request) {
@@ -158,7 +172,7 @@ class LoAHandler extends Handler {
 
 		$context = $request->getContext();
 		$user = $request->getUser();
-		if (!$user || !$user->hasRole([ROLE_ID_MANAGER, ROLE_ID_SITE_ADMIN, ROLE_ID_SUB_EDITOR], $context->getId())) {
+		if (!self::$plugin->canManageLoA($user, $context)) {
 			$request->redirect(null, 'index');
 		}
 
@@ -170,7 +184,7 @@ class LoAHandler extends Handler {
 		$loaDao = DAORegistry::getDAO('LoADAO');
 		$loaDao->revokeBySubmissionId($submissionId);
 
-		$request->redirect(null, 'workflow', 'access', $submissionId);
+		$this->_redirectAfterWorkflowAction($request, $submissionId);
 	}
 
 	function verification($args, $request) {
@@ -229,20 +243,44 @@ class LoAHandler extends Handler {
 
 		$dispatcher = $request->getDispatcher();
 		$loaDao = DAORegistry::getDAO('LoADAO');
+		$plugin = self::$plugin;
+
+		$search = is_scalar($request->getUserVar('search')) ? trim((string) $request->getUserVar('search')) : '';
+		$filterIssueId = (int) $request->getUserVar('issueId');
 
 		$rangeInfo = $this->getRangeInfo($request, 'loa_management');
+		$articles = $loaDao->getPublishedArticlesByJournalId($context->getId(), $search, $filterIssueId, $rangeInfo);
 
-		$articles = $loaDao->getPublishedArticlesByJournalId($context->getId(), $rangeInfo);
+		$loaIssues = $plugin->getIssuesForTemplate($context);
+		$pageParams = [];
+		if ($search !== '') {
+			$pageParams['search'] = $search;
+		}
+		if ($filterIssueId > 0) {
+			$pageParams['issueId'] = $filterIssueId;
+		}
 
 		$templateMgr->assign([
-			'articles' => $articles,
+			'loaIssues' => $loaIssues,
+			'canManage' => $plugin->canManageLoA($user, $context),
+			'currentSearch' => $search,
+			'currentIssueId' => $filterIssueId,
+			'loaReturnStageId' => 0,
+			'pageParams' => $pageParams,
 			'loaGenerateUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'generateFromManagement'),
 			'loaRevokeUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'revokeFromManagement'),
 			'loaViewUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'view'),
+			'loaTemplatesUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'templates'),
+			'loaManagementUrl' => $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'loa', 'management'),
 			'csrfToken' => $request->getSession()->getCsrfToken(),
 		]);
 
-		$templateMgr->display(self::$plugin->getTemplateResource('loaManagement.tpl'));
+		$templateMgr->assign([
+			'articles' => $articles,
+			'loaIssueDialog' => $templateMgr->fetch($plugin->getTemplateResource('loaIssueDialog.tpl')),
+		]);
+
+		$templateMgr->display($plugin->getTemplateResource('loaManagement.tpl'));
 	}
 
 	function generateFromManagement($args, $request) {
@@ -252,7 +290,7 @@ class LoAHandler extends Handler {
 
 		$context = $request->getContext();
 		$user = $request->getUser();
-		if (!$user || !$user->hasRole([ROLE_ID_MANAGER, ROLE_ID_SITE_ADMIN, ROLE_ID_SUB_EDITOR], $context->getId())) {
+		if (!self::$plugin->canManageLoA($user, $context)) {
 			$request->redirect(null, 'index');
 		}
 
@@ -271,7 +309,8 @@ class LoAHandler extends Handler {
 			$request->redirect(null, 'loa', 'management');
 		}
 
-		self::$plugin->generateLoAWithSnapshot($submissionId, $context, $user->getId(), $request);
+		$issueId = (int) $request->getUserVar('issueId');
+		self::$plugin->generateLoAWithSnapshot($submissionId, $context, $user->getId(), $request, $issueId);
 
 		$request->redirect(null, 'loa', 'management');
 	}
@@ -283,7 +322,7 @@ class LoAHandler extends Handler {
 
 		$context = $request->getContext();
 		$user = $request->getUser();
-		if (!$user || !$user->hasRole([ROLE_ID_MANAGER, ROLE_ID_SITE_ADMIN, ROLE_ID_SUB_EDITOR], $context->getId())) {
+		if (!self::$plugin->canManageLoA($user, $context)) {
 			$request->redirect(null, 'index');
 		}
 

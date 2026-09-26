@@ -305,3 +305,45 @@ msgstr "Kembali ke Manajemen LoA"
 msgid "plugins.generic.loa.backToTemplates"
 msgstr "Kembali ke Template"
 
+msgid "plugins.generic.loa.publish"
+msgstr "Terbitkan LoA"
+
+msgid "plugins.generic.loa.tabLabel"
+msgstr "LoA"
+
+msgid "plugins.generic.loa.publishTitle"
+msgstr "Terbitkan LoA"
+
+msgid "plugins.generic.loa.regenerateTitle"
+msgstr "Buat Ulang LoA"
+
+msgid "plugins.generic.loa.selectIssue"
+msgstr "Issue Tujuan"
+
+msgid "plugins.generic.loa.selectIssueDesc"
+msgstr "Pilih issue tempat artikel ini akan diterbitkan, lalu konfirmasi untuk menerbitkan LoA."
+
+msgid "plugins.generic.loa.selectIssueRegenerateDesc"
+msgstr "Pilih issue tujuan artikel. LoA yang sedang berlaku akan dicabut dan diganti dengan LoA baru."
+
+msgid "plugins.generic.loa.noIssues"
+msgstr "Belum ada issue pada jurnal ini. LoA akan diterbitkan tanpa penempatan issue."
+
+msgid "plugins.generic.loa.issueUnpublished"
+msgstr "Belum terbit"
+
+msgid "plugins.generic.loa.search"
+msgstr "Cari"
+
+msgid "plugins.generic.loa.searchPlaceholder"
+msgstr "Judul artikel, penulis, atau kode LoA..."
+
+msgid "plugins.generic.loa.filterByIssue"
+msgstr "Filter Issue"
+
+msgid "plugins.generic.loa.allIssues"
+msgstr "Semua Issue"
+
+msgid "plugins.generic.loa.resetFilters"
+msgstr "Reset Filter"
+

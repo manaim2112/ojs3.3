@@ -2,13 +2,44 @@
 
 {block name="page"}
 <div class="pkp_page_content">
-	<h1 class="app__pageHeading">
-		{translate key="plugins.generic.loa.management"}
-	</h1>
+	<div class="loaPageHeader">
+		<h1 class="app__pageHeading">
+			{translate key="plugins.generic.loa.management"}
+		</h1>
+		<a href="{$loaTemplatesUrl|escape}" class="pkp_button">
+			{translate key="plugins.generic.loa.templates"}
+		</a>
+	</div>
 
 	<div class="pkp_help">
 		<p>{translate key="plugins.generic.loa.managementDescription"}</p>
 	</div>
+
+	<form class="loaFilters" method="get" action="{url page="loa" op="management"}">
+		<div class="loaFilters__item loaFilters__item--search">
+			<label for="loaFilterSearch">{translate key="plugins.generic.loa.search"}</label>
+			<input
+				type="search"
+				id="loaFilterSearch"
+				name="search"
+				value="{$currentSearch|escape}"
+				placeholder="{translate key="plugins.generic.loa.searchPlaceholder"}"
+			>
+		</div>
+		<div class="loaFilters__item loaFilters__item--issue">
+			<label for="loaFilterIssue">{translate key="plugins.generic.loa.filterByIssue"}</label>
+			<select id="loaFilterIssue" name="issueId">
+				<option value="">{translate key="plugins.generic.loa.allIssues"}</option>
+				{foreach from=$loaIssues item=issue}
+					<option value="{$issue.id|escape}"{if $currentIssueId == $issue.id} selected{/if}>{$issue.label|escape}</option>
+				{/foreach}
+			</select>
+		</div>
+		<div class="loaFilters__actions">
+			<button type="submit" class="pkp_button pkp_button--primary">{translate key="plugins.generic.loa.search"}</button>
+			<a class="pkp_button" href="{$loaManagementUrl|escape}">{translate key="plugins.generic.loa.resetFilters"}</a>
+		</div>
+	</form>
 
 	<table class="pkpTable">
 		<thead>
@@ -31,6 +62,8 @@
 							{$article.issue.title|escape}
 							<br>
 							<small>{$article.issue.volume|escape} {$article.issue.number|escape} ({$article.issue.year|escape})</small>
+						{elseif $article.issue}
+							{$article.issue.volume|escape} {$article.issue.number|escape} ({$article.issue.year|escape})
 						{else}
 							<span class="pkp_text-muted">-</span>
 						{/if}
@@ -58,29 +91,31 @@
 							<a href="{$loaViewUrl|escape}/{$article.unique_code|escape}" class="pkp_button pkp_button--primary" target="_blank">
 								{translate key="plugins.generic.loa.download"}
 							</a>
-							<form method="post" action="{$loaRevokeUrl|escape}" class="loa-confirm-form" data-msg="{translate key="plugins.generic.loa.confirmRevoke"}">
-								<input type="hidden" name="submissionId" value="{$article.submission_id|escape}">
-								<input type="hidden" name="csrfToken" value="{$csrfToken|escape}">
-								<button type="submit" class="pkp_button pkp_button--danger">
-									{translate key="plugins.generic.loa.revoke"}
-								</button>
-							</form>
-						{elseif $article.loa_status == 'revoked'}
-							<form method="post" action="{$loaGenerateUrl|escape}" class="loa-confirm-form" data-msg="{translate key="plugins.generic.loa.confirmRegenerate"}">
-								<input type="hidden" name="submissionId" value="{$article.submission_id|escape}">
-								<input type="hidden" name="csrfToken" value="{$csrfToken|escape}">
-								<button type="submit" class="pkp_button">
+							{if $canManage}
+								<form method="post" action="{$loaRevokeUrl|escape}" class="loa-confirm-form" data-msg="{translate key="plugins.generic.loa.confirmRevoke"}">
+									<input type="hidden" name="submissionId" value="{$article.submission_id|escape}">
+									<input type="hidden" name="csrfToken" value="{$csrfToken|escape}">
+									<button type="submit" class="pkp_button pkp_button--danger">
+										{translate key="plugins.generic.loa.revoke"}
+									</button>
+								</form>
+							{/if}
+						{elseif $canManage}
+							<button
+								type="button"
+								class="pkp_button"
+								data-loa-issue-trigger="1"
+								data-mode="{if $article.loa_status == 'revoked'}regenerate{else}generate{/if}"
+								data-action="{$loaGenerateUrl|escape}"
+								data-submission-id="{$article.submission_id|escape}"
+								data-issue-id="{$article.issue_id|escape}"
+							>
+								{if $article.loa_status == 'revoked'}
 									{translate key="plugins.generic.loa.regenerate"}
-								</button>
-							</form>
-						{else}
-							<form method="post" action="{$loaGenerateUrl|escape}" class="loa-confirm-form" data-msg="{translate key="plugins.generic.loa.confirmRegenerate"}">
-								<input type="hidden" name="submissionId" value="{$article.submission_id|escape}">
-								<input type="hidden" name="csrfToken" value="{$csrfToken|escape}">
-								<button type="submit" class="pkp_button">
-									{translate key="plugins.generic.loa.generate"}
-								</button>
-							</form>
+								{else}
+									{translate key="plugins.generic.loa.publish"}
+								{/if}
+							</button>
 						{/if}
 					</td>
 				</tr>
@@ -89,7 +124,7 @@
 	</table>
 	<div class="gridPaging">
 		{page_info iterator=$articles}
-		{page_links name="loa_management" iterator=$articles}
+		{page_links name="loa_management" iterator=$articles params=$pageParams}
 	</div>
 	{if $articles->wasEmpty()}
 		<div class="pkp_help">
@@ -98,16 +133,5 @@
 	{/if}
 </div>
 
-<script>
-(function() {
-	var forms = document.querySelectorAll('.loa-confirm-form');
-	Array.prototype.forEach.call(forms, function(form) {
-		form.addEventListener('submit', function(e) {
-			if (!confirm(this.getAttribute('data-msg'))) {
-				e.preventDefault();
-			}
-		});
-	});
-})();
-</script>
+{$loaIssueDialog}
 {/block}

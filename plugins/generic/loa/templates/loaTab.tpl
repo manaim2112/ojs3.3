@@ -26,18 +26,24 @@
 			</a>
 
 			{if $canManage}
-				<form method="post" action="{$loaRegenerateUrl|escape}" style="display:inline;" class="loa-confirm-form" data-msg="{translate key="plugins.generic.loa.confirmRegenerate"}">
-					{csrf}
-					<input type="hidden" name="submissionId" value="{$submissionId|escape}">
-					<button type="submit" class="pkp_button" style="margin-left: 5px;">
-						{translate key="plugins.generic.loa.regenerate"}
-					</button>
-				</form>
+				<button
+					type="button"
+					class="pkp_button"
+					style="margin-left: 5px;"
+					data-loa-issue-trigger="1"
+					data-mode="regenerate"
+					data-action="{$loaRegenerateUrl|escape}"
+					data-submission-id="{$submissionId|escape}"
+					data-issue-id="{$currentIssueId|escape}"
+				>
+					{translate key="plugins.generic.loa.regenerate"}
+				</button>
 
 				{if $loa->getStatus() == 'active'}
 					<form method="post" action="{$loaRevokeUrl|escape}" style="display:inline;" class="loa-confirm-form" data-msg="{translate key="plugins.generic.loa.confirmRevoke"}">
 						{csrf}
 						<input type="hidden" name="submissionId" value="{$submissionId|escape}">
+						<input type="hidden" name="stageId" value="{$loaReturnStageId|escape}">
 						<button type="submit" class="pkp_button" style="margin-left: 5px; background-color: #dc3545;">
 							{translate key="plugins.generic.loa.revoke"}
 						</button>
@@ -45,34 +51,23 @@
 				{/if}
 			{/if}
 		</div>
-
-<script>
-{literal}
-(function() {
-	var forms = document.querySelectorAll('.loa-confirm-form');
-	Array.prototype.forEach.call(forms, function(form) {
-		form.addEventListener('submit', function(e) {
-			if (!confirm(this.getAttribute('data-msg'))) {
-				e.preventDefault();
-			}
-		});
-	});
-})();
-{/literal}
-</script>
 	{else}
 		<div class="pkp_help" style="margin-bottom: 15px;">
 			<p>{translate key="plugins.generic.loa.noLoA"}</p>
 		</div>
 
 		{if $canManage}
-<form method="post" action="{$loaGenerateUrl|escape}">
-			{csrf}
-			<input type="hidden" name="submissionId" value="{$submissionId|escape}">
-			<button type="submit" class="pkp_button">
-				{translate key="plugins.generic.loa.generate"}
+			<button
+				type="button"
+				class="pkp_button"
+				data-loa-issue-trigger="1"
+				data-mode="generate"
+				data-action="{$loaGenerateUrl|escape}"
+				data-submission-id="{$submissionId|escape}"
+				data-issue-id="{$currentIssueId|escape}"
+			>
+				{translate key="plugins.generic.loa.publish"}
 			</button>
-		</form>
 		{/if}
 	{/if}
 </div>

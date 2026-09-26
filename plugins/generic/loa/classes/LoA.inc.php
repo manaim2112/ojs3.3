@@ -26,6 +26,14 @@ class LoA extends DataObject {
 		$this->setData('submissionId', $submissionId);
 	}
 
+	public function getIssueId() {
+		return $this->getData('issueId');
+	}
+
+	public function setIssueId($issueId) {
+		$this->setData('issueId', $issueId);
+	}
+
 	public function getUniqueCode() {
 		return $this->getData('uniqueCode');
 	}
