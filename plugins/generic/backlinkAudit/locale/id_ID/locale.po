@@ -102,4 +102,34 @@ msgid "plugins.generic.backlinkAudit.alert.unexplained"
 msgstr "TIDAK TERJELASKAN - tidak dikirim lewat antarmuka OJS"
 
 msgid "plugins.generic.backlinkAudit.alert.footer"
-msgstr "Buka laporan Audit Backlink di OJS untuk riwayat lengkap. Perubahan bertanda TIDAK TERJELASKAN tidak dilakukan lewat antarmuka pengguna, jadi akun pelakunya tidak diketahui. Periksa itu lebih dulu."
+msgstr "Buka laporan Audit Backlink di OJS untuk riwayat lengkap. Perubahan bertanda TIDAK TERJELASKAN tidak dilakukan lewat antarmuka OJS, jadi pengguna yang ditampilkan hanyalah yang sedang masuk saat itu — perubahan tidak dapat dipastikan miliknya. Periksa itu lebih dulu."
+
+msgid "plugins.generic.backlinkAudit.signInAs"
+msgstr "Masuk sebagai pengguna ini"
+
+msgid "plugins.generic.backlinkAudit.user.unknown"
+msgstr "Tidak diketahui — tidak dapat ditautkan ke orang"
+
+msgid "plugins.generic.backlinkAudit.filter.search"
+msgstr "Cari"
+
+msgid "plugins.generic.backlinkAudit.filter.searchPlaceholder"
+msgstr "Username, email, deskripsi, jurnal, IP…"
+
+msgid "plugins.generic.backlinkAudit.filter.action"
+msgstr "Aksi"
+
+msgid "plugins.generic.backlinkAudit.filter.allActions"
+msgstr "Semua aksi"
+
+msgid "plugins.generic.backlinkAudit.filter.from"
+msgstr "Dari"
+
+msgid "plugins.generic.backlinkAudit.filter.to"
+msgstr "Sampai"
+
+msgid "plugins.generic.backlinkAudit.filter.apply"
+msgstr "Terapkan"
+
+msgid "plugins.generic.backlinkAudit.filter.reset"
+msgstr "Reset"

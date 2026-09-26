@@ -127,9 +127,12 @@ class BacklinkAuditNotifier {
 			. '</tr>';
 
 		foreach ($changes as $change) {
-			$actor = $change['unexplained']
-				? '<strong style="color:#b91c1c;">' . htmlspecialchars(__('plugins.generic.backlinkAudit.alert.unexplained'), ENT_QUOTES, 'UTF-8') . '</strong>'
-				: htmlspecialchars($change['actor'] ?: '-', ENT_QUOTES, 'UTF-8');
+			$actor = htmlspecialchars($change['actor'] ?: '-', ENT_QUOTES, 'UTF-8');
+			if (!empty($change['unexplained'])) {
+				$actor .= '<br><strong style="color:#b91c1c;">'
+					. htmlspecialchars(__('plugins.generic.backlinkAudit.alert.unexplained'), ENT_QUOTES, 'UTF-8')
+					. '</strong>';
+			}
 
 			$account = '#' . (int) $change['userId'] . ' ' . htmlspecialchars((string) $change['username'], ENT_QUOTES, 'UTF-8');
 			if (!empty($change['contextPath'])) {

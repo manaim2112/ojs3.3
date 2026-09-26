@@ -36,6 +36,34 @@
 			</a>
 		</div>
 
+		<form method="get" action="{$reportUrl|escape}" style="margin-bottom:1rem;display:flex;gap:.75rem;flex-wrap:wrap;align-items:flex-end;">
+			<div>
+				<label for="backlinkAuditQ" style="display:block;font-size:.7rem;font-weight:600;margin-bottom:.2rem;">{translate key="plugins.generic.backlinkAudit.filter.search"}</label>
+				<input type="search" id="backlinkAuditQ" name="q" value="{$q|escape}" placeholder="{translate key="plugins.generic.backlinkAudit.filter.searchPlaceholder"}" style="padding:.4rem .5rem;border:1px solid #c1c5cb;border-radius:3px;min-width:16rem;">
+			</div>
+			<div>
+				<label for="backlinkAuditAction" style="display:block;font-size:.7rem;font-weight:600;margin-bottom:.2rem;">{translate key="plugins.generic.backlinkAudit.filter.action"}</label>
+				<select id="backlinkAuditAction" name="action" style="padding:.4rem .5rem;border:1px solid #c1c5cb;border-radius:3px;">
+					<option value="">{translate key="plugins.generic.backlinkAudit.filter.allActions"}</option>
+					{foreach from=$actionOptions item=opt}
+						<option value="{$opt|escape}"{if $actionFilter eq $opt} selected="selected"{/if}>{$opt|escape}</option>
+					{/foreach}
+				</select>
+			</div>
+			<div>
+				<label for="backlinkAuditFrom" style="display:block;font-size:.7rem;font-weight:600;margin-bottom:.2rem;">{translate key="plugins.generic.backlinkAudit.filter.from"}</label>
+				<input type="date" id="backlinkAuditFrom" name="from" value="{$dateFrom|escape}" style="padding:.4rem .5rem;border:1px solid #c1c5cb;border-radius:3px;">
+			</div>
+			<div>
+				<label for="backlinkAuditTo" style="display:block;font-size:.7rem;font-weight:600;margin-bottom:.2rem;">{translate key="plugins.generic.backlinkAudit.filter.to"}</label>
+				<input type="date" id="backlinkAuditTo" name="to" value="{$dateTo|escape}" style="padding:.4rem .5rem;border:1px solid #c1c5cb;border-radius:3px;">
+			</div>
+			<div style="display:flex;gap:.5rem;">
+				<button type="submit" class="pkpButton">{translate key="plugins.generic.backlinkAudit.filter.apply"}</button>
+				<a class="pkpButton pkpButtonOffset" href="{$reportUrl|escape}">{translate key="plugins.generic.backlinkAudit.filter.reset"}</a>
+			</div>
+		</form>
+
 		<table class="pkpTable" style="width:100%;border-collapse:collapse;font-size:0.85rem;">
 			<thead>
 				<tr style="text-align:left;border-bottom:2px solid #ccc;">
@@ -67,9 +95,14 @@
 							<td style="padding:.5rem;">
 								{if $entry->user_id}
 									<strong>#{$entry->user_id|escape} {$entry->username|escape}</strong>
-									<br><small>{$entry->user_email|escape}</small>
-								{else}
+									{if $entry->user_id != $currentUserId}
+										<br><a href="{url router=$smarty.const.ROUTE_PAGE page="login" op="signInAsUser" path=$entry->user_id redirectUrl=$reportUrl}" style="font-size:.7rem;color:#1d4ed8;">{translate key="plugins.generic.backlinkAudit.signInAs"}</a>
+									{/if}
+									{if $entry->user_email}<br><small>{$entry->user_email|escape}</small>{/if}
+								{elseif $entry->username}
 									<em>{$entry->username|escape}</em>
+								{else}
+									<span style="color:#9ca3af;">{translate key="plugins.generic.backlinkAudit.user.unknown"}</span>
 								{/if}
 							</td>
 							<td style="padding:.5rem;">{$entry->context_path|escape}{if $entry->context_id}<br><small>id={$entry->context_id|escape}</small>{/if}</td>
@@ -118,7 +151,9 @@
 		</table>
 
 		<div style="margin-top:1rem;">
-			{page_links name="backlinkAudit" iterator=$entries}
+			{* The filter values must be handed to page_links too, or the next
+			   page silently drops the search and shows every row again. *}
+			{page_links name="backlinkAudit" iterator=$entries q=$q action=$actionFilter from=$dateFrom to=$dateTo}
 		</div>
 
 	</div>

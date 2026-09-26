@@ -433,6 +433,11 @@ class BacklinkAuditPlugin extends GenericPlugin {
 		@set_time_limit(30);
 
 		try {
+			// Labels baked into source_desc are frozen for the life of the
+			// row, so make absolutely sure this plugin's locale file is
+			// registered before the diff runs rather than relying on it
+			// having been registered at register() time.
+			$this->addLocaleData();
 			$this->_actor = $this->_captureActor();
 			$this->diffSnapshots();
 		} catch (\Throwable $e) {
@@ -578,19 +583,23 @@ class BacklinkAuditPlugin extends GenericPlugin {
 	 * Who to credit or blame. Only a POST that carried userGroupIds is
 	 * attributable; anything else is reported as unexplained, which is the
 	 * case that deserves attention.
+	 *
+	 * The session user is a fact either way, so it is always returned: the
+	 * report must be able to name — and link — whoever was signed in when
+	 * the change was noticed. `unexplained` keeps saying whether the change
+	 * itself came from the OJS interface, and [UNEXPLAINED] still leads the
+	 * description; dropping the user for those rows just left the column
+	 * blank on the cases that matter most.
 	 * @return array ['userId' =>, 'username' =>, 'email' =>, 'label' =>, 'unexplained' =>]
 	 */
 	function _resolveActor() {
 		$attributed = !empty($this->_actor['isPost']) && !empty($this->_actor['submittedGroups']);
-		if (!$attributed) {
-			return ['userId' => null, 'username' => null, 'email' => null, 'label' => null, 'unexplained' => true];
-		}
 		return [
 			'userId' => $this->_actor['userId'],
 			'username' => $this->_actor['username'],
 			'email' => $this->_actor['email'],
 			'label' => '#' . $this->_actor['userId'] . ' ' . $this->_actor['username'],
-			'unexplained' => false,
+			'unexplained' => !$attributed,
 		];
 	}
 

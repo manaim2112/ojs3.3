@@ -104,13 +104,57 @@ class BacklinkAuditDAO extends DAO {
 	}
 
 	/**
+	 * Shared WHERE clause for the report list, its count query and the CSV
+	 * export, so all three always agree on which rows are in scope.
+	 * @param $contextId int|null null = all contexts (site admin)
+	 * @param $filters array q / action / from / to, all optional strings
+	 * @return array [string suffix ("" or " WHERE ..."), array bind params]
+	 */
+	function filterSql($contextId, $filters = []) {
+		$where = [];
+		$params = [];
+
+		if ($contextId !== null) {
+			$where[] = 'context_id = ?';
+			$params[] = (int) $contextId;
+		}
+
+		$action = isset($filters['action']) ? trim($filters['action']) : '';
+		if ($action !== '') {
+			$where[] = 'action = ?';
+			$params[] = $action;
+		}
+
+		$q = isset($filters['q']) ? trim($filters['q']) : '';
+		if ($q !== '') {
+			$like = '%' . str_replace(['\\', '%', '_'], ['\\\\', '\%', '\_'], $q) . '%';
+			$where[] = '(username LIKE ? OR user_email LIKE ? OR source_desc LIKE ? OR context_path LIKE ? OR ip LIKE ?)';
+			for ($i = 0; $i < 5; $i++) $params[] = $like;
+		}
+
+		$from = isset($filters['from']) ? trim($filters['from']) : '';
+		if ($from !== '') {
+			$where[] = 'created_at >= ?';
+			$params[] = $from . ' 00:00:00';
+		}
+		$to = isset($filters['to']) ? trim($filters['to']) : '';
+		if ($to !== '') {
+			$where[] = 'created_at <= ?';
+			$params[] = $to . ' 23:59:59';
+		}
+
+		return [$where ? ' WHERE ' . implode(' AND ', $where) : '', $params];
+	}
+
+	/**
 	 * Get a paginated list of entries.
 	 * @param $contextId int|null null = all contexts (site admin)
 	 * @param $rangeInfo RangeInfo
+	 * @param $filters array q / action / from / to
 	 * @return DAOResultFactory
 	 */
-	function getEntries($contextId, $rangeInfo = null) {
-		$params = [];
+	function getEntries($contextId, $rangeInfo = null, $filters = []) {
+		list($where, $params) = $this->filterSql($contextId, $filters);
 		// old_content / new_content are LONGTEXT capped at 20 KB each, and the
 		// report only renders them for role and account changes, where they are
 		// a few hundred bytes of labels at most. Pulling them for every
@@ -123,15 +167,8 @@ class BacklinkAuditDAO extends DAO {
 				added_count, removed_count, content_hash, ip, user_agent,
 				CASE WHEN action IN (\'role_change\', \'user_change\') THEN old_content END AS old_content,
 				CASE WHEN action IN (\'role_change\', \'user_change\') THEN new_content END AS new_content
-			FROM backlink_audit_log';
-		if ($contextId !== null) {
-			$sql .= ' WHERE context_id = ?';
-			$params[] = (int) $contextId;
-		}
-		$sql .= ' ORDER BY audit_id DESC';
-		$countSql = $contextId !== null
-			? 'SELECT audit_id FROM backlink_audit_log WHERE context_id = ?'
-			: 'SELECT audit_id FROM backlink_audit_log';
+			FROM backlink_audit_log' . $where . ' ORDER BY audit_id DESC';
+		$countSql = 'SELECT audit_id FROM backlink_audit_log' . $where;
 		$result = $this->retrieveRange($sql, $params, $rangeInfo);
 		return new DAOResultFactory($result, $this, '_fromRow', [], $countSql, $params, $rangeInfo);
 	}
@@ -141,8 +178,28 @@ class BacklinkAuditDAO extends DAO {
 	 */
 	function _fromRow($row) {
 		$row = (array) $row;
+		$row['source_desc'] = self::fixMissingLocale($row['source_desc']);
 		$row['links'] = json_decode($row['links_json'], true);
 		if (!is_array($row['links'])) $row['links'] = [];
+		foreach ($row['links'] as $k => $link) {
+			if (isset($link['text'])) $row['links'][$k]['text'] = self::fixMissingLocale($link['text']);
+		}
 		return (object) $row;
+	}
+
+	/**
+	 * Rows written while the plugin's locale file was not readable were
+	 * stored with the marker OJS leaves behind for an unknown key (##key##),
+	 * and source_desc is a frozen copy of a translated string. Look the key
+	 * up again at render time so those rows show text instead of the marker.
+	 * @param $text string
+	 * @return string
+	 */
+	static function fixMissingLocale($text) {
+		if (!is_string($text) || strpos($text, '##') === false) return $text;
+		return preg_replace_callback('/##([A-Za-z0-9_.]+)##/', function ($matches) {
+			$translated = __($matches[1]);
+			return $translated === '##' . $matches[1] . '##' ? $matches[0] : $translated;
+		}, $text);
 	}
 }

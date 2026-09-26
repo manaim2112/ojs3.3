@@ -102,4 +102,34 @@ msgid "plugins.generic.backlinkAudit.alert.unexplained"
 msgstr "UNEXPLAINED - not submitted through the OJS interface"
 
 msgid "plugins.generic.backlinkAudit.alert.footer"
-msgstr "Open the Backlink Audit report in OJS for the full history. Changes marked UNEXPLAINED were not made through the user interface, so the account that made them is unknown. Investigate those first."
+msgstr "Open the Backlink Audit report in OJS for the full history. Changes marked UNEXPLAINED did not come through the OJS interface, so the user shown was only the one signed in at the time — the change cannot be attributed to them with certainty. Investigate those first."
+
+msgid "plugins.generic.backlinkAudit.signInAs"
+msgstr "Sign in as this user"
+
+msgid "plugins.generic.backlinkAudit.user.unknown"
+msgstr "Unknown — not attributable to a person"
+
+msgid "plugins.generic.backlinkAudit.filter.search"
+msgstr "Search"
+
+msgid "plugins.generic.backlinkAudit.filter.searchPlaceholder"
+msgstr "Username, email, description, journal, IP…"
+
+msgid "plugins.generic.backlinkAudit.filter.action"
+msgstr "Action"
+
+msgid "plugins.generic.backlinkAudit.filter.allActions"
+msgstr "All actions"
+
+msgid "plugins.generic.backlinkAudit.filter.from"
+msgstr "From"
+
+msgid "plugins.generic.backlinkAudit.filter.to"
+msgstr "To"
+
+msgid "plugins.generic.backlinkAudit.filter.apply"
+msgstr "Apply"
+
+msgid "plugins.generic.backlinkAudit.filter.reset"
+msgstr "Reset"
