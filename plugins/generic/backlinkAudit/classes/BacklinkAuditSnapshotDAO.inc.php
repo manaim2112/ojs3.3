@@ -28,6 +28,14 @@ class BacklinkAuditSnapshotDAO extends DAO {
 	/** @var bool */
 	var $_tablesChecked = false;
 
+	/**
+	 * @var bool|null Memoised tablesExist() result. Tables cannot appear or
+	 * disappear mid-request, and this used to run six information_schema
+	 * queries on every single page view (once here, once in the plugin's
+	 * _ensureSchema()), so the answer is kept for the whole request.
+	 */
+	static $_tablesExistMemo = null;
+
 	/** @var string Advisory lock name used to serialise concurrent diffs */
 	var $_lockName = 'backlink_audit_snapshot_diff';
 
@@ -62,14 +70,16 @@ class BacklinkAuditSnapshotDAO extends DAO {
 	 * @return bool
 	 */
 	function tablesExist() {
+		if (self::$_tablesExistMemo !== null) return self::$_tablesExistMemo;
 		try {
 			$schema = Capsule::schema();
-			return $schema->hasTable('backlink_audit_log')
+			self::$_tablesExistMemo = $schema->hasTable('backlink_audit_log')
 				&& $schema->hasTable('backlink_audit_role_snapshot')
 				&& $schema->hasTable('backlink_audit_user_snapshot');
 		} catch (\Throwable $e) {
-			return false;
+			self::$_tablesExistMemo = false;
 		}
+		return self::$_tablesExistMemo;
 	}
 
 	/**

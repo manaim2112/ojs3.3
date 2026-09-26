@@ -24,6 +24,13 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 
 class BacklinkAuditPlugin extends GenericPlugin {
 
+	/**
+	 * Stored in the schema_ready plugin setting once the three tables are
+	 * confirmed present. Bump whenever BacklinkAuditSchemaMigration changes so
+	 * the stored token forces exactly one re-probe after that upgrade.
+	 */
+	const SCHEMA_TOKEN = '1';
+
 	/** @var BacklinkAuditLogger */
 	var $_logger;
 
@@ -36,14 +43,32 @@ class BacklinkAuditPlugin extends GenericPlugin {
 	/** @var bool True once setupBackendPage() has fired for this request */
 	var $_isBackendRender = false;
 
-	/** @var bool Guards against PluginRegistry::register() running twice */
-	var $_watcherRegistered = false;
+	/**
+	 * @var bool Static, not per-instance: PluginRegistry::loadCategory() builds
+	 * a fresh plugin object every time it runs, so an instance flag would let
+	 * the full diff fire twice in one request.
+	 */
+	static $_watcherRegistered = false;
 
 	/**
-	 * @var array|null Acting user, captured while the session is still open.
-	 * The privilege diff runs from a shutdown callback, and SessionManager
-	 * closes the session before shutdown callbacks fire, so the user cannot
-	 * be read at that point.
+	 * @var bool Guards the hook registrations below. PluginRegistry::register()
+	 * runs $plugin->register() before it checks whether the plugin is already
+	 * loaded, so a second loadCategory() inside one request reaches here again
+	 * — and HookRegistry::register() does not de-duplicate, which would fire
+	 * every callback twice for the rest of the request.
+	 */
+	static $_hooksRegistered = false;
+
+	/**
+	 * @var bool|null Whether all three tables are known to exist for this
+	 * request. null = not checked yet. Set by _ensureSchema() so the shutdown
+	 * diff answers from memory instead of re-running the same probes.
+	 */
+	var $_schemaOk = null;
+
+	/**
+	 * @var array|null Acting user, read from the registry at shutdown — see
+	 * _captureActor() for why it is not read earlier.
 	 */
 	var $_actor = null;
 
@@ -60,14 +85,30 @@ class BacklinkAuditPlugin extends GenericPlugin {
 			return true;
 		}
 
-		if ($success && $this->getEnabled($mainContextId)) {
-			$dao = new BacklinkAuditDAO();
-			DAORegistry::registerDAO('BacklinkAuditDAO', $dao);
-			$this->_logger = new BacklinkAuditLogger($dao);
+		if (!$success) return $success;
 
-			// Create the log table if missing (idempotent)
-			$this->_ensureSchema();
+		// The DAOs are created OUTSIDE the getEnabled() gate on purpose. The
+		// shutdown diff below is armed unconditionally, and DAORegistry::getDAO()
+		// does not return null for an unknown name — it calls fatalError() and
+		// kills the page with "Unrecognized DAO BacklinkAuditSnapshotDAO!".
+		// getEnabled() can be false while register() still runs: another plugin
+		// calling PluginRegistry::loadCategory('generic') without $enabledOnly
+		// re-registers every plugin found on disk, enabled or not. The watcher
+		// must therefore never depend on this block having run.
+		$dao = new BacklinkAuditDAO();
+		DAORegistry::registerDAO('BacklinkAuditDAO', $dao);
+		$this->_logger = new BacklinkAuditLogger($dao);
 
+		$snapshotDao = new BacklinkAuditSnapshotDAO();
+		DAORegistry::registerDAO('BacklinkAuditSnapshotDAO', $snapshotDao);
+		$this->_snapshotDao = $snapshotDao;
+
+		// Create the log tables if missing (idempotent; effectively free once
+		// the schema_ready token below has been written).
+		$this->_ensureSchema();
+
+		if ($this->getEnabled($mainContextId) && !self::$_hooksRegistered) {
+			self::$_hooksRegistered = true;
 			// Precise attribution: settings saves through services (covers the REST API)
 			HookRegistry::register('Context::add', [$this, 'callbackContextAdd']);
 			HookRegistry::register('Context::edit', [$this, 'callbackContextEdit']);
@@ -98,11 +139,6 @@ class BacklinkAuditPlugin extends GenericPlugin {
 			if ($templateMgr) {
 				$templateMgr->registerFilter('output', [$this, 'callbackNoFollowFilter']);
 			}
-
-			// Snapshot storage for the privilege-change detector.
-			$snapshotDao = new BacklinkAuditSnapshotDAO();
-			DAORegistry::registerDAO('BacklinkAuditSnapshotDAO', $snapshotDao);
-			$this->_snapshotDao = $snapshotDao;
 		}
 
 		// The privilege watcher is registered OUTSIDE the getEnabled() gate on
@@ -110,9 +146,7 @@ class BacklinkAuditPlugin extends GenericPlugin {
 		// (0), so site-level and API requests would otherwise skip this block
 		// entirely — and the snapshots are global anyway, so detection must not
 		// depend on which journal the manager happens to be browsing.
-		if ($success) {
-			$this->_registerPrivilegeWatcher();
-		}
+		$this->_registerPrivilegeWatcher();
 
 		return $success;
 	}
@@ -336,22 +370,42 @@ class BacklinkAuditPlugin extends GenericPlugin {
 	//
 
 	/**
-	 * Capture the acting user and arm the shutdown diff.
-	 *
-	 * Runs for every request, but the shutdown callback itself is only armed
-	 * for signed-in users; the privileged check happens at shutdown, straight
-	 * from the database, so it does not depend on the session.
+	 * Arm the shutdown diff. Deliberately touches nothing else.
 	 */
 	function _registerPrivilegeWatcher() {
-		if ($this->_watcherRegistered) return;
-		$this->_watcherRegistered = true;
+		if (self::$_watcherRegistered) return;
+		self::$_watcherRegistered = true;
 
+		// Do not read the user here. register() is called from
+		// Dispatcher::dispatch(), which runs BEFORE PKPPageRouter::route() has
+		// had the chance to define SESSION_DISABLE_INIT, so calling
+		// $request->getUser() at this point constructs SessionManager and
+		// starts a session on requests that are meant to run without one (OAI,
+		// the CLI tools, and every front-end request of a guest). The acting
+		// user is read from the registry at shutdown instead.
+		if (defined('SESSION_DISABLE_INIT')) return;
+
+		register_shutdown_function([$this, 'shutdownDiff']);
+	}
+
+	/**
+	 * The acting user for this request, read without starting a session.
+	 *
+	 * PKPRequest::getUser() writes the user into the Registry by reference on
+	 * its first call, so whatever already resolved the session user —
+	 * PKPPageRouter::route() does it for every normal page, the API router for
+	 * every token-authenticated call — is still there at shutdown. Reading the
+	 * Registry never constructs SessionManager, which is the whole point: a
+	 * request that never resolved a user cannot have changed a privilege, and
+	 * OAI/CLI requests must not be given a session now.
+	 * @return array|null
+	 */
+	function _captureActor() {
 		try {
-			$request = Application::get()->getRequest();
-			$user = $request ? $request->getUser() : null;
-			if (!$user) return;
+			$user = Registry::get('user', false, null);
+			if (!is_object($user) || !method_exists($user, 'getId') || !$user->getId()) return null;
 
-			$this->_actor = [
+			return [
 				'userId' => (int) $user->getId(),
 				'username' => (string) $user->getUsername(),
 				'email' => (string) $user->getEmail(),
@@ -365,10 +419,8 @@ class BacklinkAuditPlugin extends GenericPlugin {
 			];
 		} catch (\Throwable $e) {
 			error_log('BacklinkAudit: could not capture the acting user: ' . $e->getMessage());
-			return;
+			return null;
 		}
-
-		register_shutdown_function([$this, 'shutdownDiff']);
 	}
 
 	/**
@@ -381,6 +433,7 @@ class BacklinkAuditPlugin extends GenericPlugin {
 		@set_time_limit(30);
 
 		try {
+			$this->_actor = $this->_captureActor();
 			$this->diffSnapshots();
 		} catch (\Throwable $e) {
 			error_log('BacklinkAudit privilege diff failed: ' . $e->getMessage());
@@ -389,23 +442,34 @@ class BacklinkAuditPlugin extends GenericPlugin {
 
 	/**
 	 * Decide whether to run the diff, then hand off to _runPrivilegeDiff().
+	 *
+	 * Gates are ordered cheapest first. They used to run table checks and the
+	 * role query before the throttle, so every single page view paid for them
+	 * even though the diff only actually runs every 300s on a GET.
 	 */
 	function diffSnapshots() {
 		if (empty($this->_actor) || empty($this->_actor['userId'])) return;
 
-		$dao = $this->_getSnapshotDao();
-		if (!$dao || !$dao->tablesExist()) return;
-
-		// Only manager-level users can change privileges; skipping everyone
-		// else keeps this off the hot path for ordinary readers and authors.
-		if (!$dao->isPrivilegedUser($this->_actor['userId'])) return;
-
 		$isPost = !empty($this->_actor['isPost']);
 
-		// POSTs are where changes actually happen, so they always run. On GET
-		// a full diff of every user and assignment would be wasteful, so it is
-		// throttled — a change still surfaces, just on the next interval.
-		if (!$isPost && !$this->_throttleAllowsRun()) return;
+		// 1. Read-only throttle. On a GET inside the window this is one
+		//    settings read and the request stops here.
+		if (!$isPost && !$this->_throttleExpired()) return;
+
+		$dao = $this->_getSnapshotDao();
+		if (!$dao) return;
+
+		// 2. Schema. Answered from _ensureSchema()'s result when the plugin is
+		//    loaded; memoised otherwise.
+		if (!$this->_tablesOk()) return;
+
+		// 3. Only manager-level users can change privileges; skipping everyone
+		//    else keeps this off the hot path for ordinary readers and authors.
+		if (!$dao->isPrivilegedUser($this->_actor['userId'])) return;
+
+		// 4. Consume the window only now that the run was actually worth doing:
+		//    a reader's GET must never postpone a manager's run.
+		if (!$isPost) $this->_throttleMark();
 
 		if (!$dao->acquireLock()) return;
 		try {
@@ -737,26 +801,58 @@ class BacklinkAuditPlugin extends GenericPlugin {
 	}
 
 	/**
-	 * Rate-limit full diffs on non-POST requests.
-	 * @return bool True when this run may proceed
+	 * Read-only half of the rate limit: has the window on non-POST requests
+	 * elapsed? Must not write anything, otherwise a reader's GET would consume
+	 * the window before a manager's run had a chance to take it.
+	 * @return bool True when a run may be considered
 	 */
-	function _throttleAllowsRun() {
+	function _throttleExpired() {
 		try {
 			$last = (int) $this->getSetting(CONTEXT_ID_NONE, 'last_snapshot_check');
-			if ($last && (time() - $last) < $this->_diffThrottleSeconds) return false;
-			$this->updateSetting(CONTEXT_ID_NONE, 'last_snapshot_check', time(), 'string');
-			return true;
+			return !$last || (time() - $last) >= $this->_diffThrottleSeconds;
 		} catch (\Throwable $e) {
 			return true;
 		}
 	}
 
+	/**
+	 * Write half of the rate limit. Only called once a run has been approved,
+	 * and only on non-POST requests (POSTs always run).
+	 */
+	function _throttleMark() {
+		try {
+			$this->updateSetting(CONTEXT_ID_NONE, 'last_snapshot_check', time(), 'string');
+		} catch (\Throwable $e) {
+			// A failed write only means the next GET may run the diff again.
+		}
+	}
+
+	/**
+	 * Whether the snapshot tables are present, without repeating work.
+	 *
+	 * _ensureSchema() has normally already answered this at registration time;
+	 * falling back to the memoised tablesExist() costs nothing extra either.
+	 *
+	 * @return bool
+	 */
+	function _tablesOk() {
+		if ($this->_schemaOk !== null) return $this->_schemaOk;
+		$dao = $this->_getSnapshotDao();
+		if (!$dao) return false;
+		return $dao->tablesExist();
+	}
+
 	function _getSnapshotDao() {
 		if ($this->_snapshotDao === null) {
-			$this->_snapshotDao = DAORegistry::getDAO('BacklinkAuditSnapshotDAO');
-			if ($this->_snapshotDao === null) {
+			// DAORegistry::getDAO() fatals for names it does not know instead of
+			// returning null, so look the instance up directly.
+			$daos = DAORegistry::getDAOs();
+			if (isset($daos['BacklinkAuditSnapshotDAO'])) {
+				$this->_snapshotDao = $daos['BacklinkAuditSnapshotDAO'];
+			} else {
 				try {
 					$this->_snapshotDao = new BacklinkAuditSnapshotDAO();
+					DAORegistry::registerDAO('BacklinkAuditSnapshotDAO', $this->_snapshotDao);
 				} catch (\Throwable $e) {
 					return null;
 				}
@@ -782,14 +878,34 @@ class BacklinkAuditPlugin extends GenericPlugin {
 	 * Every table has to be checked, not just the first one: the log table
 	 * already exists on installs that ran an earlier version of this plugin,
 	 * so guarding on it alone would silently skip creating the snapshots.
+	 *
+	 * The result is remembered twice over: in the schema_ready setting across
+	 * requests (so the three information_schema probes normally never run at
+	 * all) and in $_schemaOk within this request (so the shutdown diff does
+	 * not repeat them).
 	 */
 	function _ensureSchema() {
+		if ($this->_schemaOk !== null) return;
 		try {
+			if ((string) $this->getSetting(CONTEXT_ID_NONE, 'schema_ready') === self::SCHEMA_TOKEN) {
+				$this->_schemaOk = true;
+				return;
+			}
+
 			$schema = Capsule::schema();
-			if (!$schema->hasTable('backlink_audit_log')
-					|| !$schema->hasTable('backlink_audit_role_snapshot')
-					|| !$schema->hasTable('backlink_audit_user_snapshot')) {
+			$ok = $schema->hasTable('backlink_audit_log')
+				&& $schema->hasTable('backlink_audit_role_snapshot')
+				&& $schema->hasTable('backlink_audit_user_snapshot');
+			if (!$ok) {
 				$this->getInstallMigration()->up();
+				$ok = $schema->hasTable('backlink_audit_log')
+					&& $schema->hasTable('backlink_audit_role_snapshot')
+					&& $schema->hasTable('backlink_audit_user_snapshot');
+			}
+
+			$this->_schemaOk = $ok;
+			if ($ok) {
+				$this->updateSetting(CONTEXT_ID_NONE, 'schema_ready', self::SCHEMA_TOKEN, 'string');
 			}
 		} catch (\Throwable $e) {
 			error_log('BacklinkAuditPlugin::_ensureSchema failed: ' . $e->getMessage());
@@ -798,7 +914,9 @@ class BacklinkAuditPlugin extends GenericPlugin {
 
 	function _getLogger() {
 		if ($this->_logger === null) {
-			$dao = DAORegistry::getDAO('BacklinkAuditDAO');
+			// Same reasoning as _getSnapshotDao(): getDAO() fatals on unknown names.
+			$daos = DAORegistry::getDAOs();
+			$dao = isset($daos['BacklinkAuditDAO']) ? $daos['BacklinkAuditDAO'] : new BacklinkAuditDAO();
 			$this->_logger = new BacklinkAuditLogger($dao);
 		}
 		return $this->_logger;

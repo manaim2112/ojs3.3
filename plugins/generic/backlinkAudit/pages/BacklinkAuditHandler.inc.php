@@ -129,9 +129,15 @@ class BacklinkAuditHandler extends Handler {
 		}
 
 		$dao = DAORegistry::getDAO('BacklinkAuditDAO');
+		// Not SELECT *: the CSV has no column for old_content / new_content /
+		// content_hash, and those are LONGTEXT — 10000 rows of them is up to
+		// 400 MB read out of the database to write 14 CSV columns.
+		$select = 'created_at, action, source_type, source_desc, object_id,
+			context_path, user_id, username, user_email, links_json,
+			added_count, removed_count, ip, user_agent';
 		$result = $contextFilter === null
-			? $dao->retrieve('SELECT * FROM backlink_audit_log ORDER BY audit_id DESC LIMIT 10000')
-			: $dao->retrieve('SELECT * FROM backlink_audit_log WHERE context_id = ? ORDER BY audit_id DESC LIMIT 10000', [(int) $contextFilter]);
+			? $dao->retrieve('SELECT ' . $select . ' FROM backlink_audit_log ORDER BY audit_id DESC LIMIT 10000')
+			: $dao->retrieve('SELECT ' . $select . ' FROM backlink_audit_log WHERE context_id = ? ORDER BY audit_id DESC LIMIT 10000', [(int) $contextFilter]);
 
 		header('Content-Type: text/csv; charset=utf-8');
 		header('Content-Disposition: attachment; filename=backlink-audit-' . date('Ymd-His') . '.csv');

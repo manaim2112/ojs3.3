@@ -111,7 +111,19 @@ class BacklinkAuditDAO extends DAO {
 	 */
 	function getEntries($contextId, $rangeInfo = null) {
 		$params = [];
-		$sql = 'SELECT * FROM backlink_audit_log';
+		// old_content / new_content are LONGTEXT capped at 20 KB each, and the
+		// report only renders them for role and account changes, where they are
+		// a few hundred bytes of labels at most. Pulling them for every
+		// link-save row meant up to a megabyte of HTML per page that was never
+		// displayed. The CASE keeps them for exactly the two actions that use
+		// them and yields NULL for the rest, so MySQL never reads those columns
+		// for a row it is not going to return them for.
+		$sql = 'SELECT audit_id, created_at, user_id, username, user_email, context_id, context_path,
+				source_type, source_desc, object_id, action, links_json, link_count,
+				added_count, removed_count, content_hash, ip, user_agent,
+				CASE WHEN action IN (\'role_change\', \'user_change\') THEN old_content END AS old_content,
+				CASE WHEN action IN (\'role_change\', \'user_change\') THEN new_content END AS new_content
+			FROM backlink_audit_log';
 		if ($contextId !== null) {
 			$sql .= ' WHERE context_id = ?';
 			$params[] = (int) $contextId;

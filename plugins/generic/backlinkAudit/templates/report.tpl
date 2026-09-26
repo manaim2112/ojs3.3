@@ -118,7 +118,7 @@
 		</table>
 
 		<div style="margin-top:1rem;">
-			{page_links iterator=$entries page="securityaudit" op="index"}
+			{page_links name="backlinkAudit" iterator=$entries}
 		</div>
 
 	</div>
